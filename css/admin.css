@@ -1988,6 +1988,16 @@ select.form-control {
    ============================================ */
 
 .hp-canvas { padding-bottom: 2rem; }
+.hp-canvas .wysiwyg-page {
+  background: var(--admin-bg);
+  color: var(--admin-text);
+  box-shadow: none;
+  font-family: inherit;
+  border: 1px solid var(--admin-border);
+}
+.hp-canvas .wysiwyg-title,
+.hp-canvas .wysiwyg-title:focus { color: var(--admin-text); }
+.hp-canvas .wysiwyg-hero-placeholder { color: var(--admin-text-dim); }
 
 .hp-label {
   font-size: 0.7rem;
