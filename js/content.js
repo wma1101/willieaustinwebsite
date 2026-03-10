@@ -68,10 +68,24 @@ const Content = (() => {
     if (el && html != null) el.innerHTML = html;
   }
 
+  // Resolve image src — check admin image store for uploaded base64 images
+  function resolveImg(src) {
+    if (!src) return src;
+    if (src.indexOf('data:') === 0) return src;
+    try {
+      const raw = localStorage.getItem('wa_imageStore');
+      if (raw) {
+        const store = JSON.parse(raw);
+        if (store[src]) return store[src];
+      }
+    } catch (e) {}
+    return src;
+  }
+
   // Helper: build an img tag with fallback
   function imgTag(src, alt, extra) {
-    const fallback = src.startsWith('assets/') ? '' : '';
-    return `<img src="${esc(src)}" alt="${esc(alt || '')}" loading="lazy" ${extra || ''}>`;
+    const resolved = resolveImg(src);
+    return `<img src="${esc(resolved)}" alt="${esc(alt || '')}" loading="lazy" ${extra || ''}>`;
   }
 
   // Generate article URL — dedicated pages get their own URL, others use article.html?id=slug
@@ -155,9 +169,26 @@ const Content = (() => {
 
   // ─── HOMEPAGE (Vogue-style) ───
 
+  // Pre-resolve all image paths in data using the admin image store
+  function resolveAllImages(obj) {
+    if (!obj || typeof obj !== 'object') return obj;
+    if (Array.isArray(obj)) { obj.forEach(resolveAllImages); return obj; }
+    var keys = Object.keys(obj);
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      if (k === 'image' || k === 'hero_image' || k === 'src') {
+        if (typeof obj[k] === 'string') obj[k] = resolveImg(obj[k]);
+      } else if (typeof obj[k] === 'object') {
+        resolveAllImages(obj[k]);
+      }
+    }
+    return obj;
+  }
+
   async function renderHomepage(data) {
     console.log('[Content] renderHomepage called, data:', !!data);
     if (!data) return;
+    resolveAllImages(data);
 
     // Cover
     if (data.cover) {

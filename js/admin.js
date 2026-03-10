@@ -83,7 +83,6 @@
 
   function saveToStorage(key, data) {
     localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(data));
-    markUnsaved();
   }
 
   function getFromStorage(key) {
