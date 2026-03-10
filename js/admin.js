@@ -1042,7 +1042,7 @@
           renderWysiwygBody();
         }
       } else if (typeof pendingUploadTarget === 'string' && pendingUploadTarget.indexOf('hp-') === 0) {
-        applyHpUpload(pendingUploadTarget, dataUrl);
+        applyHpUpload(pendingUploadTarget, path);
       }
 
       markUnsaved();
@@ -1083,7 +1083,7 @@
           renderWysiwygBody();
         }
       } else if (typeof target === 'string' && target.indexOf('hp-') === 0) {
-        applyHpUpload(target, dataUrl);
+        applyHpUpload(target, path);
       }
 
       markUnsaved();

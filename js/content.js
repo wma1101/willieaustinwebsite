@@ -68,18 +68,22 @@ const Content = (() => {
     if (el && html != null) el.innerHTML = html;
   }
 
-  // Resolve image src — check admin image store for uploaded base64 images
+  // Load admin image store once (uploaded base64 images)
+  let _imgStore = null;
+  function getImgStore() {
+    if (_imgStore !== null) return _imgStore;
+    try {
+      const raw = localStorage.getItem('wa_imageStore');
+      _imgStore = raw ? JSON.parse(raw) : {};
+    } catch (e) { _imgStore = {}; }
+    return _imgStore;
+  }
+
   function resolveImg(src) {
     if (!src) return src;
     if (src.indexOf('data:') === 0) return src;
-    try {
-      const raw = localStorage.getItem('wa_imageStore');
-      if (raw) {
-        const store = JSON.parse(raw);
-        if (store[src]) return store[src];
-      }
-    } catch (e) {}
-    return src;
+    const store = getImgStore();
+    return store[src] || src;
   }
 
   // Helper: build an img tag with fallback
