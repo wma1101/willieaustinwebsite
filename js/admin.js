@@ -82,7 +82,12 @@
   }
 
   function saveToStorage(key, data) {
-    localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(data));
+    try {
+      localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(data));
+    } catch (e) {
+      console.warn('localStorage save failed for', key, e);
+      if (key === 'imageStore') showToast('Storage full — image kept in memory only', 'error');
+    }
   }
 
   function getFromStorage(key) {
@@ -279,11 +284,12 @@
 
   // Helper: image zone HTML for homepage cards
   function hpImgZone(target, imgSrc) {
+    var safeSrc = imgSrc ? (imgSrc.indexOf('data:') === 0 ? imgSrc : esc(imgSrc)) : '';
     return '<div class="hp-img-zone"' +
       ' ondragover="adminPanel.preventDragDefault(event)"' +
       ' ondragenter="adminPanel.preventDragDefault(event)"' +
       ' ondrop="adminPanel.handleDrop(event,\'' + target + '\')">' +
-      (imgSrc ? '<img src="' + esc(imgSrc) + '" alt="" onerror="this.style.display=\'none\'">' : '') +
+      (safeSrc ? '<img src="' + safeSrc + '" alt="">' : '') +
       '<div class="hp-img-overlay' + (imgSrc ? '' : ' empty') + '" onclick="adminPanel.triggerUpload(\'' + target + '\')">' +
       '<i class="fas fa-camera"></i>' +
       '</div></div>';
@@ -1036,7 +1042,7 @@
           renderWysiwygBody();
         }
       } else if (typeof pendingUploadTarget === 'string' && pendingUploadTarget.indexOf('hp-') === 0) {
-        applyHpUpload(pendingUploadTarget, path);
+        applyHpUpload(pendingUploadTarget, dataUrl);
       }
 
       markUnsaved();
@@ -1077,7 +1083,7 @@
           renderWysiwygBody();
         }
       } else if (typeof target === 'string' && target.indexOf('hp-') === 0) {
-        applyHpUpload(target, path);
+        applyHpUpload(target, dataUrl);
       }
 
       markUnsaved();
