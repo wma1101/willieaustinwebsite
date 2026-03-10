@@ -1,0 +1,254 @@
+/* Loading Screen — Retro 90s/2000s Nostalgia */
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loading);
+  background: var(--color-black);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: default;
+}
+
+/* CRT scanline effect */
+.loading-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* CRT flicker */
+.loading-screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(245, 242, 237, 0.02);
+  pointer-events: none;
+  z-index: 3;
+  animation: crt-flicker 0.1s infinite;
+}
+
+@keyframes crt-flicker {
+  0%   { opacity: 0.02; }
+  50%  { opacity: 0.04; }
+  100% { opacity: 0.02; }
+}
+
+/* Title assembling letter by letter */
+.loading-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  color: var(--color-paper);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  position: relative;
+  z-index: 4;
+  overflow: hidden;
+}
+
+.loading-title .letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: letter-appear 0.4s var(--ease-out) forwards;
+}
+
+@keyframes letter-appear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Retro progress bar */
+.loading-bar-container {
+  margin-top: var(--space-lg);
+  width: min(400px, 80vw);
+  position: relative;
+  z-index: 4;
+}
+
+.loading-bar-track {
+  width: 100%;
+  height: 20px;
+  border: 2px solid var(--gray-600);
+  background: var(--gray-900);
+  position: relative;
+  /* Pixelated look */
+  image-rendering: pixelated;
+}
+
+.loading-bar-fill {
+  height: 100%;
+  background: var(--color-accent);
+  width: 0%;
+  transition: width 0.3s steps(20);
+  position: relative;
+}
+
+/* Chunky pixel segments */
+.loading-bar-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 18px,
+    rgba(0, 0, 0, 0.3) 18px,
+    rgba(0, 0, 0, 0.3) 20px
+  );
+}
+
+.loading-percentage {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  color: var(--gray-400);
+  text-align: right;
+  margin-top: var(--space-xs);
+}
+
+/* Loading messages */
+.loading-message {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  color: var(--gray-500);
+  margin-top: var(--space-md);
+  position: relative;
+  z-index: 4;
+  min-height: 1.5em;
+}
+
+.loading-message::after {
+  content: '_';
+  animation: blink-cursor 0.6s step-end infinite;
+}
+
+@keyframes blink-cursor {
+  50% { opacity: 0; }
+}
+
+/* Click to enter prompt */
+.loading-enter {
+  position: relative;
+  z-index: 4;
+  margin-top: var(--space-xl);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.loading-enter.visible {
+  opacity: 1;
+}
+
+.loading-enter button {
+  font-family: var(--font-secondary);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-paper);
+  border: 1px solid var(--gray-600);
+  padding: 0.75em 2em;
+  cursor: pointer;
+  transition: all var(--duration-normal) ease;
+}
+
+.loading-enter button:hover {
+  background: var(--color-paper);
+  color: var(--color-black);
+  border-color: var(--color-paper);
+}
+
+/* Exit animation — curtain split */
+.loading-screen.exit {
+  animation: none;
+}
+
+.loading-screen.exit .loading-curtain-left,
+.loading-screen.exit .loading-curtain-right {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: var(--color-black);
+  z-index: 10;
+}
+
+.loading-screen.exit .loading-curtain-left {
+  left: 0;
+  animation: curtain-left 0.8s var(--ease-in-out) forwards;
+}
+
+.loading-screen.exit .loading-curtain-right {
+  right: 0;
+  animation: curtain-right 0.8s var(--ease-in-out) forwards;
+}
+
+@keyframes curtain-left {
+  to { transform: translateX(-100%); }
+}
+
+@keyframes curtain-right {
+  to { transform: translateX(100%); }
+}
+
+.loading-screen.exit .loading-title,
+.loading-screen.exit .loading-bar-container,
+.loading-screen.exit .loading-message,
+.loading-screen.exit .loading-enter {
+  animation: fade-out 0.3s ease forwards;
+}
+
+@keyframes fade-out {
+  to { opacity: 0; }
+}
+
+/* Hidden after exit */
+.loading-screen.hidden {
+  display: none;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .loading-title {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+    letter-spacing: 0.15em;
+  }
+
+  .loading-bar-container {
+    width: min(300px, 85vw);
+  }
+
+  .loading-bar-track {
+    height: 16px;
+  }
+
+  .loading-message {
+    font-size: var(--text-caption);
+    padding-inline: var(--space-sm);
+    text-align: center;
+  }
+
+  .loading-enter {
+    margin-top: var(--space-lg);
+  }
+
+  .loading-enter button {
+    font-size: var(--text-caption);
+    letter-spacing: 0.2em;
+    padding: 0.65em 1.5em;
+  }
+}

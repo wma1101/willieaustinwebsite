@@ -1,0 +1,88 @@
+/* Design Tokens — Willie Austin Website */
+
+:root {
+  /* Colors */
+  --color-black: #0a0a0a;
+  --color-paper: #f5f2ed;
+  --color-accent: #c4462a;
+  --color-accent-hover: #a83920;
+
+  /* Warm grays */
+  --gray-900: #1a1a1a;
+  --gray-800: #2a2a28;
+  --gray-700: #3d3d3a;
+  --gray-600: #555550;
+  --gray-500: #76766f;
+  --gray-400: #9a9a92;
+  --gray-300: #bdbdb5;
+  --gray-200: #d4d4cd;
+  --gray-100: #e8e5e0;
+  --gray-50: #f0ede8;
+
+  /* Typography — Fluid scale */
+  --font-display: 'WillieAustin', Georgia, serif;
+  --font-secondary: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Source Serif 4', Georgia, serif;
+  --font-mono: 'Courier New', monospace;
+  --font-serif-italic: 'Source Serif 4', Georgia, serif;
+
+  --text-display-xl: clamp(4rem, 8vw + 1rem, 10rem);
+  --text-display: clamp(3rem, 5vw + 1rem, 7rem);
+  --text-display-sm: clamp(2rem, 3vw + 0.5rem, 4rem);
+  --text-h1: clamp(1.75rem, 2.5vw + 0.5rem, 3rem);
+  --text-h2: clamp(1.5rem, 2vw + 0.5rem, 2.25rem);
+  --text-h3: clamp(1.125rem, 1.5vw + 0.25rem, 1.5rem);
+  --text-body: clamp(1.0625rem, 0.5vw + 0.875rem, 1.1875rem);
+  --text-small: clamp(0.8125rem, 0.25vw + 0.75rem, 0.875rem);
+  --text-caption: 0.875rem;
+  --text-overline: 0.6875rem;
+
+  /* Spacing */
+  --space-xs: clamp(0.25rem, 0.5vw, 0.5rem);
+  --space-sm: clamp(0.5rem, 1vw, 1rem);
+  --space-md: clamp(1rem, 2vw, 2rem);
+  --space-lg: clamp(2rem, 4vw, 4rem);
+  --space-xl: clamp(3rem, 6vw, 6rem);
+  --space-2xl: clamp(4rem, 8vw, 8rem);
+  --space-3xl: clamp(6rem, 12vw, 12rem);
+
+  /* Layout */
+  --content-width: 65ch;
+  --wide-width: 90rem;
+  --grid-gap: clamp(1rem, 2vw, 2rem);
+  --grid-gap-lg: clamp(2rem, 3vw, 3rem);
+  --space-section: clamp(5rem, 10vw, 10rem);
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-hover: 400ms;
+  --duration-slow: 600ms;
+  --duration-reveal: 1000ms;
+
+  /* Z-index layers */
+  --z-base: 1;
+  --z-sticky: 100;
+  --z-nav: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-loading: 500;
+  --z-cursor: 9999;
+
+  /* Borders */
+  --border-thin: 1px solid var(--gray-200);
+  --border-accent: 2px solid var(--color-accent);
+}
+
+/* Dark mode tokens (for game / loading screen) */
+[data-theme="dark"] {
+  --color-bg: var(--color-black);
+  --color-text: var(--color-paper);
+}
+
+[data-theme="light"] {
+  --color-bg: var(--color-paper);
+  --color-text: var(--color-black);
+}

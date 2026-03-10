@@ -1,0 +1,216 @@
+/* Animations — Willie Austin Website */
+
+/* ============================================
+   SCROLL REVEAL
+   ============================================ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity var(--duration-reveal) var(--ease-out),
+              transform var(--duration-reveal) var(--ease-out);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--duration-slow) var(--ease-out),
+              transform var(--duration-slow) var(--ease-out);
+}
+
+.reveal-stagger.visible > *:nth-child(1) { transition-delay: 0ms; }
+.reveal-stagger.visible > *:nth-child(2) { transition-delay: 100ms; }
+.reveal-stagger.visible > *:nth-child(3) { transition-delay: 200ms; }
+.reveal-stagger.visible > *:nth-child(4) { transition-delay: 300ms; }
+.reveal-stagger.visible > *:nth-child(5) { transition-delay: 400ms; }
+
+.reveal-stagger.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reveal from left */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-24px);
+  transition: opacity var(--duration-reveal) var(--ease-out),
+              transform var(--duration-reveal) var(--ease-out);
+}
+
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Reveal from right */
+.reveal-right {
+  opacity: 0;
+  transform: translateX(24px);
+  transition: opacity var(--duration-reveal) var(--ease-out),
+              transform var(--duration-reveal) var(--ease-out);
+}
+
+.reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Scale reveal (for images) */
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity var(--duration-reveal) var(--ease-out),
+              transform var(--duration-reveal) var(--ease-out);
+}
+
+.reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ============================================
+   IMAGE PARALLAX
+   ============================================ */
+
+.parallax-wrap {
+  overflow: hidden;
+}
+
+.parallax-img {
+  transform: translateY(-10%);
+  height: 120%;
+  width: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+/* ============================================
+   PAGE TRANSITION OVERLAY
+   ============================================ */
+
+.page-transition {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: var(--color-black);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-in-out);
+}
+
+.page-transition.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ============================================
+   HOVER EFFECTS
+   ============================================ */
+
+/* Image scale on hover */
+.hover-scale {
+  overflow: hidden;
+}
+
+.hover-scale img {
+  transition: transform var(--duration-hover) var(--ease-out);
+}
+
+.hover-scale:hover img {
+  transform: scale(1.03);
+}
+
+/* Headline color shift */
+.hover-headline:hover .stream-item__headline,
+.hover-headline:hover h2,
+.hover-headline:hover h3 {
+  color: var(--color-accent);
+}
+
+/* ============================================
+   CUSTOM CURSOR
+   ============================================ */
+
+.custom-cursor {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-paper);
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  transform: translate(-50%, -50%);
+  transition: width var(--duration-fast) var(--ease-out),
+              height var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) ease,
+              background var(--duration-fast) ease;
+  mix-blend-mode: difference;
+}
+
+.custom-cursor.hovering {
+  width: 40px;
+  height: 40px;
+  background: rgba(196, 70, 42, 0.2);
+  border-color: var(--color-accent);
+}
+
+.custom-cursor.clicking {
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+/* Hide default cursor when custom is active */
+.cursor-active,
+.cursor-active * {
+  cursor: none !important;
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale,
+  .reveal-stagger > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .cover__image img {
+    opacity: 1;
+    animation: none;
+  }
+
+  .cover__title {
+    clip-path: none;
+    animation: none;
+  }
+
+  .cover__tagline,
+  .cover__scroll {
+    opacity: 1;
+    animation: none;
+  }
+
+  .marquee__inner {
+    animation: none;
+  }
+
+  .parallax-img {
+    transform: none;
+    height: 100%;
+  }
+
+  .custom-cursor {
+    display: none;
+  }
+}

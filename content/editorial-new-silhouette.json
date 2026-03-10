@@ -1,0 +1,115 @@
+{
+  "category": "Editorial",
+  "title": "The New Silhouette",
+  "author": "Willie Austin",
+  "date": "January 2026",
+  "read_time": "8 min read",
+  "hero_image": "assets/images/editorials/new-silhouette/hero.jpg",
+  "tags": ["Fashion", "Design", "Editorial", "Process"],
+
+  "body": [
+    {
+      "type": "paragraph",
+      "dropcap": true,
+      "text": "There is something profoundly honest about a garment that shows its making. In an industry obsessed with perfection — with invisible seams and flawless finishes and the illusion that clothes simply materialize on bodies — deconstruction asks a different question: what if we let the work show?"
+    },
+    {
+      "type": "paragraph",
+      "text": "This isn't a new idea. Rei Kawakubo has been asking it since the early 1980s. Martin Margiela turned it into a philosophy. But the current generation of designers is taking it somewhere new — not as provocation, but as a genuine design language. The raw edge isn't a statement anymore. It's a vocabulary."
+    },
+    {
+      "type": "image",
+      "layout": "wide",
+      "src": "assets/images/editorials/new-silhouette/detail-wide.jpg",
+      "caption": "A detail from the Nocturne collection: raw-edge wool panel with exposed dart construction."
+    },
+    {
+      "type": "heading",
+      "text": "The Honesty of Imperfection"
+    },
+    {
+      "type": "paragraph",
+      "text": "Consider the dart. In traditional tailoring, darts are pressed flat, hidden, made invisible. They shape the fabric to the body but deny their own existence. A deconstructed dart does the opposite — it stands proud, visible, a declaration that this fabric was shaped by human hands for a human body."
+    },
+    {
+      "type": "paragraph",
+      "text": "This is not laziness disguised as design. The precision required to make a visible seam look intentional is, if anything, greater than the precision required to hide one. Every raw edge must be cut with intention. Every exposed construction detail must be placed where it adds to the garment rather than diminishing it."
+    },
+    {
+      "type": "pullquote",
+      "text": "The raw edge isn't a statement anymore. It's a vocabulary.",
+      "attribution": "Willie Austin"
+    },
+    {
+      "type": "paragraph",
+      "text": "Walk into any fabric store and run your hand along a bolt of cloth. Feel the selvage — that finished edge where the weft threads turn back on themselves. There's a beauty in that edge that most fashion consumers never see. Deconstruction invites them to."
+    },
+    {
+      "type": "image",
+      "layout": "full-bleed",
+      "src": "assets/images/editorials/new-silhouette/full-bleed.jpg",
+      "caption": "The tension between structure and softness: tailored wool melting into draped silk charmeuse."
+    },
+    {
+      "type": "heading",
+      "text": "Structure as Expression"
+    },
+    {
+      "type": "paragraph",
+      "text": "The most interesting thing happening in fashion right now is the conversation between structure and fluidity. Not choosing one or the other, but finding the space where they coexist. A jacket with architectural shoulders that softens into a draped hem. A shirt where one side is precisely tailored and the other falls freely."
+    },
+    {
+      "type": "paragraph",
+      "text": "This isn't about breaking rules for the sake of breaking rules. It's about understanding the rules so deeply that you can bend them with intention. Every great deconstructionist is, first, a master technician."
+    },
+    {
+      "type": "paragraph",
+      "text": "I think about this every time I sit down at a cutting table. The scissors know the difference between a careless cut and a careful one, even if the result looks the same. The fabric knows. And ultimately, the person wearing the garment knows, even if they can't articulate why one thing feels right and another doesn't."
+    },
+    {
+      "type": "image",
+      "layout": "wide",
+      "src": "assets/images/editorials/new-silhouette/process-wide.jpg",
+      "caption": "Process documentation: pattern development for the asymmetric blazer, showing the evolution from conventional to deconstructed."
+    },
+    {
+      "type": "heading",
+      "text": "What Comes Next"
+    },
+    {
+      "type": "paragraph",
+      "text": "The next chapter of this conversation won't look like what came before. We're moving past the point where exposed seams are surprising. The question now is subtler: how do you build a garment that feels both finished and ongoing? That suggests it could be taken apart and rebuilt?"
+    },
+    {
+      "type": "paragraph",
+      "text": "The answer, I think, lies in modularity — pieces that connect and disconnect, that can be worn three ways or five ways, that invite the wearer to participate in the design. Not as a gimmick, but as a fundamental rethinking of what a garment is."
+    },
+    {
+      "type": "paragraph",
+      "text": "Fashion at its best is a collaboration between maker and wearer. Deconstruction — real deconstruction, not the surface-level version — makes that collaboration visible. And visibility, in this industry, is the most radical act of all."
+    }
+  ],
+
+  "dual_read": {
+    "title": "The Making Of",
+    "paragraphs": [
+      "Every piece in the Nocturne collection went through at least seven iterations. The process is as much a part of the story as the finished garment — maybe more. These images document the journey from first sketch to final form.",
+      "What you see on the runway is the end of a conversation that began months earlier, in a room full of fabric swatches and half-finished patterns and the smell of steam.",
+      "The process isn't linear. Ideas fold back on themselves. A sleeve that worked in sketch didn't work in muslin. A color that seemed wrong became the foundation of the whole palette. Design is finding your way by getting lost."
+    ],
+    "images": [
+      "assets/images/editorials/new-silhouette/dual-01.jpg",
+      "assets/images/editorials/new-silhouette/dual-02.jpg",
+      "assets/images/editorials/new-silhouette/dual-03.jpg",
+      "assets/images/editorials/new-silhouette/dual-04.jpg"
+    ]
+  },
+
+  "gallery": [
+    { "image": "assets/images/editorials/new-silhouette/gallery-01.jpg", "caption": "I. Opening — the runway before the show" },
+    { "image": "assets/images/editorials/new-silhouette/gallery-02.jpg", "caption": "II. First Light — morning in the studio" },
+    { "image": "assets/images/editorials/new-silhouette/gallery-03.jpg", "caption": "III. The Cut — precision at the table" },
+    { "image": "assets/images/editorials/new-silhouette/gallery-04.jpg", "caption": "IV. Color — the moment burnt sienna entered" },
+    { "image": "assets/images/editorials/new-silhouette/gallery-05.jpg", "caption": "V. Finale — everything comes together" }
+  ]
+}

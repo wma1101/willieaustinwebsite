@@ -1,0 +1,87 @@
+WILLIE AUSTIN WEBSITE — IMAGE GUIDE
+====================================
+
+Drop your photos into the folders below using these exact filenames.
+The site will automatically use them instead of the Unsplash placeholders.
+
+Recommended: JPG format, high quality. Heroes should be at least 1400px wide.
+Thumbnails/side images can be 600-800px wide.
+
+
+COVER (homepage hero)
+─────────────────────
+  assets/images/cover/
+    hero.jpg              ← Full-screen homepage cover image (B&W fashion recommended)
+
+
+COLLECTIONS
+───────────
+
+  assets/images/collections/nocturne/
+    hero.jpg              ← Full-bleed opening spread (collection hero)
+    look-01.jpg           ← Look 01 — single full-bleed
+    look-02.jpg           ← Look 02 (left of pair)
+    look-03.jpg           ← Look 03 (right of pair)
+    look-04.jpg           ← Look 04 — full-bleed dramatic
+    look-05.jpg           ← Look 05 (left, asymmetric)
+    look-06.jpg           ← Look 06 (right, asymmetric)
+    look-07.jpg           ← Look 07 — single wide (landscape ok)
+    look-08.jpg           ← Look 08 (left of pair)
+    look-09.jpg           ← Look 09 (right of pair)
+    look-10.jpg           ← Look 10 (left, asymmetric reverse)
+    look-11.jpg           ← Look 11 (right, asymmetric reverse)
+    finale.jpg            ← Full-bleed finale image
+
+  assets/images/collections/soft-architecture/
+    thumb.jpg             ← Thumbnail for The Stream (4:5 ratio)
+
+
+EDITORIALS
+──────────
+
+  assets/images/editorials/new-silhouette/
+    hero.jpg              ← Article hero image
+    detail-wide.jpg       ← First wide image (raw-edge detail)
+    full-bleed.jpg        ← Full-bleed breakout image
+    process-wide.jpg      ← Second wide image (pattern development)
+    dual-01.jpg           ← Dual-read section image 1
+    dual-02.jpg           ← Dual-read section image 2
+    dual-03.jpg           ← Dual-read section image 3
+    dual-04.jpg           ← Dual-read section image 4
+    gallery-01.jpg        ← Horizontal gallery panel 1
+    gallery-02.jpg        ← Horizontal gallery panel 2
+    gallery-03.jpg        ← Horizontal gallery panel 3
+    gallery-04.jpg        ← Horizontal gallery panel 4
+    gallery-05.jpg        ← Horizontal gallery panel 5
+
+  assets/images/editorials/raw-material/
+    thumb.jpg             ← Thumbnail for The Stream (3:4 ratio)
+
+  assets/images/editorials/red-thread/
+    thumb.jpg             ← Thumbnail for The Stream & Featured Now (4:5 ratio)
+
+  assets/images/editorials/between-takes/
+    thumb.jpg             ← Thumbnail for Featured Now sidebar
+
+
+ABOUT (profile)
+───────────────
+  assets/images/about/
+    portrait.jpg          ← Full-bleed dramatic portrait (hero)
+    studio-wide.jpg       ← Wide studio panoramic image
+    full-bleed.jpg        ← Full-bleed accent image
+    process-wide.jpg      ← Wide behind-the-scenes / process image
+
+
+NEWS (optional — for stream stories)
+────────────────────────────────────
+  assets/images/news/
+    fendi.jpg             ← Fendi debut story
+    gucci.jpg             ← Gucci Primavera story
+    paris-fw.jpg          ← Paris Fashion Week story
+    saks.jpg              ← Saks bankruptcy story
+    disco.jpg             ← Disco-glam revival story
+    marni.jpg             ← Marni / Meryll Rogge story
+    kendall.jpg           ← Kendall Jenner Vogue France
+    ariana.jpg            ← Ariana Grande Vogue Japan
+    industry.jpg          ← Brands rush upmarket story

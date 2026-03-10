@@ -1,0 +1,192 @@
+/* Editorial Grid System — Willie Austin Website */
+
+/* Magazine-style grid with named areas */
+.editorial-grid {
+  display: grid;
+  grid-template-columns:
+    [full-start] minmax(var(--space-md), 1fr)
+    [wide-start] minmax(0, calc((var(--wide-width) - var(--content-width)) / 2))
+    [content-start] min(var(--content-width), 100%)
+    [content-end] minmax(0, calc((var(--wide-width) - var(--content-width)) / 2))
+    [wide-end] minmax(var(--space-md), 1fr)
+    [full-end];
+}
+
+.editorial-grid > * {
+  grid-column: content;
+}
+
+.editorial-grid > .wide {
+  grid-column: wide;
+}
+
+.editorial-grid > .full-bleed {
+  grid-column: full;
+}
+
+/* Content container (simple centered) */
+.container {
+  width: min(var(--content-width), 100% - var(--space-md) * 2);
+  margin-inline: auto;
+}
+
+.container-wide {
+  width: min(var(--wide-width), 100% - var(--space-md) * 2);
+  margin-inline: auto;
+}
+
+/* Stream layout — asymmetric blocks */
+.stream {
+  display: grid;
+  gap: clamp(3rem, 6vw, 6rem);
+  padding: var(--space-xl) 0;
+  max-width: var(--wide-width);
+  margin-inline: auto;
+  padding-inline: var(--space-md);
+}
+
+/* Feature block — large image + text side by side */
+.stream-feature {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: var(--grid-gap-lg);
+  align-items: center;
+  min-height: 40vh;
+}
+
+.stream-feature:nth-child(even) {
+  grid-template-columns: 2fr 3fr;
+}
+
+.stream-feature:nth-child(even) .stream-feature__image {
+  order: 2;
+}
+
+.stream-feature__image {
+  width: 100%;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+}
+
+.stream-feature__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stream-feature__content {
+  padding: var(--space-lg) var(--space-md);
+}
+
+/* Duo block — two items side by side */
+.stream-duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--grid-gap);
+}
+
+/* Text break block */
+.stream-text-break {
+  padding: var(--space-lg) var(--space-xl);
+  text-align: center;
+}
+
+/* Magazine spread layouts */
+.spread {
+  display: grid;
+  gap: var(--grid-gap);
+  margin: var(--space-section) 0;
+}
+
+.spread--single {
+  grid-template-columns: 1fr;
+}
+
+.spread--pair {
+  grid-template-columns: 1fr 1fr;
+}
+
+.spread--asymmetric {
+  grid-template-columns: 2fr 1fr;
+}
+
+.spread--asymmetric-reverse {
+  grid-template-columns: 1fr 2fr;
+}
+
+.spread img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Dual-read layout (sticky text + scrolling images) */
+.dual-read {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.dual-read__text {
+  position: sticky;
+  top: calc(var(--space-xl) + 60px);
+  padding-right: var(--space-lg);
+}
+
+.dual-read__images {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .stream-feature {
+    grid-template-columns: 1fr 1fr;
+    min-height: auto;
+  }
+
+  .stream-feature:nth-child(even) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .dual-read {
+    gap: var(--space-lg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stream-feature {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .stream-feature:nth-child(even) {
+    grid-template-columns: 1fr;
+  }
+
+  .stream-feature:nth-child(even) .stream-feature__image {
+    order: 0;
+  }
+
+  .stream-duo {
+    grid-template-columns: 1fr;
+  }
+
+  .spread--pair,
+  .spread--asymmetric,
+  .spread--asymmetric-reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .dual-read {
+    grid-template-columns: 1fr;
+  }
+
+  .dual-read__text {
+    position: static;
+    padding-right: 0;
+  }
+}

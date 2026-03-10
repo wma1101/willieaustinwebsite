@@ -1,0 +1,35 @@
+{
+  "season": "Fall / Winter 2026",
+  "title": "Nocturne",
+  "description": "An exploration of shadow and structure. Twelve looks that move between architectural tailoring and fluid draping, rendered in a palette of midnight, charcoal, and burnt sienna.",
+
+  "looks": [
+    { "number": "Look 01", "image": "assets/images/collections/nocturne/look-01.jpg", "layout": "single" },
+    { "number": "Looks 02 — 03", "images": ["assets/images/collections/nocturne/look-02.jpg", "assets/images/collections/nocturne/look-03.jpg"], "layout": "pair" },
+    { "number": null, "image": "assets/images/collections/nocturne/look-04.jpg", "layout": "full-bleed" },
+    { "number": "Looks 05 — 06", "images": ["assets/images/collections/nocturne/look-05.jpg", "assets/images/collections/nocturne/look-06.jpg"], "layout": "asymmetric" },
+    { "number": "Look 07", "image": "assets/images/collections/nocturne/look-07.jpg", "layout": "single" },
+    { "number": "Looks 08 — 09", "images": ["assets/images/collections/nocturne/look-08.jpg", "assets/images/collections/nocturne/look-09.jpg"], "layout": "pair" },
+    { "number": "Looks 10 — 12", "images": ["assets/images/collections/nocturne/look-10.jpg", "assets/images/collections/nocturne/look-11.jpg"], "layout": "asymmetric-reverse" },
+    { "number": null, "image": "assets/images/collections/nocturne/finale.jpg", "layout": "full-bleed" }
+  ],
+
+  "designer_notes": [
+    "The collection begins in darkness — a single figure emerging from shadow. The opening look establishes the vocabulary: sharp shoulders that soften into draped panels, a tension between control and release that runs through every piece.",
+
+    "By the fourth look, the palette shifts. Burnt sienna appears — first as a thread, then as a lining glimpsed through movement, and finally as a full garment that glows against the surrounding darkness like an ember.\n\nEvery seam is intentional. Every fold is considered. But nothing is rigid. The clothes move because the person wearing them moves. That's the difference between architecture and fashion — fashion breathes.",
+
+    "The final movement returns to darkness, but differently than where we began. There's warmth now — the burnt sienna has mixed with the blacks, creating tones that feel lived-in, like a well-worn leather jacket or a city street after rain."
+  ],
+
+  "credits": {
+    "Design": "Willie Austin",
+    "Photography": "Studio Name",
+    "Styling": "Stylist Name",
+    "Hair & Makeup": "Artist Name",
+    "Models": "Model Agency",
+    "Production": "Production Company"
+  },
+
+  "hero_image": "assets/images/collections/nocturne/hero.jpg"
+}

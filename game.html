@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Run From Anna Wintour | WILLIE AUSTIN</title>
+  <meta name="description" content="A retro endless runner game. Dodge obstacles on the runway while Anna Wintour chases you.">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/typography.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+
+  <!-- Masthead (minimal for game) -->
+  <header class="masthead" role="banner" style="mix-blend-mode:normal;">
+    <a href="index.html" class="masthead__logo" aria-label="Willie Austin — Home">WILLIE AUSTIN</a>
+    <nav class="masthead__nav" role="navigation" aria-label="Main navigation" style="position:static;background:none;transform:none;flex-direction:row;">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="collection.html" class="nav-link">Collections</a>
+      <a href="editorial.html" class="nav-link">Articles</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="game.html" class="nav-link nav-link--play active">Play</a>
+    </nav>
+  </header>
+
+  <!-- Game Page -->
+  <main class="game-page">
+    <div class="game-container">
+
+      <!-- Header with score -->
+      <div class="game-header">
+        <h1 class="game-title">Run From<br>Anna Wintour</h1>
+        <div class="game-score">
+          <span id="game-score-value">0m</span>
+        </div>
+      </div>
+
+      <!-- Canvas -->
+      <div class="game-canvas-wrap">
+        <canvas id="game-canvas" width="800" height="300"></canvas>
+
+        <!-- Start overlay -->
+        <div class="game-overlay game-start-overlay">
+          <div class="game-overlay__title">Run From<br>Anna Wintour</div>
+          <p class="game-overlay__subtitle">An endless runner down the world's most intimidating runway</p>
+          <button class="game-btn game-start-btn" type="button">START RUNNING</button>
+        </div>
+
+        <!-- Game Over overlay -->
+        <div class="game-overlay game-over-overlay hidden">
+          <div class="game-overlay__title">Caught!</div>
+          <p class="game-overlay__score" id="game-final-score">0 runway meters</p>
+          <p class="game-overlay__high-score" id="game-best-score">Best: 0m</p>
+          <button class="game-btn game-restart-btn" type="button">RUN AGAIN</button>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="game-controls">
+        <kbd>SPACE</kbd> or <kbd>&uarr;</kbd> to jump &bull; <kbd>TAP</kbd> on mobile &bull; Dodge chairs, cameras &amp; Vogue magazines
+      </div>
+
+      <!-- Back to site -->
+      <a href="index.html" class="game-back">&#8592; Back to Latest</a>
+    </div>
+  </main>
+
+  <!-- Sound toggle -->
+  <button class="sound-toggle no-print" aria-label="Toggle sound">
+    <span class="sound-icon">&#9835;</span>
+  </button>
+
+  <script src="js/sounds.js"></script>
+  <script src="js/game.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      SoundSystem.init();
+      RunnerGame.init();
+    });
+  </script>
+</body>
+</html>

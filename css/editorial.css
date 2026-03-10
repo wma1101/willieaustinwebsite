@@ -1,0 +1,330 @@
+/* Editorial — Article + Photo Story Layouts */
+
+/* ============================================
+   ARTICLE HERO
+   ============================================ */
+
+.article-hero {
+  position: relative;
+  height: 75vh;
+  min-height: 500px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--color-black);
+}
+
+.article-hero__image {
+  position: absolute;
+  inset: 0;
+}
+
+.article-hero__image img,
+.article-hero__image .placeholder-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.article-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 60%);
+}
+
+.article-hero__content {
+  position: relative;
+  z-index: 2;
+  padding: var(--space-2xl) var(--space-lg);
+  max-width: var(--content-width);
+}
+
+.article-hero__category {
+  font-family: var(--font-secondary);
+  font-size: var(--text-overline);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-sm);
+}
+
+.article-hero__title {
+  font-family: var(--font-display);
+  font-size: var(--text-display-sm);
+  color: var(--color-paper);
+  line-height: 1;
+  margin-bottom: var(--space-md);
+}
+
+.article-hero__meta {
+  font-family: var(--font-serif-italic);
+  font-size: var(--text-small);
+  font-style: italic;
+  color: var(--gray-400);
+  letter-spacing: 0.01em;
+}
+
+.article-hero__meta span + span::before {
+  content: ' \2014 ';
+}
+
+/* ============================================
+   ARTICLE BODY
+   ============================================ */
+
+.article-body {
+  background: var(--color-paper);
+  padding: var(--space-2xl) 0;
+}
+
+.article-body .editorial-grid {
+  row-gap: var(--space-xl);
+}
+
+.article-body p {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.8;
+  color: var(--gray-800);
+}
+
+.article-body p + p {
+  margin-top: 1.75em;
+}
+
+/* Drop cap on first paragraph */
+.article-body .drop-cap::first-letter {
+  font-family: 'Playfair Display', serif;
+  float: left;
+  font-size: 5em;
+  line-height: 0.75;
+  padding-right: 0.08em;
+  padding-top: 0.06em;
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* Pull quote */
+.article-body .pull-quote {
+  grid-column: content;
+  font-family: var(--font-display);
+  font-size: var(--text-display-sm);
+  line-height: 1.15;
+  border-left: 3px solid var(--color-accent);
+  padding: var(--space-lg) 0 var(--space-lg) var(--space-md);
+  margin: var(--space-xl) 0;
+  color: var(--color-black);
+}
+
+/* Wide images that break out */
+.article-body .image-wide {
+  grid-column: wide;
+  margin: var(--space-xl) 0;
+  overflow: hidden;
+}
+
+.article-body .image-full {
+  grid-column: full;
+  margin: var(--space-xl) 0;
+  overflow: hidden;
+}
+
+.article-body .image-wide img,
+.article-body .image-full img,
+.article-body .image-wide .placeholder-img,
+.article-body .image-full .placeholder-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.article-body .image-caption {
+  font-family: var(--font-secondary);
+  font-size: var(--text-caption);
+  color: var(--gray-500);
+  margin-top: var(--space-xs);
+  padding-inline: var(--space-md);
+}
+
+/* Section headings within articles */
+.article-body h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-md);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--gray-200);
+  color: var(--color-black);
+}
+
+.article-body h3 {
+  font-family: var(--font-secondary);
+  font-size: var(--text-h3);
+  font-weight: 600;
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
+}
+
+/* ============================================
+   DUAL READ LAYOUT
+   ============================================ */
+
+.dual-read-section {
+  background: var(--color-paper);
+  padding: var(--space-2xl) var(--space-md);
+}
+
+.dual-read-section .dual-read {
+  max-width: var(--wide-width);
+  margin-inline: auto;
+}
+
+.dual-read__text h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  margin-bottom: var(--space-md);
+}
+
+.dual-read__text p {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.8;
+  color: var(--gray-700);
+}
+
+.dual-read__text p + p {
+  margin-top: 1.5em;
+}
+
+.dual-read__images .placeholder-img,
+.dual-read__images img {
+  width: 100%;
+  object-fit: cover;
+}
+
+/* ============================================
+   HORIZONTAL SCROLL GALLERY (Photo Editorial)
+   ============================================ */
+
+.horizontal-gallery {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-black);
+}
+
+.horizontal-gallery__track {
+  display: flex;
+  will-change: transform;
+}
+
+.horizontal-gallery__panel {
+  flex: 0 0 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.horizontal-gallery__panel img,
+.horizontal-gallery__panel .placeholder-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.horizontal-gallery__panel .panel-caption {
+  position: absolute;
+  bottom: var(--space-lg);
+  left: var(--space-lg);
+  font-family: var(--font-secondary);
+  font-size: var(--text-small);
+  color: var(--color-paper);
+  letter-spacing: 0.05em;
+  max-width: 40ch;
+}
+
+.horizontal-gallery__counter {
+  position: absolute;
+  bottom: var(--space-lg);
+  right: var(--space-lg);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  color: var(--gray-400);
+  z-index: 10;
+}
+
+/* Mobile fallback: vertical images */
+@media (max-width: 768px) {
+  .horizontal-gallery__track {
+    flex-direction: column;
+  }
+
+  .horizontal-gallery__panel {
+    flex: 0 0 auto;
+    height: 80vh;
+  }
+
+  .horizontal-gallery {
+    height: auto !important;
+  }
+}
+
+/* ============================================
+   ARTICLE FOOTER / SHARE
+   ============================================ */
+
+.article-footer {
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: var(--space-xl) var(--space-md);
+  border-top: 1px solid var(--gray-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.article-footer__tags {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.article-tag {
+  font-family: var(--font-secondary);
+  font-size: var(--text-overline);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  border: 1px solid var(--gray-200);
+  padding: 0.25em 0.75em;
+  transition: all var(--duration-fast) ease;
+}
+
+.article-tag:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+@media (max-width: 1024px) {
+  .article-hero {
+    height: 65vh;
+  }
+
+  .article-hero__title {
+    font-size: var(--text-h1);
+  }
+}
+
+@media (max-width: 768px) {
+  .article-hero {
+    height: 50vh;
+  }
+
+  .article-hero__content {
+    padding: var(--space-xl) var(--space-md);
+  }
+
+  .article-hero__title {
+    font-size: var(--text-h1);
+  }
+}

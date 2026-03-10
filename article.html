@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article | WILLIE AUSTIN</title>
+  <meta name="description" content="Fashion news, runway reports, and industry stories — curated by Willie Austin.">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/typography.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/editorial.css">
+  <link rel="stylesheet" href="css/vogue.css?v=2">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- Reading progress bar -->
+  <div class="reading-progress" aria-hidden="true"></div>
+
+  <!-- Page transition overlay -->
+  <div class="page-transition" aria-hidden="true"></div>
+
+  <!-- Custom cursor -->
+  <div class="custom-cursor" aria-hidden="true"></div>
+
+  <!-- Masthead -->
+  <header class="masthead" role="banner">
+    <a href="index.html" class="masthead__logo" aria-label="Willie Austin — Home">WILLIE AUSTIN</a>
+    <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="masthead__nav" role="navigation" aria-label="Main navigation">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="collection.html" class="nav-link">Collections</a>
+      <a href="editorial.html" class="nav-link active">Articles</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="game.html" class="nav-link nav-link--play" data-hover-sound>Play</a>
+    </nav>
+  </header>
+
+  <!-- Article Header (title-first, Vogue style) -->
+  <section class="vogue-article-header">
+    <span class="vogue-rubric" id="hero-category"></span>
+    <h1 class="vogue-article-header__title" id="hero-title"></h1>
+    <p class="vogue-article-header__dek" id="hero-dek"></p>
+    <div class="vogue-article-header__meta" id="hero-meta"></div>
+  </section>
+
+  <!-- Hero Image (below title) -->
+  <div class="vogue-article-hero-img">
+    <img src="" alt="" loading="eager" id="hero-img">
+  </div>
+
+  <!-- Article Body -->
+  <section class="article-body">
+    <div class="editorial-grid" id="article-body"></div>
+  </section>
+
+  <!-- More Stories -->
+  <section class="vogue-more-stories">
+    <h2 class="vogue-more-stories__title">More Stories</h2>
+    <div class="vogue-grid-3" id="related-articles"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer__inner">
+      <div>
+        <div class="footer__brand">Willie Austin</div>
+        <p class="caption mt-md" style="color:var(--gray-500);">Fashion / Editorial / Creative Direction</p>
+      </div>
+      <div class="footer__links">
+        <a href="index.html">Home</a>
+        <a href="collection.html">Collections</a>
+        <a href="editorial.html">Articles</a>
+        <a href="about.html">About</a>
+        <a href="game.html">Play</a>
+      </div>
+      <div class="footer__contact">
+        <p class="ui-text" style="color:var(--gray-400);margin-bottom:var(--space-xs);">Inquiries</p>
+        <a href="mailto:hello@willieaustin.com">hello@willieaustin.com</a>
+      </div>
+    </div>
+    <div class="visitor-counter">
+      You are visitor #<span id="visitor-count">00004827</span>
+    </div>
+  </footer>
+
+  <!-- Folio -->
+  <div class="folio no-print" aria-hidden="true"><span class="folio__number">01</span></div>
+
+  <!-- Sound toggle -->
+  <button class="sound-toggle no-print" aria-label="Toggle sound">
+    <span class="sound-icon">&#9835;</span>
+  </button>
+
+  <!-- Inline content data -->
+  <script>
+window.__CONTENT_DATA__ = {
+  "site.json": {"site_name":"WILLIE AUSTIN","tagline":"Fashion / Editorial / Creative Direction","email":"hello@willieaustin.com","visitor_count":"00004827","nav":[{"label":"Home","href":"index.html","id":"home"},{"label":"Collections","href":"collection.html","id":"collections"},{"label":"Articles","href":"editorial.html","id":"articles"},{"label":"About","href":"about.html","id":"about"},{"label":"Play","href":"game.html","id":"play","accent":true}],"footer_links":[{"label":"Home","href":"index.html"},{"label":"Collections","href":"collection.html"},{"label":"Articles","href":"editorial.html"},{"label":"About","href":"about.html"},{"label":"Play","href":"game.html"}],"ticker":[]},
+  "homepage.json": {"cover":{"title":"Willie\nAustin"},"featured":[{"category":"Collection","title":"Nocturne \u2014 Fall/Winter 2026","excerpt":"An exploration of shadow and structure. Twelve looks that move between architectural tailoring and fluid draping, rendered in a palette of midnight, charcoal, and burnt sienna.","href":"collection.html","image":"assets/images/collections/nocturne/hero.jpg","lead":true},{"category":"Paris Fashion Week","title":"Jonathan Anderson\u2019s Dior Redefines Heritage","excerpt":"The Bar jacket, loosened and reinterpreted as pastel knits with fluted peplums \u2014 a runway skimming across a lily-pad pond in the Tuileries. Anderson\u2019s second couture-inflected season confirmed his vision for the house: softer, stranger, and deeply rooted in craft. Pleated organza blouses floated over tailored trousers. A pale blue coat with exaggerated shoulders recalled the original Bar silhouette while dissolving its rigidity. The set \u2014 a reflecting pool in the Tuileries garden \u2014 turned each exit into a Monet.","href":"editorial.html","image":"assets/images/news/dior-aw26.jpg"},{"category":"Paris Fashion Week","title":"Piccioli\u2019s Balenciaga: Clair-Obscur","excerpt":"Light and darkness collide in cocoon silhouettes, velvet gowns, and elevated denim. Pierpaolo Piccioli\u2019s second collection for Balenciaga leaned into Crist\u00f3bal\u2019s architectural legacy while adding his own warmth. Oversized cocoon coats in midnight velvet opened the show. Sculpted gowns with built-in corsetry moved with unexpected fluidity. The closing sequence \u2014 all white, all sheer \u2014 was a masterclass in tension between concealing and revealing.","href":"editorial.html","image":"assets/images/news/balenciaga-aw26.jpg"},{"category":"Latest","title":"Red Thread","excerpt":"Following a single red thread from first sketch to runway. A photo story documenting the journey of a single garment from its first pencil mark to the final stitch on a runway in Paris.","href":"editorial.html","image":"assets/images/editorials/red-thread/thumb.jpg"}],"stream":[{"type":"feature","category":"Paris Fashion Week","title":"Sarah Burton\u2019s Givenchy Finds Its Voice in Third Outing","excerpt":"Not proposing one ideal woman but many women and many ways of being strong. Exact tailoring, power suits, draped detachable sleeves, and a leopard-print sequin dress with fringes signaled the collection where Burton\u2019s Givenchy point of view finally clicked. Stephen Jones designed white milkmaid headpieces that anchored every exit. The power suit \u2014 sharp-shouldered, nipped at the waist \u2014 was the season\u2019s standout. Burton spoke backstage about designing for women who want to feel armored and beautiful simultaneously.","date":"March 7, 2026","source":"South China Morning Post","image":"assets/images/news/givenchy-aw26.jpg"},{"type":"duo","items":[{"category":"Paris Fashion Week","title":"Loewe\u2019s McCollough & Hernandez Push Material Innovation to Its Limits","excerpt":"3D-printed latex slip dresses, inflatable parkas, and rubber-molded trainers \u2014 luxury craftsmanship reimagined with whimsy. Cosima von Bonin\u2019s blue velvet stuffed animals set the tone. The palette screamed in lurid yellows and highlighter greens. Each piece was an engineering feat: dresses printed in a single pass, parkas that inflated with body heat, and sneakers molded from recycled rubber. The duo\u2019s message was clear \u2014 innovation is the new luxury.","date":"March 5, 2026","source":"Wallpaper","image":"assets/images/news/loewe-aw26.jpg"},{"category":"Paris Fashion Week","title":"Celine\u2019s Michael Rider Designs for the Everyday Parisian","excerpt":"The starting point for fall was a daily commute in Paris \u2014 loose trench coats over sequined dresses, navy coats with knotted leather belts, and knit dresses in abstract floral prints. Less accessorized, more streamlined. Rider\u2019s Celine woman doesn\u2019t try hard; she just is. The collection moved effortlessly from morning to evening: a camel coat for the M\u00e9tro, a slip dress for dinner, a leather jacket that works for both.","date":"March 4, 2026","source":"South China Morning Post","image":"assets/images/news/celine-aw26.jpg"}]},{"type":"feature","category":"Paris Fashion Week","title":"Herm\u00e8s Conjures a Liminal Realm Between Day and Evening, Earth and Space","excerpt":"Nad\u00e8ge Vanh\u00e9e\u2019s A/W 2026 collection moved through shimmering silk twill, leather cycling shorts, and shearling bombers in dark blues and deep russets. Visible zips sliced across the chest and down the length of dresses \u2014 function as adornment. A silk scarf worn as a cape was the season\u2019s most photographed moment. The craftsmanship was staggering: a single leather jacket required 40 hours of hand-stitching. Vanh\u00e9e\u2019s Herm\u00e8s is about objects you keep forever.","date":"March 8, 2026","source":"Wallpaper","image":"assets/images/news/hermes-aw26.jpg"},{"type":"duo","items":[{"category":"Paris Fashion Week","title":"Jean Paul Gaultier by Duran Lantink Channels Marlene Dietrich","excerpt":"Pinstriped suits, pleated black gowns, and Fair Isle knit bodysuits in a 43-look lineup. Hat brims attached to jackets. Vintage glamour rebuilt for 2026. Lantink\u2019s guest tenure brought a maximalist joy to Gaultier\u2019s codes. Every look was a conversation between old Hollywood and new Amsterdam, between discipline and chaos.","date":"March 8, 2026","source":"Wallpaper","image":"assets/images/news/gaultier-aw26.jpg"},{"category":"Paris Fashion Week","title":"Alexander McQueen: Se\u00e1n McGirr\u2019s Romantic Darkness","excerpt":"Floral wallpaper patterns meet Gothic silhouettes, delicate lace, and chain-mail knitwear. Models emerged through a maze of sheer white curtains. Bouncy ruffled hems softened the edge. McGirr is finding his language \u2014 one part English garden, one part haunted manor. The chain-mail knits were a technical triumph, each one knitted by hand over three weeks.","date":"March 6, 2026","source":"Wallpaper","image":"assets/images/news/mcqueen-aw26.jpg"}]},{"type":"feature","category":"Industry","title":"Stars Hit Paris Runways, But Fall\u2019s Real Trend Was Dressing for Hard Times","excerpt":"Across Paris Fashion Week, designers presented clothes that work in real life, not just on Instagram. From Celine\u2019s commuter-chic to Givenchy\u2019s power suiting, the Fall 2026 season marked a decisive pivot toward pragmatism. With 46% of executives expecting conditions to worsen and tariffs looming, even the most elevated houses are designing for the world as it is. The message was unanimous: fashion must earn its place in people\u2019s lives. No more fantasy for fantasy\u2019s sake.","date":"March 9, 2026","source":"Associated Press","image":"assets/images/news/pfw-trend-aw26.jpg"},{"type":"duo","items":[{"category":"Industry","title":"Luxury Fashion Rethinks Its Value After Years of Price Hikes","excerpt":"After raising prices with no bump in quality or creativity, the industry is being forced to rebuild trust with shoppers. Value brands are reducing lowest-priced SKUs by 15\u201325%, racing upmarket as the middle hollows out. The reckoning has been years in the making: Chanel bags that cost $3,000 in 2019 now retail for $10,000. Consumers are asking what exactly they\u2019re paying for.","date":"March 2026","source":"Business of Fashion","image":"assets/images/news/luxury-rethink.jpg"},{"category":"Campaign","title":"Burberry Celebrates 170 Years With Iconic Trench Portraits","excerpt":"Black-and-white portraits featuring Kate Moss, Daisy Edgar-Jones, Teyana Taylor, and Kid Cudi. \u2018The Trench, Portraits of an Icon\u2019 campaign cements the house\u2019s most enduring symbol. Shot by Alasdair McLellan in a stripped-back London studio, the campaign lets the trench speak for itself \u2014 no sets, no distractions, just the garment and the person inside it.","date":"March 2026","source":"Who What Wear","image":"assets/images/news/burberry-170.jpg"}]},{"type":"duo","items":[{"category":"Industry","title":"Saks Global Files for Bankruptcy Owing Billions to Fashion\u2019s Biggest Names","excerpt":"Parent of Saks Fifth Avenue, Neiman Marcus, and Bergdorf Goodman filed Chapter 11 after missing a $100 million debt payment, listing $3.4 billion in debts including $136 million owed to Chanel alone. The filing sent shockwaves through the industry. Hundreds of brands face the prospect of never recovering what they\u2019re owed. It\u2019s the most significant luxury retail collapse in a generation.","date":"January 2026","source":"CNBC / Business of Fashion","image":"assets/images/news/saks.jpg"},{"category":"Fashion Week","title":"Demna\u2019s Primavera Gucci Debut Divides Critics","excerpt":"Ultra-minimal seamless garments cut close to the body, inspired by Botticelli. Kate Moss closed the show in the brand\u2019s iconic GG logo thong. Critics were split: some called it a masterful reset, others questioned whether Gucci\u2019s maximalist DNA could survive such restraint. The craftsmanship was undeniable \u2014 seamless construction required entirely new pattern-making techniques.","date":"February 28, 2026","source":"WWD","image":"assets/images/news/gucci.jpg"}]},{"type":"feature","category":"Fashion Week","title":"Maria Grazia Chiuri Makes Her Fendi Debut With Less I, More Us","excerpt":"The Italian designer presented her first collection as Fendi creative director at Milan Fashion Week, showing co-ed looks dominated by black with fluid satin, sheer gowns, and statement coats. Chiuri, who began her career at Fendi in 1989, signaled a shift toward pragmatism and collective emotion. \u2018Less I, more us,\u2019 she said backstage. The collection was a love letter to Rome \u2014 to its light, its ruins, its eternal sense of time passing.","date":"February 26, 2026","source":"Business of Fashion","image":"assets/images/news/fendi.jpg"}],"studio_content":[{"category":"Editorial","title":"Midnight Wool","excerpt":"On dead stock fabric, rust stains, designing at 1 AM, and the conversation between cloth and the person inside it.","date":"March 2026","href":"editorial-midnight-wool.html","image":"assets/images/editorials/midnight-wool/hero.jpg"},{"category":"Editorial","title":"The New Silhouette","excerpt":"Why deconstruction is the most honest form of fashion design. A vocabulary, not a provocation.","date":"January 2026","href":"editorial-new-silhouette.html","image":"assets/images/editorials/new-silhouette/hero.jpg"},{"category":"Editorial","title":"Raw Material: The Case for Imperfect Fashion","excerpt":"A long-form essay on raw edges, visible seams, and unfinished hems as a design philosophy.","date":"November 2025","href":"editorial.html","image":"assets/images/editorials/raw-material/thumb.jpg"},{"category":"Collection","title":"Soft Architecture \u2014 S/S 2026","excerpt":"Structured forms in flowing fabrics. A contradiction made wearable.","date":"October 2025","href":"collection.html","image":"assets/images/collections/soft-architecture/thumb.jpg"},{"category":"Photo Story","title":"Red Thread","excerpt":"Following a single red thread from first sketch to final stitch to runway to street.","date":"August 2025","href":"editorial.html","image":"assets/images/editorials/red-thread/thumb.jpg"}],"personal_quote":"Creating is the most honest thing I know how to do."}
+};
+  </script>
+
+  <!-- Article page renderer -->
+  <script>
+(function() {
+  // Get article slug from URL
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('id');
+  if (!slug) { window.location.href = 'editorial.html'; return; }
+
+  const data = window.__CONTENT_DATA__['homepage.json'];
+  if (!data) return;
+
+  // Extract all articles into flat array
+  const articles = [];
+  function addArticle(item) {
+    const s = (item.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    articles.push({ ...item, slug: s });
+  }
+  if (data.featured) data.featured.forEach(addArticle);
+  if (data.stream) data.stream.forEach(block => {
+    if (block.type === 'feature') addArticle(block);
+    else if (block.type === 'duo' && block.items) block.items.forEach(addArticle);
+  });
+  if (data.studio_content) data.studio_content.forEach(addArticle);
+
+  // Deduplicate
+  const seen = new Set();
+  const unique = articles.filter(a => { if (seen.has(a.slug)) return false; seen.add(a.slug); return true; });
+
+  // Find the article
+  const article = unique.find(a => a.slug === slug);
+  if (!article) { window.location.href = 'editorial.html'; return; }
+
+  // If the article has its own page (editorial-*.html), redirect there
+  if (article.href && article.href.startsWith('editorial-')) {
+    window.location.href = article.href;
+    return;
+  }
+
+  // Render title-first header
+  document.title = article.title + ' | WILLIE AUSTIN';
+  document.getElementById('hero-category').textContent = article.category || '';
+  document.getElementById('hero-title').textContent = article.title;
+
+  // Dek (first sentence as subtitle)
+  var text = article.excerpt || '';
+  var firstSentence = (text.match(/^[^.!?]+[.!?]/) || [''])[0].trim();
+  var restText = text.slice(firstSentence.length).trim();
+  document.getElementById('hero-dek').textContent = firstSentence;
+
+  var metaParts = [];
+  if (article.source) metaParts.push('By ' + article.source);
+  if (article.date) metaParts.push(article.date);
+  document.getElementById('hero-meta').innerHTML = metaParts.map(function(p) { return '<span>' + p + '</span>'; }).join('');
+
+  // Hero image
+  document.getElementById('hero-img').src = article.image || '';
+  document.getElementById('hero-img').alt = article.title;
+
+  // Article body
+  var bodyEl = document.getElementById('article-body');
+  var bodyHTML = '';
+  if (restText) {
+    var sentences = restText.match(/[^.!?]+[.!?]+/g) || [restText];
+    // First paragraph with drop cap
+    var chunk1 = sentences.length > 2 ? sentences.slice(0, 3).join('') : sentences.join('');
+    bodyHTML += '<p class="drop-cap">' + chunk1.trim() + '</p>';
+    if (sentences.length > 3) {
+      bodyHTML += '<p>' + sentences.slice(3).join('').trim() + '</p>';
+    }
+  }
+
+  bodyEl.innerHTML = bodyHTML;
+
+  // Related articles — Vogue card style
+  var related = unique.filter(function(a) { return a.slug !== slug; });
+  var sameCategory = related.filter(function(a) { return a.category === article.category; });
+  var picks = (sameCategory.length >= 3 ? sameCategory : related).slice(0, 3);
+
+  var relatedEl = document.getElementById('related-articles');
+  if (relatedEl && picks.length) {
+    relatedEl.innerHTML = picks.map(function(a) {
+      var href = (a.href && a.href.startsWith('editorial-')) ? a.href
+        : (a.href && (a.href.startsWith('collection') || a.href === 'about.html')) ? a.href
+        : 'article.html?id=' + a.slug;
+      return '<a href="' + href + '" class="vogue-card">' +
+        '<div class="vogue-card__img" style="aspect-ratio:3/4;"><img src="' + (a.image || '') + '" alt="' + (a.title || '') + '" loading="lazy"></div>' +
+        '<span class="vogue-rubric">' + (a.category || '') + '</span>' +
+        '<h3 class="vogue-card__title">' + (a.title || '') + '</h3>' +
+        '</a>';
+    }).join('');
+  }
+})();
+  </script>
+
+  <script src="js/images.js"></script>
+  <script src="js/sounds.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/reveal.js"></script>
+  <script src="js/transitions.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

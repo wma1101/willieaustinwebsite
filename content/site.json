@@ -1,0 +1,35 @@
+{
+  "site_name": "WILLIE AUSTIN",
+  "tagline": "Fashion / Editorial / Creative Direction",
+  "email": "hello@willieaustin.com",
+  "visitor_count": "00004827",
+
+  "nav": [
+    { "label": "Home", "href": "index.html", "id": "home" },
+    { "label": "Collections", "href": "collection.html", "id": "collections" },
+    { "label": "Articles", "href": "editorial.html", "id": "articles" },
+    { "label": "About", "href": "about.html", "id": "about" },
+    { "label": "Play", "href": "game.html", "id": "play", "accent": true }
+  ],
+
+  "footer_links": [
+    { "label": "Home", "href": "index.html" },
+    { "label": "Collections", "href": "collection.html" },
+    { "label": "Articles", "href": "editorial.html" },
+    { "label": "About", "href": "about.html" },
+    { "label": "Play", "href": "game.html" }
+  ],
+
+  "ticker": [
+    "PARIS FASHION WEEK WRAPS: Fall's Real Trend Was Dressing for Hard Times",
+    "Jonathan Anderson's Dior Tops Social Media With Lily-Pad Runway in the Tuileries",
+    "Piccioli's Second Balenciaga Show Explores Light & Darkness With 'Euphoria' Director Sam Levinson",
+    "Sarah Burton's Givenchy Finds Its Voice — Power Suits, Velvet, and Stephen Jones Headpieces",
+    "Loewe Goes Inflatable: 3D-Printed Latex and Rubber-Molded Trainers Steal the Show",
+    "Hermès A/W 2026: Visible Zips, Silk Capes, and a Liminal Realm",
+    "Celine's Michael Rider Designs for the Parisian Commuter",
+    "Burberry Celebrates 170th Anniversary With Kate Moss Trench Campaign",
+    "9 of 15 Largest Luxury Houses Have New Creative Directors",
+    "Saks Global Files for Bankruptcy Owing $3.4 Billion"
+  ]
+}

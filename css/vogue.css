@@ -1,0 +1,333 @@
+/* Vogue-style Homepage Stream */
+
+/* ============================================
+   SHARED CARD ELEMENTS
+   ============================================ */
+
+.vogue-rubric {
+  display: block;
+  font-family: var(--font-secondary);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 0.4em;
+}
+
+.vogue-byline {
+  display: block;
+  font-family: var(--font-secondary);
+  font-size: 0.75rem;
+  color: var(--gray-400);
+  letter-spacing: 0.03em;
+  margin-top: 0.35em;
+}
+
+.vogue-card__img {
+  overflow: hidden;
+  margin-bottom: var(--space-sm);
+}
+
+.vogue-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-out);
+}
+
+/* Hover: zoom image, accent title */
+a.vogue-card:hover .vogue-card__img img,
+a.vogue-hero:hover .vogue-hero__img img,
+a.vogue-full:hover .vogue-full__img img,
+a.vogue-asym__big:hover .vogue-card__img img,
+a.vogue-asym__small:hover .vogue-card__img img {
+  transform: scale(1.04);
+}
+
+a.vogue-card:hover .vogue-card__title,
+a.vogue-hero:hover .vogue-hero__title,
+a.vogue-full:hover .vogue-full__title,
+a.vogue-asym__big:hover .vogue-card__title,
+a.vogue-asym__small:hover .vogue-card__title {
+  color: var(--color-accent);
+}
+
+.vogue-card__title {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  line-height: 1.15;
+  color: var(--color-black);
+  transition: color 0.3s ease;
+}
+
+/* All vogue links reset */
+a.vogue-hero,
+a.vogue-full,
+a.vogue-card,
+a.vogue-asym__big,
+a.vogue-asym__small {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* ============================================
+   STREAM CONTAINER
+   ============================================ */
+
+#stream {
+  max-width: var(--wide-width);
+  margin-inline: auto;
+  padding: var(--space-2xl) var(--space-md) var(--space-3xl);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 6vw, 5rem);
+}
+
+/* ============================================
+   HERO — Full-width lead story
+   ============================================ */
+
+.vogue-hero {
+  position: relative;
+}
+
+.vogue-hero__img {
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+.vogue-hero__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.vogue-hero__text {
+  padding-top: var(--space-md);
+  max-width: 55ch;
+}
+
+.vogue-hero__title {
+  font-family: var(--font-display);
+  font-size: var(--text-display-sm);
+  line-height: 1.05;
+  color: var(--color-black);
+  transition: color 0.3s ease;
+}
+
+/* ============================================
+   ASYMMETRIC GRID — 1 large + 2 stacked small
+   ============================================ */
+
+.vogue-asym {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: var(--grid-gap-lg);
+  align-items: start;
+}
+
+.vogue-asym--reverse {
+  grid-template-columns: 2fr 3fr;
+}
+
+.vogue-asym__big .vogue-card__img {
+  aspect-ratio: 3 / 4;
+}
+
+.vogue-asym__big .vogue-card__title {
+  font-size: var(--text-h2);
+}
+
+.vogue-asym__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--grid-gap-lg);
+}
+
+.vogue-asym__small .vogue-card__img {
+  aspect-ratio: 4 / 3;
+}
+
+.vogue-asym__small .vogue-card__title {
+  font-size: var(--text-h3);
+}
+
+/* ============================================
+   3-COLUMN GRID — Uniform cards
+   ============================================ */
+
+.vogue-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--grid-gap-lg);
+}
+
+.vogue-grid-3 .vogue-card__img {
+  aspect-ratio: 3 / 4;
+}
+
+/* ============================================
+   FULL-WIDTH FEATURE — Horizontal layout
+   ============================================ */
+
+.vogue-full {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: var(--grid-gap-lg);
+  align-items: center;
+  border-top: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+  padding: var(--space-xl) 0;
+}
+
+.vogue-full__img {
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+}
+
+.vogue-full__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.vogue-full__text {
+  padding: var(--space-md);
+}
+
+.vogue-full__title {
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  line-height: 1.08;
+  color: var(--color-black);
+  transition: color 0.3s ease;
+}
+
+/* ============================================
+   ARTICLE PAGE — Title-first Vogue layout
+   ============================================ */
+
+.vogue-article-header {
+  max-width: 720px;
+  margin-inline: auto;
+  padding: calc(80px + var(--space-2xl)) var(--space-md) var(--space-lg);
+  text-align: center;
+}
+
+.vogue-article-header__title {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  line-height: 1;
+  color: var(--color-black);
+  margin-bottom: var(--space-md);
+}
+
+.vogue-article-header__dek {
+  font-family: var(--font-body);
+  font-size: var(--text-h3);
+  line-height: 1.5;
+  color: var(--gray-600);
+  max-width: 55ch;
+  margin-inline: auto;
+  margin-bottom: var(--space-md);
+}
+
+.vogue-article-header__meta {
+  font-family: var(--font-secondary);
+  font-size: var(--text-small);
+  color: var(--gray-400);
+  letter-spacing: 0.03em;
+}
+
+.vogue-article-header__meta span + span::before {
+  content: ' \2014 ';
+}
+
+.vogue-article-hero-img {
+  max-width: 1000px;
+  margin-inline: auto;
+  padding: 0 var(--space-md) var(--space-xl);
+}
+
+.vogue-article-hero-img img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* More Stories section */
+.vogue-more-stories {
+  background: var(--color-paper);
+  padding: var(--space-2xl) var(--space-md);
+  max-width: var(--wide-width);
+  margin-inline: auto;
+}
+
+.vogue-more-stories__title {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .vogue-asym {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .vogue-asym--reverse {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .vogue-full {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  #stream {
+    gap: clamp(2rem, 5vw, 3rem);
+  }
+
+  .vogue-hero__title {
+    font-size: var(--text-h1);
+  }
+
+  .vogue-asym {
+    grid-template-columns: 1fr;
+  }
+
+  .vogue-asym--reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .vogue-asym--reverse .vogue-asym__side {
+    order: -1;
+  }
+
+  .vogue-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .vogue-full {
+    grid-template-columns: 1fr;
+  }
+
+  .vogue-full__title {
+    font-size: var(--text-h2);
+  }
+
+  .vogue-asym__big .vogue-card__title {
+    font-size: var(--text-h3);
+  }
+}

@@ -1,0 +1,387 @@
+/* Cover — Homepage Hero */
+
+.cover {
+  position: relative;
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--color-black);
+}
+
+/* Editorial variant — shorter, with room for Featured Now to peek */
+.cover--editorial {
+  height: 85vh;
+  min-height: 500px;
+}
+
+/* Background image */
+.cover__image {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.cover__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: cover-image-in 1.5s var(--ease-out) 0.5s forwards;
+}
+
+@keyframes cover-image-in {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Title overlay */
+.cover__title {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-display);
+  font-size: var(--text-display-xl);
+  color: var(--color-paper);
+  letter-spacing: 0.04em;
+  line-height: 0.85;
+  text-align: center;
+  mix-blend-mode: difference;
+  clip-path: inset(0 100% 0 0);
+  animation: clip-reveal 1.2s var(--ease-out) 0.8s forwards;
+}
+
+@keyframes clip-reveal {
+  to {
+    clip-path: inset(0 0% 0 0);
+  }
+}
+
+/* ============================================
+   COVER HEADLINES — Magazine cover story teasers
+   ============================================ */
+
+.cover__headlines {
+  position: absolute;
+  bottom: var(--space-2xl);
+  left: var(--space-lg);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  opacity: 0;
+  animation: fade-up 0.8s var(--ease-out) 1.8s forwards;
+}
+
+.cover__headline-item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  color: var(--color-paper);
+  transition: all var(--duration-normal) ease;
+  text-decoration: none;
+}
+
+.cover__headline-item:hover {
+  transform: translateX(8px);
+}
+
+.cover__headline-item:hover .cover__headline-text {
+  color: var(--color-accent);
+}
+
+.cover__headline-tag {
+  font-family: var(--font-secondary);
+  font-size: var(--text-overline);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.cover__headline-text {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  letter-spacing: 0.02em;
+  transition: color var(--duration-hover) ease;
+}
+
+/* Tagline — repositioned for editorial cover */
+.cover--editorial .cover__tagline {
+  position: absolute;
+  bottom: var(--space-2xl);
+  right: var(--space-lg);
+  margin-top: 0;
+}
+
+.cover__tagline {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-secondary);
+  font-size: var(--text-small);
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--color-paper);
+  mix-blend-mode: difference;
+  margin-top: var(--space-md);
+  opacity: 0;
+  animation: fade-up 0.8s var(--ease-out) 1.6s forwards;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Gradient overlay — stronger at bottom for headline readability */
+.cover__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 10, 10, 0.2) 0%,
+    rgba(10, 10, 10, 0.05) 30%,
+    rgba(10, 10, 10, 0.5) 80%,
+    rgba(10, 10, 10, 0.7) 100%
+  );
+}
+
+/* ============================================
+   FEATURED NOW — Immediately visible editorial
+   ============================================ */
+
+.featured-now {
+  background: var(--color-paper);
+  padding: var(--space-section) var(--space-md) var(--space-2xl);
+  max-width: var(--wide-width);
+  margin-inline: auto;
+}
+
+.featured-now__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.featured-now__label {
+  font-family: var(--font-secondary);
+  font-size: var(--text-overline);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.featured-now__line {
+  flex: 1;
+  height: 1px;
+  background: var(--gray-200);
+}
+
+/* Grid: lead story (60%) + side stories (40%) */
+.featured-now__grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: var(--grid-gap);
+  align-items: start;
+}
+
+/* Lead story */
+.featured-now__lead-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.featured-now__lead-image {
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  margin-bottom: var(--space-md);
+}
+
+.featured-now__lead-image > * {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.featured-now__lead-link:hover .featured-now__lead-image > * {
+  transform: scale(1.03);
+}
+
+.featured-now__lead-title {
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  line-height: 1.05;
+  margin: var(--space-xs) 0 var(--space-sm);
+  transition: color var(--duration-hover) ease;
+}
+
+.featured-now__lead-link:hover .featured-now__lead-title {
+  color: var(--color-accent);
+}
+
+.featured-now__lead-excerpt {
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: var(--gray-600);
+  line-height: 1.6;
+  max-width: 50ch;
+  margin-bottom: var(--space-sm);
+}
+
+.featured-now__cta {
+  font-family: var(--font-secondary);
+  font-size: var(--text-overline);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  transition: letter-spacing var(--duration-normal) ease;
+}
+
+.featured-now__lead-link:hover .featured-now__cta {
+  letter-spacing: 0.25em;
+}
+
+/* Side stories — stacked */
+.featured-now__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.featured-now__side-item a {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: var(--space-sm);
+  align-items: start;
+  text-decoration: none;
+  color: inherit;
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.featured-now__side-item:last-child a {
+  border-bottom: none;
+}
+
+.featured-now__side-image {
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+
+.featured-now__side-image > * {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.featured-now__side-item a:hover .featured-now__side-image > * {
+  transform: scale(1.05);
+}
+
+.featured-now__side-content h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  line-height: 1.15;
+  margin: var(--space-xs) 0;
+  transition: color var(--duration-hover) ease;
+}
+
+.featured-now__side-item a:hover h3 {
+  color: var(--color-accent);
+}
+
+.featured-now__side-content p {
+  font-family: var(--font-body);
+  font-size: var(--text-caption);
+  color: var(--gray-500);
+  line-height: 1.5;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .featured-now__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--grid-gap-lg);
+  }
+
+  .featured-now__lead-image {
+    aspect-ratio: 4 / 5;
+  }
+}
+
+@media (max-width: 768px) {
+  .cover--editorial {
+    height: 75vh;
+    min-height: 450px;
+  }
+
+  .cover__title {
+    font-size: clamp(2.5rem, 12vw, 5rem);
+    letter-spacing: 0.05em;
+  }
+
+  .cover__headlines {
+    bottom: var(--space-lg);
+    left: var(--space-md);
+    right: var(--space-md);
+    gap: var(--space-xs);
+  }
+
+  .cover__headline-text {
+    font-size: 0.85rem;
+  }
+
+  .cover--editorial .cover__tagline {
+    display: none;
+  }
+
+  .cover__tagline {
+    font-size: var(--text-caption);
+    letter-spacing: 0.25em;
+  }
+
+  /* Featured Now — stack on mobile */
+  .featured-now__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .featured-now__lead-image {
+    aspect-ratio: 16 / 10;
+  }
+
+  .featured-now__lead-title {
+    font-size: var(--text-h2);
+  }
+
+  .featured-now__side-item a {
+    grid-template-columns: 80px 1fr;
+  }
+}

@@ -1,0 +1,322 @@
+WILLIE AUSTIN WEBSITE — CONTENT GUIDE
+======================================
+
+This guide tells you exactly where to find and edit every piece of text
+on the site. Open the HTML file in any text editor (TextEdit, VS Code,
+Sublime, etc.) and change the words between the > and < symbols.
+
+Tip: Use Cmd+F to search for the current text, then replace it.
+
+
+=====================================================================
+INDEX.HTML — Homepage
+=====================================================================
+
+COVER
+─────
+Line ~86   Title:          "Willie Austin"
+Line ~99   Tagline:        "Fashion / Editorial / Creative Direction"
+
+Cover Headlines (bottom-left of hero):
+Line ~87   Headline 1 tag:   "New Collection"
+Line ~88   Headline 1 text:  "Nocturne — F/W 2026"
+Line ~91   Headline 2 tag:   "Editorial"
+Line ~92   Headline 2 text:  "The New Silhouette"
+Line ~95   Headline 3 tag:   "Profile"
+Line ~96   Headline 3 text:  "Meet the Designer"
+
+
+FEATURED NOW (below the cover)
+──────────────────────────────
+Lead story:
+  Category tag:    "Collection"
+  Title:           "Nocturne — Fall/Winter 2026"
+  Excerpt:         "An exploration of shadow and structure..."
+  CTA button:      "View Collection →"
+
+Side story 1:
+  Category:        "Editorial"
+  Title:           "The New Silhouette"
+  Excerpt:         "Why deconstruction is the most honest form..."
+
+Side story 2:
+  Category:        "Photo Story"
+  Title:           "Between Takes"
+  Excerpt:         "Behind-the-scenes from the Spring lookbook..."
+
+Side story 3:
+  Category:        "Latest"
+  Title:           "Red Thread"
+  Excerpt:         "Following a single red thread from first sketch..."
+
+
+MARQUEE TICKER (scrolling bar)
+──────────────────────────────
+Search for "marquee__text" to find all ticker items. There are 5 unique
+messages that repeat. Change them to whatever you want:
+  1. "BREAKING: Paris Fashion Week Opens March 2 with 68 Shows"
+  2. "Maria Grazia Chiuri Makes Fendi Debut at Milan"
+  3. "Demna's 'Primavera' Collection Divides Critics at Gucci"
+  4. "Saks Global Files for Bankruptcy Owing $3.4 Billion"
+  5. "Disco-Glam Revival Takes Over Milan Runways"
+
+IMPORTANT: The ticker text is duplicated (for seamless scrolling).
+Update BOTH copies of each message.
+
+
+THE STREAM — News Stories
+─────────────────────────
+Each story has:
+  - category-tag:          e.g. "Fashion Week"
+  - stream-item__headline: The headline
+  - stream-item__excerpt:  The summary paragraph
+  - stream-item__date:     Date + source
+
+Story 1 — Fendi Debut
+  Headline:  "Maria Grazia Chiuri Makes Her Fendi Debut..."
+  Excerpt:   "The Italian designer presented her first collection..."
+  Date:      "February 26, 2026 — via Business of Fashion"
+
+Story 2 — Gucci
+  Headline:  "Demna's 'Primavera' Gucci Debut Divides Critics"
+  Excerpt:   "Ultra-minimal seamless garments cut close to the body..."
+  Date:      "February 28, 2026 — via WWD"
+
+Story 3 — Paris Fashion Week
+  Headline:  "Paris Fashion Week Opens with 68 Shows..."
+  Excerpt:   "Antonin Tron's Balmain debut signals a shift..."
+  Date:      "March 1, 2026 — via Fashionista"
+
+Story 4 — Saks Bankruptcy
+  Headline:  "Saks Global Files for Bankruptcy..."
+  Excerpt:   "Parent of Saks Fifth Avenue, Neiman Marcus..."
+  Date:      "January 2026 — via CNBC / Business of Fashion"
+
+Story 5 — Disco-Glam
+  Headline:  "Disco-Glam Revival Takes Over Milan Fashion Week"
+  Excerpt:   "Gucci, Diesel, and others embrace glittering..."
+  Date:      "February 25, 2026 — via The Zoe Report"
+
+Story 6 — Marni
+  Headline:  "Meryll Rogge Reinvents Marni..."
+  Excerpt:   "The first woman to lead the Italian house..."
+  Date:      "February 27, 2026 — via Wallpaper"
+
+Story 7 — Kendall Jenner
+  Headline:  "Kendall Jenner Covers Vogue France..."
+  Excerpt:   "Photographed by Renell Medrano..."
+  Date:      "February 24, 2026 — via Vogue France"
+
+Story 8 — Ariana Grande
+  Headline:  "Ariana Grande Stars in Vogue Japan..."
+  Excerpt:   "The March 2026 cover features multiple Balenciaga..."
+  Date:      "January 26, 2026 — via Vogue Japan"
+
+Story 9 — Industry
+  Headline:  "Brands Rush Upmarket as Fashion Faces..."
+  Excerpt:   "The 2026 State of Fashion report reveals 46%..."
+  Date:      "February 2026 — via Business of Fashion / Bain"
+
+Pull Quotes / Text Breaks:
+  Quote 1:   "Fashion has to do with ideas, the way we live..."
+  Stat:      "76% of fashion leaders call tariffs the defining issue..."
+  Personal:  "Creating is the most honest thing I know how to do."
+
+Willie's Own Content (below "From the Studio" divider):
+  Story:     "Raw Material: The Case for Imperfect Fashion"
+  Story:     "Soft Architecture — S/S 2026"
+  Story:     "Red Thread"
+
+
+FOOTER
+──────
+  Brand:           "Willie Austin"
+  Subtitle:        "Fashion / Editorial / Creative Direction"
+  Email:           "hello@willieaustin.com"
+  Visitor count:   "00004827" (change to any number you want)
+
+
+=====================================================================
+COLLECTION.HTML — Nocturne Lookbook
+=====================================================================
+
+HERO
+────
+  Season label:    "Fall / Winter 2026"
+  Title:           "Nocturne"
+  Description:     "An exploration of shadow and structure..."
+
+LOOK NUMBERS
+────────────
+  "Look 01", "Looks 02 — 03", "Looks 05 — 06", etc.
+  (Search for "look-number" to find all)
+
+DESIGNER NOTES (italic text between images)
+────────────────────────────────────────────
+  Note 1:  "The collection begins in darkness — a single figure..."
+  Note 2:  "By the fourth look, the palette shifts..."
+           "Every seam is intentional..."
+  Note 3:  "The final movement returns to darkness..."
+
+CREDITS
+───────
+  Design:          "Willie Austin"
+  Photography:     "Studio Name"        ← CHANGE THIS
+  Styling:         "Stylist Name"       ← CHANGE THIS
+  Hair & Makeup:   "Artist Name"        ← CHANGE THIS
+  Models:          "Model Agency"       ← CHANGE THIS
+  Production:      "Production Company" ← CHANGE THIS
+
+
+=====================================================================
+EDITORIAL.HTML — "The New Silhouette" Article
+=====================================================================
+
+HERO
+────
+  Category:        "Editorial"
+  Title:           "The New Silhouette"
+  Author:          "By Willie Austin"
+  Date:            "January 2026"
+  Read time:       "8 min read"
+
+ARTICLE BODY
+────────────
+The full article text is between <article class="article-body"> and
+</article>. Key paragraphs:
+
+  Opening (drop cap):
+    "There is something profoundly honest about a garment..."
+
+  Section "The Honesty of Imperfection":
+    "Consider the dart. In traditional tailoring..."
+
+  Pull Quote:
+    "The raw edge isn't a statement anymore. It's a vocabulary."
+    Attribution: "Willie Austin"
+
+  Section "Structure as Expression":
+    "The most interesting thing happening in fashion right now..."
+
+  Section "What Comes Next":
+    "The next chapter of this conversation..."
+
+IMAGE CAPTIONS
+──────────────
+  Caption 1:  "A detail from the Nocturne collection..."
+  Caption 2:  "The tension between structure and softness..."
+  Caption 3:  "Process documentation: pattern development..."
+
+DUAL-READ SECTION ("The Making Of")
+────────────────────────────────────
+  Title:     "The Making Of"
+  Text:      "Every piece in the Nocturne collection..."
+             "What you see on the runway is the end of a conversation..."
+             "The process isn't linear..."
+
+GALLERY PANEL CAPTIONS (horizontal scroll)
+──────────────────────────────────────────
+  Panel I:   "Opening — the runway before the show"
+  Panel II:  "First Light — morning in the studio"
+  Panel III: "The Cut — precision at the table"
+  Panel IV:  "Color — the moment burnt sienna entered"
+  Panel V:   "Finale — everything comes together"
+
+ARTICLE TAGS
+────────────
+  "Fashion", "Design", "Editorial", "Process"
+
+
+=====================================================================
+ABOUT.HTML — Profile Feature
+=====================================================================
+
+HERO
+────
+  Label:           "Profile"
+  Name:            "Willie Austin"
+  Subtitle:        "The designer building a world where fashion
+                    and editorial are the same conversation."
+
+QUICK FACTS SIDEBAR
+───────────────────
+  Based in:        "Los Angeles, California"      ← CHANGE THIS
+  Founded:         "2020"                          ← CHANGE THIS
+  Specialties:     "Fashion Design, Creative Direction, Editorial"
+  Education:       "Self-taught"                   ← CHANGE THIS
+  Philosophy:      "Fashion and editorial are the same language"
+
+PROFILE TEXT (third-person editorial voice)
+──────────────────────────────────────────
+  Opening (drop cap):
+    "Willie Austin doesn't draw a line between fashion design
+     and editorial storytelling..."
+
+  The full profile runs ~10 paragraphs. Search for the text you want
+  to change and edit it directly. Key quotes within:
+
+    "Every collection is a story"
+    "I kept seeing things in my head that didn't exist yet"
+    "I don't follow trends... I'm just busy."
+    "The editorial work isn't separate from the design work"
+    "I'm interested in what happens when you stop treating
+     fashion and editorial as different things."
+
+CONTACT SIGN-OFF
+────────────────
+  Text:     "For inquiries, collaborations, and press"
+  Email:    "hello@willieaustin.com"                    ← CHANGE THIS
+
+
+=====================================================================
+GAME.HTML — Run From Anna Wintour
+=====================================================================
+
+  Title:           "Run From Anna Wintour"
+  Subtitle:        "An endless runner down the world's most
+                    intimidating runway"
+  Start button:    "START RUNNING"
+  Game over title: "Caught!"
+  Restart button:  "RUN AGAIN"
+  Back link:       "← Back to The Stream"
+
+
+=====================================================================
+HOW TO ADD A NEW ARTICLE
+=====================================================================
+
+1. Duplicate editorial.html and rename it (e.g. "my-new-article.html")
+
+2. Create an image folder:
+   assets/images/editorials/my-new-article/
+
+3. Add your images to that folder:
+   hero.jpg, detail-wide.jpg, full-bleed.jpg, etc.
+
+4. Open the new HTML file and change:
+   - The <title> tag in <head>
+   - Hero category, title, author, date
+   - All article body text
+   - Image src paths to point to your new folder
+   - Image captions and alt text
+
+5. Add a link to it from index.html (copy one of the stream blocks
+   and change the headline, excerpt, image, and href)
+
+6. Add a link in the nav if you want it in the menu
+
+
+=====================================================================
+HOW TO ADD A NEW COLLECTION
+=====================================================================
+
+1. Duplicate collection.html and rename it
+
+2. Create an image folder:
+   assets/images/collections/my-collection/
+
+3. Add look images: hero.jpg, look-01.jpg, look-02.jpg, etc.
+
+4. Edit the HTML: title, season, description, designer notes, credits
+
+5. Link to it from index.html

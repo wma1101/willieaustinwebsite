@@ -1,0 +1,217 @@
+{
+  "cover": {
+    "title": "Willie\nAustin",
+    "headlines": [
+      { "tag": "New Collection", "text": "Nocturne — F/W 2026", "href": "collection.html" },
+      { "tag": "Editorial", "text": "The New Silhouette", "href": "editorial.html" },
+      { "tag": "Profile", "text": "Meet the Designer", "href": "about.html" }
+    ],
+    "image": "assets/images/cover/hero.jpg"
+  },
+
+  "featured": [
+    {
+      "category": "Collection",
+      "title": "Nocturne — Fall/Winter 2026",
+      "excerpt": "An exploration of shadow and structure. Twelve looks that move between architectural tailoring and fluid draping, rendered in a palette of midnight, charcoal, and burnt sienna.",
+      "cta": "View Collection →",
+      "href": "collection.html",
+      "image": "assets/images/collections/nocturne/hero.jpg",
+      "lead": true
+    },
+    {
+      "category": "Paris Fashion Week",
+      "title": "Jonathan Anderson's Dior Redefines Heritage",
+      "excerpt": "The Bar jacket, loosened and reinterpreted as pastel knits with fluted peplums — a runway skimming across a lily-pad pond in the Tuileries.",
+      "href": "editorial.html",
+      "image": "assets/images/news/dior-aw26.jpg"
+    },
+    {
+      "category": "Paris Fashion Week",
+      "title": "Piccioli's Balenciaga: Clair-Obscur",
+      "excerpt": "Light and darkness collide in cocoon silhouettes, velvet gowns, and elevated denim.",
+      "href": "editorial.html",
+      "image": "assets/images/news/balenciaga-aw26.jpg"
+    },
+    {
+      "category": "Latest",
+      "title": "Red Thread",
+      "excerpt": "Following a single red thread from first sketch to runway.",
+      "href": "editorial.html",
+      "image": "assets/images/editorials/red-thread/thumb.jpg"
+    }
+  ],
+
+  "stream": [
+    {
+      "type": "feature",
+      "category": "Paris Fashion Week",
+      "title": "Sarah Burton's Givenchy Finds Its Voice in Third Outing",
+      "excerpt": "Not proposing one ideal woman but many women and many ways of being strong. Exact tailoring, power suits, draped detachable sleeves, and a leopard-print sequin dress with fringes signaled the collection where Burton's Givenchy point of view finally clicked. Stephen Jones designed white milkmaid headpieces that anchored every exit.",
+      "date": "March 7, 2026",
+      "source": "South China Morning Post",
+      "image": "assets/images/news/givenchy-aw26.jpg"
+    },
+    {
+      "type": "duo",
+      "items": [
+        {
+          "category": "Paris Fashion Week",
+          "title": "Loewe's McCollough & Hernandez Push Material Innovation to Its Limits",
+          "excerpt": "3D-printed latex slip dresses, inflatable parkas, and rubber-molded trainers — luxury craftsmanship reimagined with whimsy. Cosima von Bonin's blue velvet stuffed animals set the tone. The palette screamed in lurid yellows and highlighter greens.",
+          "date": "March 5, 2026",
+          "source": "Wallpaper",
+          "image": "assets/images/news/loewe-aw26.jpg"
+        },
+        {
+          "category": "Paris Fashion Week",
+          "title": "Celine's Michael Rider Designs for the Everyday Parisian",
+          "excerpt": "\"Bienvenue chez Celine.\" The starting point for fall was a daily commute in Paris — loose trench coats over sequined dresses, navy coats with knotted leather belts, and knit dresses in abstract floral prints. Less accessorized, more streamlined.",
+          "date": "March 4, 2026",
+          "source": "South China Morning Post",
+          "image": "assets/images/news/celine-aw26.jpg"
+        }
+      ]
+    },
+    {
+      "type": "quote",
+      "text": "Fashion has to do with ideas, the way we live, what is happening."
+    },
+    {
+      "type": "feature",
+      "category": "Paris Fashion Week",
+      "title": "Hermès Conjures a Liminal Realm Between Day and Evening, Earth and Space",
+      "excerpt": "Nadège Vanhée's A/W 2026 collection moved through shimmering silk twill, leather cycling shorts, and shearling bombers in dark blues and deep russets. Visible zips sliced across the chest and down the length of dresses — function as adornment. A silk scarf worn as a cape was the season's most photographed moment.",
+      "date": "March 8, 2026",
+      "source": "Wallpaper",
+      "image": "assets/images/news/hermes-aw26.jpg"
+    },
+    {
+      "type": "duo",
+      "items": [
+        {
+          "category": "Paris Fashion Week",
+          "title": "Jean Paul Gaultier by Duran Lantink Channels Marlene Dietrich",
+          "excerpt": "Pinstriped suits, pleated black gowns, and Fair Isle knit bodysuits in a 43-look lineup. Hat brims attached to jackets. Vintage glamour rebuilt for 2026.",
+          "date": "March 8, 2026",
+          "source": "Wallpaper",
+          "image": "assets/images/news/gaultier-aw26.jpg"
+        },
+        {
+          "category": "Paris Fashion Week",
+          "title": "Alexander McQueen: Seán McGirr's Romantic Darkness",
+          "excerpt": "Floral wallpaper patterns meet Gothic silhouettes, delicate lace, and chain-mail knitwear. Models emerged through a maze of sheer white curtains. Bouncy ruffled hems softened the edge.",
+          "date": "March 6, 2026",
+          "source": "Wallpaper",
+          "image": "assets/images/news/mcqueen-aw26.jpg"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "text": "9 of the 15 largest luxury houses appointed new creative directors in the past 12 months.",
+      "source": "Business of Fashion — State of Fashion Report 2026"
+    },
+    {
+      "type": "feature",
+      "category": "Industry",
+      "title": "Stars Hit Paris Runways, But Fall's Real Trend Was Dressing for Hard Times",
+      "excerpt": "Across Paris Fashion Week, designers presented clothes that work in real life, not just on Instagram. From Celine's commuter-chic to Givenchy's power suiting, the Fall 2026 season marked a decisive pivot toward pragmatism. With 46% of executives expecting conditions to worsen and tariffs looming, even the most elevated houses are designing for the world as it is.",
+      "date": "March 9, 2026",
+      "source": "Associated Press",
+      "image": "assets/images/news/pfw-trend-aw26.jpg"
+    },
+    {
+      "type": "duo",
+      "items": [
+        {
+          "category": "Industry",
+          "title": "Luxury Fashion Rethinks Its Value After Years of Price Hikes",
+          "excerpt": "After raising prices with no bump in quality or creativity, the industry is being forced to rebuild trust with shoppers. Value brands are reducing lowest-priced SKUs by 15–25%, racing upmarket as the middle hollows out.",
+          "date": "March 2026",
+          "source": "Business of Fashion",
+          "image": "assets/images/news/luxury-rethink.jpg"
+        },
+        {
+          "category": "Campaign",
+          "title": "Burberry Celebrates 170 Years With Iconic Trench Portraits",
+          "excerpt": "Black-and-white portraits featuring Kate Moss, Daisy Edgar-Jones, Teyana Taylor, and Kid Cudi. 'The Trench, Portraits of an Icon' campaign cements the house's most enduring symbol.",
+          "date": "March 2026",
+          "source": "Who What Wear",
+          "image": "assets/images/news/burberry-170.jpg"
+        }
+      ]
+    },
+    {
+      "type": "quote",
+      "text": "The most interesting clothes are the ones that show their making."
+    },
+    {
+      "type": "duo",
+      "items": [
+        {
+          "category": "Industry",
+          "title": "Saks Global Files for Bankruptcy Owing Billions to Fashion's Biggest Names",
+          "excerpt": "Parent of Saks Fifth Avenue, Neiman Marcus, and Bergdorf Goodman filed Chapter 11 after missing a $100 million debt payment, listing $3.4 billion in debts including $136 million owed to Chanel alone.",
+          "date": "January 2026",
+          "source": "CNBC / Business of Fashion",
+          "image": "assets/images/news/saks.jpg"
+        },
+        {
+          "category": "Fashion Week",
+          "title": "Demna's \"Primavera\" Gucci Debut Divides Critics",
+          "excerpt": "Ultra-minimal seamless garments cut close to the body, inspired by Botticelli. Kate Moss closed the show in the brand's iconic GG logo thong.",
+          "date": "February 28, 2026",
+          "source": "WWD",
+          "image": "assets/images/news/gucci.jpg"
+        }
+      ]
+    },
+    {
+      "type": "feature",
+      "category": "Fashion Week",
+      "title": "Maria Grazia Chiuri Makes Her Fendi Debut With \"Less I, More Us\"",
+      "excerpt": "The Italian designer presented her first collection as Fendi creative director at Milan Fashion Week, showing co-ed looks dominated by black with fluid satin, sheer gowns, and statement coats. Chiuri, who began her career at Fendi in 1989, signaled a shift toward pragmatism and collective emotion.",
+      "date": "February 26, 2026",
+      "source": "Business of Fashion",
+      "image": "assets/images/news/fendi.jpg"
+    }
+  ],
+
+  "studio_content": [
+    {
+      "category": "Editorial",
+      "title": "Midnight Wool",
+      "excerpt": "On dead stock fabric, rust stains, designing at 1 AM, and the conversation between cloth and the person inside it.",
+      "date": "March 2026",
+      "href": "editorial-midnight-wool.html",
+      "image": "assets/images/editorials/midnight-wool/hero.jpg"
+    },
+    {
+      "category": "Editorial",
+      "title": "Raw Material: The Case for Imperfect Fashion",
+      "excerpt": "A long-form essay on why the most interesting clothes are the ones that show their making — raw edges, visible seams, and unfinished hems as a design philosophy.",
+      "date": "November 2025",
+      "href": "editorial.html",
+      "image": "assets/images/editorials/raw-material/thumb.jpg"
+    },
+    {
+      "category": "Collection",
+      "title": "Soft Architecture — S/S 2026",
+      "excerpt": "Structured forms in flowing fabrics. A contradiction made wearable.",
+      "date": "October 2025",
+      "href": "collection.html",
+      "image": "assets/images/collections/soft-architecture/thumb.jpg"
+    },
+    {
+      "category": "Photo Story",
+      "title": "Red Thread",
+      "excerpt": "Following a single red thread from first sketch to final stitch to runway to street.",
+      "date": "August 2025",
+      "href": "editorial.html",
+      "image": "assets/images/editorials/red-thread/thumb.jpg"
+    }
+  ],
+
+  "personal_quote": "Creating is the most honest thing I know how to do."
+}

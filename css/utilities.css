@@ -1,0 +1,101 @@
+/* Utility Classes — Willie Austin Website */
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Full bleed */
+.full-bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
+/* Aspect ratios */
+.aspect-portrait { aspect-ratio: 3 / 4; }
+.aspect-landscape { aspect-ratio: 4 / 3; }
+.aspect-wide { aspect-ratio: 16 / 9; }
+.aspect-square { aspect-ratio: 1; }
+
+/* Object fit */
+.cover { object-fit: cover; width: 100%; height: 100%; }
+.contain { object-fit: contain; }
+
+/* Text alignment */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+/* Spacing helpers */
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+.mt-2xl { margin-top: var(--space-2xl); }
+
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mb-xl { margin-bottom: var(--space-xl); }
+
+.pt-xl { padding-top: var(--space-xl); }
+.pb-xl { padding-bottom: var(--space-xl); }
+
+/* Flex utilities */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+
+/* Background colors */
+.bg-black { background-color: var(--color-black); color: var(--color-paper); }
+.bg-paper { background-color: var(--color-paper); color: var(--color-black); }
+.bg-accent { background-color: var(--color-accent); color: var(--color-paper); }
+
+/* Color utilities */
+.text-accent { color: var(--color-accent); }
+.text-muted { color: var(--gray-500); }
+
+/* Image container */
+.img-wrap {
+  overflow: hidden;
+  position: relative;
+}
+
+.img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.img-wrap:hover img {
+  transform: scale(1.03);
+}
+
+/* No scroll (when loading / modal is open) */
+.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* Focus visible styles */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Print */
+@media print {
+  .no-print { display: none !important; }
+}

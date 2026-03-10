@@ -1,0 +1,74 @@
+{
+  "label": "Profile",
+  "name": "Willie Austin",
+  "subtitle": "The designer building a world where fashion and editorial are the same conversation.",
+  "hero_image": "assets/images/about/portrait.jpg",
+
+  "facts": {
+    "Based in": "Los Angeles, California",
+    "Founded": "2020",
+    "Specialties": "Fashion Design, Creative Direction, Editorial",
+    "Education": "Self-taught",
+    "Philosophy": "Fashion and editorial are the same language"
+  },
+
+  "body": [
+    {
+      "type": "paragraph",
+      "dropcap": true,
+      "text": "Willie Austin doesn't draw a line between fashion design and editorial storytelling — a distinction that, in his view, was always artificial. \"Every collection is a story,\" he says, leaning forward in the cluttered studio where bolts of midnight wool share shelf space with photography books and back issues of vintage fashion magazines. \"The clothes are the text. The editorial is how you read them.\""
+    },
+    {
+      "type": "paragraph",
+      "text": "It's an approach that has earned Austin a reputation as one of the most thoughtful young designers working today — someone who treats a lookbook with the same rigor as a fashion show, and approaches a written essay with the same visual intensity as a garment. His work exists in the space between disciplines, drawing from both without fully belonging to either."
+    },
+    {
+      "type": "paragraph",
+      "text": "Born and raised in a city that understands reinvention, Austin came to fashion not through the traditional pipeline of design school and internships, but through a side door — he started making clothes because he couldn't find what he wanted to wear. \"I kept seeing things in my head that didn't exist yet,\" he says. \"At some point, the only option was to make them myself.\""
+    },
+    {
+      "type": "image",
+      "layout": "wide",
+      "src": "assets/images/about/studio-wide.jpg"
+    },
+    {
+      "type": "paragraph",
+      "text": "The self-taught approach shows in his work — not as a limitation, but as a freedom. Without the conventions of formal training to unlearn, Austin has developed a design language that feels genuinely idiosyncratic. His silhouettes owe as much to architecture as they do to the human body. His color palettes are drawn from photography and painting rather than seasonal trend forecasts."
+    },
+    {
+      "type": "paragraph",
+      "text": "\"I don't follow trends,\" he says, and it's not the kind of performative anti-fashion statement that designers sometimes make. It's a practical reality. By the time a trend reaches him, he's already three collections deep into whatever he was going to do anyway. \"I'm not against trends. I'm just busy.\""
+    },
+    {
+      "type": "image",
+      "layout": "full-bleed",
+      "src": "assets/images/about/full-bleed.jpg"
+    },
+    {
+      "type": "paragraph",
+      "text": "The studio, located in a converted industrial space, doubles as an editorial production office. There's a photography area at one end, a cutting table at the other, and in between, evidence of a creative process that refuses to compartmentalize. Fabric swatches are pinned next to printed essays. Mood boards mix garment construction details with typographic experiments. A half-finished blazer hangs next to a half-written article, and Austin moves between them throughout the day."
+    },
+    {
+      "type": "paragraph",
+      "text": "\"The editorial work isn't separate from the design work,\" he explains. \"When I write about fashion, I understand the clothes better. When I design, the writing finds its shape. They're two sides of the same thing.\""
+    },
+    {
+      "type": "image",
+      "layout": "wide",
+      "src": "assets/images/about/process-wide.jpg"
+    },
+    {
+      "type": "paragraph",
+      "text": "His most recent collection, Nocturne, exemplifies this dual practice. The twelve looks are accompanied by a series of written pieces — not press releases or marketing copy, but genuine essays that explore the ideas behind the clothes. \"The industry has trained us to think of words about fashion as secondary,\" he says. \"But some ideas can only be expressed in language, and some can only be expressed in fabric. I want to do both.\""
+    },
+    {
+      "type": "paragraph",
+      "text": "What comes next, Austin won't say precisely — only that it will continue to blur the line that he's spent his career erasing. \"I'm interested in what happens when you stop treating fashion and editorial as different things. When the magazine page and the garment exist in the same world. When you can't tell where one ends and the other begins.\" He pauses. \"That's the project.\""
+    }
+  ],
+
+  "contact": {
+    "text": "For inquiries, collaborations, and press",
+    "email": "hello@willieaustin.com"
+  }
+}

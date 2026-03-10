@@ -1,0 +1,177 @@
+/* Typography — Willie Austin Website */
+
+/* Custom font */
+@font-face {
+  font-family: 'WillieAustin';
+  src: url('../Myfont-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,300;1,8..60,400;1,8..60,600&family=Space+Grotesk:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
+/* Base type styles */
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  color: var(--color-black);
+  line-height: 1.7;
+}
+
+/* Display type */
+.display-xl {
+  font-family: var(--font-display);
+  font-size: var(--text-display-xl);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+.display-sm {
+  font-family: var(--font-display);
+  font-size: var(--text-display-sm);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+/* Headings */
+h1, .h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+h2, .h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  line-height: 1.15;
+}
+
+h3, .h3 {
+  font-family: var(--font-secondary);
+  font-size: var(--text-h3);
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+/* Body text */
+.body-text {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.7;
+}
+
+.body-text p + p {
+  margin-top: 1.5em;
+}
+
+/* Secondary / UI text */
+.ui-text {
+  font-family: var(--font-secondary);
+  font-size: var(--text-small);
+  letter-spacing: 0.02em;
+}
+
+/* Overline / category tags */
+.overline {
+  font-family: var(--font-secondary);
+  font-size: var(--text-overline);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* Captions */
+.caption {
+  font-family: var(--font-secondary);
+  font-size: var(--text-caption);
+  color: var(--gray-500);
+  letter-spacing: 0.02em;
+}
+
+/* Drop cap */
+.drop-cap::first-letter {
+  font-family: 'Playfair Display', serif;
+  float: left;
+  font-size: 4.5em;
+  line-height: 0.8;
+  padding-right: 0.1em;
+  padding-top: 0.05em;
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* Pull quote */
+.pull-quote {
+  font-family: var(--font-display);
+  font-size: var(--text-display-sm);
+  line-height: 1.1;
+  border-left: 3px solid var(--color-accent);
+  padding: var(--space-lg) 0 var(--space-lg) var(--space-md);
+  margin: var(--space-xl) 0;
+}
+
+/* Byline — serif italic for meta/attribution */
+.byline {
+  font-family: var(--font-serif-italic);
+  font-style: italic;
+  letter-spacing: 0.01em;
+}
+
+.pull-quote cite {
+  display: block;
+  font-family: var(--font-secondary);
+  font-size: var(--text-small);
+  font-style: normal;
+  color: var(--gray-500);
+  margin-top: var(--space-sm);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Links in body text */
+.body-text a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  transition: color var(--duration-fast) ease;
+}
+
+.body-text a:hover {
+  color: var(--color-accent-hover);
+}
+
+/* Selection */
+::selection {
+  background: var(--color-accent);
+  color: var(--color-paper);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .drop-cap::first-letter {
+    font-size: 3.2em;
+    line-height: 0.85;
+    padding-right: 0.08em;
+  }
+
+  .pull-quote {
+    font-size: var(--text-h2);
+    padding: var(--space-md) 0 var(--space-md) var(--space-sm);
+    margin: var(--space-lg) 0;
+  }
+
+  .display-xl {
+    line-height: 0.95;
+  }
+}
