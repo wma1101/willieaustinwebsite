@@ -15,12 +15,13 @@
   align-items: center;
   justify-content: space-between;
   transition: all var(--duration-normal) var(--ease-out);
-  mix-blend-mode: difference;
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .masthead.scrolled {
   background: rgba(10, 10, 10, 0.95);
-  mix-blend-mode: normal;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: calc(var(--space-xs) * 0.75) var(--space-md);
