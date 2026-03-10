@@ -110,94 +110,128 @@ window.__CONTENT_DATA__ = {
   <!-- Article page renderer -->
   <script>
 (function() {
-  // Get article slug from URL
-  const params = new URLSearchParams(window.location.search);
-  const slug = params.get('id');
+  var params = new URLSearchParams(window.location.search);
+  var slug = params.get('id');
   if (!slug) { window.location.href = 'editorial.html'; return; }
 
-  const data = window.__CONTENT_DATA__['homepage.json'];
+  var data = window.__CONTENT_DATA__['homepage.json'];
   if (!data) return;
 
   // Extract all articles into flat array
-  const articles = [];
+  var articles = [];
   function addArticle(item) {
-    const s = (item.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    articles.push({ ...item, slug: s });
+    var s = (item.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    articles.push(Object.assign({}, item, { slug: s }));
   }
   if (data.featured) data.featured.forEach(addArticle);
-  if (data.stream) data.stream.forEach(block => {
+  if (data.stream) data.stream.forEach(function(block) {
     if (block.type === 'feature') addArticle(block);
     else if (block.type === 'duo' && block.items) block.items.forEach(addArticle);
   });
   if (data.studio_content) data.studio_content.forEach(addArticle);
 
   // Deduplicate
-  const seen = new Set();
-  const unique = articles.filter(a => { if (seen.has(a.slug)) return false; seen.add(a.slug); return true; });
+  var seen = {};
+  var unique = articles.filter(function(a) { if (seen[a.slug]) return false; seen[a.slug] = true; return true; });
 
   // Find the article
-  const article = unique.find(a => a.slug === slug);
+  var article = null;
+  for (var i = 0; i < unique.length; i++) { if (unique[i].slug === slug) { article = unique[i]; break; } }
   if (!article) { window.location.href = 'editorial.html'; return; }
 
-  // If the article has its own page (editorial-*.html), redirect there
-  if (article.href && article.href.startsWith('editorial-')) {
-    window.location.href = article.href;
-    return;
-  }
+  // If the article has its own page, redirect
+  if (article.href && article.href.startsWith('editorial-')) { window.location.href = article.href; return; }
 
-  // Render title-first header
-  document.title = article.title + ' | WILLIE AUSTIN';
-  document.getElementById('hero-category').textContent = article.category || '';
-  document.getElementById('hero-title').textContent = article.title;
+  // Escape HTML
+  function esc(str) { return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  // Dek (first sentence as subtitle)
-  var text = article.excerpt || '';
-  var firstSentence = (text.match(/^[^.!?]+[.!?]/) || [''])[0].trim();
-  var restText = text.slice(firstSentence.length).trim();
-  document.getElementById('hero-dek').textContent = firstSentence;
+  // Try to load full article from articles.json, then render
+  function renderArticle(fullData) {
+    var full = fullData ? fullData[slug] : null;
 
-  var metaParts = [];
-  if (article.source) metaParts.push('By ' + article.source);
-  if (article.date) metaParts.push(article.date);
-  document.getElementById('hero-meta').innerHTML = metaParts.map(function(p) { return '<span>' + p + '</span>'; }).join('');
+    // Header
+    document.title = (full ? full.title : article.title) + ' | WILLIE AUSTIN';
+    document.getElementById('hero-category').textContent = (full ? full.category : article.category) || '';
+    document.getElementById('hero-title').textContent = full ? full.title : article.title;
+    document.getElementById('hero-dek').textContent = full ? full.dek : (article.excerpt || '').split(/[.!?]/)[0] + '.';
 
-  // Hero image
-  document.getElementById('hero-img').src = article.image || '';
-  document.getElementById('hero-img').alt = article.title;
+    var metaParts = [];
+    if (full && full.author) metaParts.push('By ' + full.author);
+    else if (article.source) metaParts.push('By ' + article.source);
+    if (full && full.date) metaParts.push(full.date);
+    else if (article.date) metaParts.push(article.date);
+    if (full && full.read_time) metaParts.push(full.read_time);
+    document.getElementById('hero-meta').innerHTML = metaParts.map(function(p) { return '<span>' + esc(p) + '</span>'; }).join('');
 
-  // Article body
-  var bodyEl = document.getElementById('article-body');
-  var bodyHTML = '';
-  if (restText) {
-    var sentences = restText.match(/[^.!?]+[.!?]+/g) || [restText];
-    // First paragraph with drop cap
-    var chunk1 = sentences.length > 2 ? sentences.slice(0, 3).join('') : sentences.join('');
-    bodyHTML += '<p class="drop-cap">' + chunk1.trim() + '</p>';
-    if (sentences.length > 3) {
-      bodyHTML += '<p>' + sentences.slice(3).join('').trim() + '</p>';
+    // Hero image
+    document.getElementById('hero-img').src = (full ? full.image : article.image) || '';
+    document.getElementById('hero-img').alt = full ? full.title : article.title;
+
+    // Article body
+    var bodyEl = document.getElementById('article-body');
+    var bodyHTML = '';
+
+    if (full && full.body && full.body.length) {
+      full.body.forEach(function(block) {
+        if (block.type === 'paragraph') {
+          bodyHTML += block.dropcap
+            ? '<p class="drop-cap">' + esc(block.text) + '</p>'
+            : '<p>' + esc(block.text) + '</p>';
+        } else if (block.type === 'heading') {
+          bodyHTML += '<h2>' + esc(block.text) + '</h2>';
+        } else if (block.type === 'pullquote') {
+          bodyHTML += '<blockquote class="pull-quote">' + esc(block.text) +
+            (block.attribution ? '<cite>' + esc(block.attribution) + '</cite>' : '') + '</blockquote>';
+        } else if (block.type === 'image') {
+          bodyHTML += '<div class="image-wide reveal"><img src="' + esc(block.src) + '" alt="' + esc(block.caption || '') + '" loading="lazy" style="width:100%;object-fit:cover;">' +
+            (block.caption ? '<p class="image-caption">' + esc(block.caption) + '</p>' : '') + '</div>';
+        }
+      });
+    } else {
+      // Fallback: render excerpt as body
+      var text = article.excerpt || '';
+      var sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+      if (sentences.length > 0) {
+        var chunk1 = sentences.length > 2 ? sentences.slice(0, 3).join('') : sentences.join('');
+        bodyHTML += '<p class="drop-cap">' + esc(chunk1.trim()) + '</p>';
+        if (sentences.length > 3) bodyHTML += '<p>' + esc(sentences.slice(3).join('').trim()) + '</p>';
+      }
+    }
+
+    bodyEl.innerHTML = bodyHTML;
+
+    // Related articles
+    var related = unique.filter(function(a) { return a.slug !== slug; });
+    var sameCategory = related.filter(function(a) { return a.category === article.category; });
+    var picks = (sameCategory.length >= 3 ? sameCategory : related).slice(0, 3);
+
+    var relatedEl = document.getElementById('related-articles');
+    if (relatedEl && picks.length) {
+      relatedEl.innerHTML = picks.map(function(a) {
+        var href = (a.href && a.href.startsWith('editorial-')) ? a.href
+          : (a.href && (a.href.startsWith('collection') || a.href === 'about.html')) ? a.href
+          : 'article.html?id=' + a.slug;
+        return '<a href="' + esc(href) + '" class="vogue-card">' +
+          '<div class="vogue-card__img" style="aspect-ratio:3/4;"><img src="' + esc(a.image || '') + '" alt="' + esc(a.title || '') + '" loading="lazy"></div>' +
+          '<span class="vogue-rubric">' + esc(a.category || '') + '</span>' +
+          '<h3 class="vogue-card__title">' + esc(a.title || '') + '</h3>' +
+          '</a>';
+      }).join('');
     }
   }
 
-  bodyEl.innerHTML = bodyHTML;
-
-  // Related articles — Vogue card style
-  var related = unique.filter(function(a) { return a.slug !== slug; });
-  var sameCategory = related.filter(function(a) { return a.category === article.category; });
-  var picks = (sameCategory.length >= 3 ? sameCategory : related).slice(0, 3);
-
-  var relatedEl = document.getElementById('related-articles');
-  if (relatedEl && picks.length) {
-    relatedEl.innerHTML = picks.map(function(a) {
-      var href = (a.href && a.href.startsWith('editorial-')) ? a.href
-        : (a.href && (a.href.startsWith('collection') || a.href === 'about.html')) ? a.href
-        : 'article.html?id=' + a.slug;
-      return '<a href="' + href + '" class="vogue-card">' +
-        '<div class="vogue-card__img" style="aspect-ratio:3/4;"><img src="' + (a.image || '') + '" alt="' + (a.title || '') + '" loading="lazy"></div>' +
-        '<span class="vogue-rubric">' + (a.category || '') + '</span>' +
-        '<h3 class="vogue-card__title">' + (a.title || '') + '</h3>' +
-        '</a>';
-    }).join('');
-  }
+  // Load articles.json for full content, fall back to excerpt
+  try {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'content/articles.json', true);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        try { renderArticle(JSON.parse(xhr.responseText)); } catch(e) { renderArticle(null); }
+      } else { renderArticle(null); }
+    };
+    xhr.onerror = function() { renderArticle(null); };
+    xhr.send();
+  } catch(e) { renderArticle(null); }
 })();
   </script>
 
