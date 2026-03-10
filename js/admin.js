@@ -221,126 +221,370 @@
   }
 
   /* ============================================
-     HOMEPAGE EDITOR
+     HOMEPAGE EDITOR — WYSIWYG
      ============================================ */
 
   function renderHomepage() {
-    const cover = homepageData.cover || {};
+    var cover = homepageData.cover || {};
 
-    // Cover
-    setVal('cover-title', cover.title || '');
-    setVal('cover-image', cover.image || '');
+    // Cover image
+    renderHpCoverImage(cover.image);
+
+    // Cover title
+    var titleEl = $('hp-cover-title');
+    if (titleEl) titleEl.innerText = cover.title || '';
+
+    // Headlines
     renderCoverHeadlines();
 
-    // Stream items
+    // Featured
+    renderFeaturedItems();
+
+    // Stream
     renderStreamItems();
 
-    // Studio content
+    // Studio
     renderStudioItems();
 
-    // Personal quote
-    setVal('personal-quote', homepageData.personal_quote || '');
+    // Quote
+    var quoteEl = $('hp-quote');
+    if (quoteEl) quoteEl.textContent = homepageData.personal_quote || '';
   }
 
+  function renderHpCoverImage(imgPath) {
+    var src = resolveImageSrc(imgPath || '');
+    var img = $('hp-cover-img');
+    var placeholder = $('hp-cover-placeholder');
+    var actions = $('hp-cover-actions');
+    if (src) {
+      img.src = src;
+      img.style.display = 'block';
+      img.onerror = function() { img.style.display = 'none'; placeholder.style.display = ''; if (actions) actions.style.display = 'none'; };
+      placeholder.style.display = 'none';
+      if (actions) actions.style.display = '';
+    } else {
+      img.style.display = 'none';
+      placeholder.style.display = '';
+      if (actions) actions.style.display = 'none';
+    }
+  }
+
+  function clearHpImage(type) {
+    if (type === 'cover') {
+      if (!homepageData.cover) homepageData.cover = {};
+      homepageData.cover.image = '';
+      renderHpCoverImage('');
+      markUnsaved();
+    }
+  }
+
+  // Helper: image zone HTML for homepage cards
+  function hpImgZone(target, imgSrc) {
+    return '<div class="hp-img-zone"' +
+      ' ondragover="adminPanel.preventDragDefault(event)"' +
+      ' ondragenter="adminPanel.preventDragDefault(event)"' +
+      ' ondrop="adminPanel.handleDrop(event,\'' + target + '\')">' +
+      (imgSrc ? '<img src="' + esc(imgSrc) + '" alt="" onerror="this.style.display=\'none\'">' : '') +
+      '<div class="hp-img-overlay' + (imgSrc ? '' : ' empty') + '" onclick="adminPanel.triggerUpload(\'' + target + '\')">' +
+      '<i class="fas fa-camera"></i>' +
+      '</div></div>';
+  }
+
+  // Generic field update handler
+  function onHpInput(section, index, field, value) {
+    if (section === 'featured') {
+      if (homepageData.featured && homepageData.featured[index]) homepageData.featured[index][field] = value;
+    } else if (section === 'stream') {
+      if (homepageData.stream && homepageData.stream[index]) homepageData.stream[index][field] = value;
+    } else if (section === 'studio') {
+      if (homepageData.studio_content && homepageData.studio_content[index]) homepageData.studio_content[index][field] = value;
+    }
+    markUnsaved();
+  }
+
+  function onHpDuoInput(streamIdx, subIdx, field, value) {
+    if (homepageData.stream && homepageData.stream[streamIdx] && homepageData.stream[streamIdx].items) {
+      homepageData.stream[streamIdx].items[subIdx][field] = value;
+    }
+    markUnsaved();
+  }
+
+  function onHpHeadlineInput(i, field, value) {
+    if (homepageData.cover && homepageData.cover.headlines && homepageData.cover.headlines[i]) {
+      homepageData.cover.headlines[i][field] = value;
+    }
+    markUnsaved();
+  }
+
+  // Apply uploaded image to homepage target
+  function applyHpUpload(target, path) {
+    // target format: hp-cover, hp-featured-N, hp-stream-N, hp-duo-N-M, hp-studio-N
+    var parts = target.split('-');
+    if (parts[1] === 'cover') {
+      if (!homepageData.cover) homepageData.cover = {};
+      homepageData.cover.image = path;
+      renderHpCoverImage(path);
+    } else if (parts[1] === 'featured') {
+      var idx = parseInt(parts[2]);
+      if (homepageData.featured && homepageData.featured[idx]) {
+        homepageData.featured[idx].image = path;
+        renderFeaturedItems();
+      }
+    } else if (parts[1] === 'stream') {
+      var idx = parseInt(parts[2]);
+      if (homepageData.stream && homepageData.stream[idx]) {
+        homepageData.stream[idx].image = path;
+        renderStreamItems();
+      }
+    } else if (parts[1] === 'duo') {
+      var si = parseInt(parts[2]);
+      var di = parseInt(parts[3]);
+      if (homepageData.stream && homepageData.stream[si] && homepageData.stream[si].items) {
+        homepageData.stream[si].items[di].image = path;
+        renderStreamItems();
+      }
+    } else if (parts[1] === 'studio') {
+      var idx = parseInt(parts[2]);
+      if (homepageData.studio_content && homepageData.studio_content[idx]) {
+        homepageData.studio_content[idx].image = path;
+        renderStudioItems();
+      }
+    }
+  }
+
+  function clearHpItemImage(section, index, subIndex) {
+    if (section === 'featured') {
+      if (homepageData.featured && homepageData.featured[index]) homepageData.featured[index].image = '';
+      renderFeaturedItems();
+    } else if (section === 'stream') {
+      if (homepageData.stream && homepageData.stream[index]) homepageData.stream[index].image = '';
+      renderStreamItems();
+    } else if (section === 'duo') {
+      if (homepageData.stream && homepageData.stream[index] && homepageData.stream[index].items) {
+        homepageData.stream[index].items[subIndex].image = '';
+      }
+      renderStreamItems();
+    } else if (section === 'studio') {
+      if (homepageData.studio_content && homepageData.studio_content[index]) homepageData.studio_content[index].image = '';
+      renderStudioItems();
+    }
+    markUnsaved();
+  }
+
+  // --- Cover Headlines ---
+
   function renderCoverHeadlines() {
-    const headlines = (homepageData.cover || {}).headlines || [];
-    const container = $('cover-headlines');
-    container.innerHTML = headlines.map((h, i) => `
-      <div class="stream-editor-item" data-index="${i}">
-        <div class="item-info">
-          <div class="item-type">${esc(h.tag)}</div>
-          <div class="item-title">${esc(h.text)}</div>
-          <div class="item-excerpt">${esc(h.href)}</div>
-        </div>
-        <div class="item-actions">
-          <button class="btn-icon" onclick="adminPanel.editCoverHeadline(${i})" title="Edit"><i class="fas fa-pen"></i></button>
-          <button class="btn-icon danger" onclick="adminPanel.deleteCoverHeadline(${i})" title="Delete"><i class="fas fa-trash"></i></button>
-        </div>
-      </div>
-    `).join('');
+    var headlines = (homepageData.cover || {}).headlines || [];
+    var container = $('hp-headlines');
+    if (!container) return;
+
+    if (headlines.length === 0) {
+      container.innerHTML = '<div class="hp-empty">No headlines yet.</div>';
+      return;
+    }
+
+    var html = '';
+    for (var i = 0; i < headlines.length; i++) {
+      var h = headlines[i];
+      html += '<div class="hp-headline-card">' +
+        '<div class="hp-headline-fields">' +
+        '<input type="text" class="hp-field hp-field-sm" value="' + esc(h.tag || '') + '" placeholder="Tag" oninput="adminPanel.onHpHeadlineInput(' + i + ',\'tag\',this.value)">' +
+        '<input type="text" class="hp-field hp-field-title" value="' + esc(h.text || '') + '" placeholder="Headline text" oninput="adminPanel.onHpHeadlineInput(' + i + ',\'text\',this.value)">' +
+        '<input type="text" class="hp-field hp-field-sm" value="' + esc(h.href || '') + '" placeholder="Link (e.g. collection.html)" oninput="adminPanel.onHpHeadlineInput(' + i + ',\'href\',this.value)">' +
+        '</div>' +
+        '<div class="hp-card-actions">' +
+        (i > 0 ? '<button onclick="adminPanel.moveCoverHeadline(' + i + ',-1)" title="Move up"><i class="fas fa-chevron-up"></i></button>' : '') +
+        (i < headlines.length - 1 ? '<button onclick="adminPanel.moveCoverHeadline(' + i + ',1)" title="Move down"><i class="fas fa-chevron-down"></i></button>' : '') +
+        '<button class="danger" onclick="adminPanel.deleteCoverHeadline(' + i + ')" title="Delete"><i class="fas fa-trash"></i></button>' +
+        '</div></div>';
+    }
+    container.innerHTML = html;
   }
 
   function addCoverHeadline() {
     if (!homepageData.cover) homepageData.cover = {};
     if (!homepageData.cover.headlines) homepageData.cover.headlines = [];
-    const tag = prompt('Tag (e.g. "New Collection"):');
-    if (!tag) return;
-    const text = prompt('Headline text:');
-    if (!text) return;
-    const href = prompt('Link (e.g. "collection.html"):') || '#';
-    homepageData.cover.headlines.push({ tag, text, href });
+    homepageData.cover.headlines.push({ tag: 'New', text: '', href: '#' });
     renderCoverHeadlines();
     markUnsaved();
   }
 
-  function editCoverHeadline(i) {
-    const h = homepageData.cover.headlines[i];
-    const tag = prompt('Tag:', h.tag);
-    if (tag === null) return;
-    const text = prompt('Text:', h.text);
-    if (text === null) return;
-    const href = prompt('Link:', h.href);
-    if (href === null) return;
-    homepageData.cover.headlines[i] = { tag, text, href };
+  function moveCoverHeadline(i, dir) {
+    var arr = homepageData.cover.headlines;
+    var j = i + dir;
+    if (j < 0 || j >= arr.length) return;
+    var temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;
     renderCoverHeadlines();
     markUnsaved();
   }
 
   function deleteCoverHeadline(i) {
-    homepageData.cover.headlines.splice(i, 1);
-    renderCoverHeadlines();
+    pendingDeleteFn = function() {
+      homepageData.cover.headlines.splice(i, 1);
+      renderCoverHeadlines();
+      markUnsaved();
+    };
+    showModal('confirm-modal');
+  }
+
+  // --- Featured Items ---
+
+  function renderFeaturedItems() {
+    var items = homepageData.featured || [];
+    var container = $('hp-featured');
+    if (!container) return;
+
+    if (items.length === 0) {
+      container.innerHTML = '<div class="hp-empty">No featured items yet.</div>';
+      return;
+    }
+
+    var html = '';
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      var imgSrc = resolveImageSrc(item.image || '');
+      var target = 'hp-featured-' + i;
+      html += '<div class="hp-visual-card">' +
+        '<div class="hp-card-bar">' +
+        '<span class="hp-card-badge">Featured' + (item.lead ? ' &bull; Lead' : '') + '</span>' +
+        '<div class="hp-card-actions">' +
+        (i > 0 ? '<button onclick="adminPanel.moveFeaturedItem(' + i + ',-1)" title="Move up"><i class="fas fa-chevron-up"></i></button>' : '') +
+        (i < items.length - 1 ? '<button onclick="adminPanel.moveFeaturedItem(' + i + ',1)" title="Move down"><i class="fas fa-chevron-down"></i></button>' : '') +
+        '<button class="danger" onclick="adminPanel.deleteFeaturedItem(' + i + ')" title="Delete"><i class="fas fa-trash"></i></button>' +
+        '</div></div>' +
+        '<div class="hp-card-content">' +
+        hpImgZone(target, imgSrc) +
+        '<div class="hp-card-fields">' +
+        '<input type="text" class="hp-field hp-field-sm" value="' + esc(item.category || '') + '" placeholder="Category" oninput="adminPanel.onHpInput(\'featured\',' + i + ',\'category\',this.value)">' +
+        '<input type="text" class="hp-field hp-field-title" value="' + esc(item.title || '') + '" placeholder="Title" oninput="adminPanel.onHpInput(\'featured\',' + i + ',\'title\',this.value)">' +
+        '<textarea class="hp-field" placeholder="Excerpt" rows="2" oninput="adminPanel.onHpInput(\'featured\',' + i + ',\'excerpt\',this.value)">' + esc(item.excerpt || '') + '</textarea>' +
+        '<div class="hp-field-row">' +
+        '<input type="text" class="hp-field" value="' + esc(item.href || '') + '" placeholder="Link" oninput="adminPanel.onHpInput(\'featured\',' + i + ',\'href\',this.value)">' +
+        '<input type="text" class="hp-field" value="' + esc(item.cta || '') + '" placeholder="CTA text" oninput="adminPanel.onHpInput(\'featured\',' + i + ',\'cta\',this.value)">' +
+        '</div>' +
+        '<label class="hp-checkbox"><input type="checkbox"' + (item.lead ? ' checked' : '') + ' onchange="adminPanel.onHpInput(\'featured\',' + i + ',\'lead\',this.checked)"> Lead item</label>' +
+        '</div></div></div>';
+    }
+    container.innerHTML = html;
+  }
+
+  function addFeaturedItem() {
+    if (!homepageData.featured) homepageData.featured = [];
+    homepageData.featured.push({ category: '', title: '', excerpt: '', href: '', image: '', cta: '', lead: false });
+    renderFeaturedItems();
     markUnsaved();
+  }
+
+  function moveFeaturedItem(i, dir) {
+    var arr = homepageData.featured;
+    var j = i + dir;
+    if (j < 0 || j >= arr.length) return;
+    var temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;
+    renderFeaturedItems();
+    markUnsaved();
+  }
+
+  function deleteFeaturedItem(i) {
+    pendingDeleteFn = function() {
+      homepageData.featured.splice(i, 1);
+      renderFeaturedItems();
+      markUnsaved();
+    };
+    showModal('confirm-modal');
   }
 
   // --- Stream Items ---
 
   function renderStreamItems() {
-    const items = homepageData.stream || [];
-    const container = $('stream-items-list');
+    var items = homepageData.stream || [];
+    var container = $('hp-stream');
+    if (!container) return;
 
     if (items.length === 0) {
-      container.innerHTML = '<div class="empty-state"><i class="fas fa-stream"></i><p>No stream items yet.</p></div>';
+      container.innerHTML = '<div class="hp-empty">No stream items yet.</div>';
       return;
     }
 
-    container.innerHTML = items.map((item, i) => {
-      let title = '', excerpt = '';
-      if (item.type === 'feature') {
-        title = item.title || '';
-        excerpt = item.excerpt || '';
-      } else if (item.type === 'duo') {
-        const items2 = item.items || [];
-        title = items2.map(d => d.title).join(' / ');
-        excerpt = 'Duo block';
-      } else if (item.type === 'quote') {
-        title = '"' + truncate(item.text, 60) + '"';
-        excerpt = 'Quote block';
-      } else if (item.type === 'stat') {
-        title = truncate(item.text, 60);
-        excerpt = 'Stat block — ' + (item.source || '');
-      }
+    var html = '';
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      html += renderStreamCard(item, i, items.length);
+    }
+    container.innerHTML = html;
+  }
 
-      return `
-        <div class="stream-editor-item">
-          <div class="item-info">
-            <div class="item-type">${esc(item.type)}</div>
-            <div class="item-title">${esc(title)}</div>
-            <div class="item-excerpt">${esc(excerpt)}</div>
-          </div>
-          <div class="item-actions">
-            <button class="btn-icon" onclick="adminPanel.editStreamItem(${i})" title="Edit"><i class="fas fa-pen"></i></button>
-            ${i > 0 ? `<button class="btn-icon" onclick="adminPanel.moveStreamItem(${i},-1)" title="Move up"><i class="fas fa-arrow-up"></i></button>` : ''}
-            ${i < items.length - 1 ? `<button class="btn-icon" onclick="adminPanel.moveStreamItem(${i},1)" title="Move down"><i class="fas fa-arrow-down"></i></button>` : ''}
-            <button class="btn-icon danger" onclick="adminPanel.deleteStreamItem(${i})" title="Delete"><i class="fas fa-trash"></i></button>
-          </div>
-        </div>
-      `;
-    }).join('');
+  function renderStreamCard(item, i, total) {
+    var actions = '<div class="hp-card-actions">' +
+      (i > 0 ? '<button onclick="adminPanel.moveStreamItem(' + i + ',-1)" title="Move up"><i class="fas fa-chevron-up"></i></button>' : '') +
+      (i < total - 1 ? '<button onclick="adminPanel.moveStreamItem(' + i + ',1)" title="Move down"><i class="fas fa-chevron-down"></i></button>' : '') +
+      '<button class="danger" onclick="adminPanel.deleteStreamItem(' + i + ')" title="Delete"><i class="fas fa-trash"></i></button>' +
+      '</div>';
+
+    if (item.type === 'feature') {
+      var imgSrc = resolveImageSrc(item.image || '');
+      return '<div class="hp-visual-card">' +
+        '<div class="hp-card-bar"><span class="hp-card-badge feature">Feature</span>' + actions + '</div>' +
+        '<div class="hp-card-content">' +
+        hpImgZone('hp-stream-' + i, imgSrc) +
+        '<div class="hp-card-fields">' +
+        '<input type="text" class="hp-field hp-field-sm" value="' + esc(item.category || '') + '" placeholder="Category" oninput="adminPanel.onHpInput(\'stream\',' + i + ',\'category\',this.value)">' +
+        '<input type="text" class="hp-field hp-field-title" value="' + esc(item.title || '') + '" placeholder="Title" oninput="adminPanel.onHpInput(\'stream\',' + i + ',\'title\',this.value)">' +
+        '<textarea class="hp-field" placeholder="Excerpt" rows="2" oninput="adminPanel.onHpInput(\'stream\',' + i + ',\'excerpt\',this.value)">' + esc(item.excerpt || '') + '</textarea>' +
+        '<div class="hp-field-row">' +
+        '<input type="text" class="hp-field" value="' + esc(item.date || '') + '" placeholder="Date" oninput="adminPanel.onHpInput(\'stream\',' + i + ',\'date\',this.value)">' +
+        '<input type="text" class="hp-field" value="' + esc(item.source || '') + '" placeholder="Source" oninput="adminPanel.onHpInput(\'stream\',' + i + ',\'source\',this.value)">' +
+        '</div></div></div></div>';
+    }
+
+    if (item.type === 'duo') {
+      var items2 = item.items || [{}, {}];
+      var duoHtml = '<div class="hp-visual-card">' +
+        '<div class="hp-card-bar"><span class="hp-card-badge duo">Duo</span>' + actions + '</div>' +
+        '<div class="hp-duo-wrap">';
+      for (var d = 0; d < 2; d++) {
+        var sub = items2[d] || {};
+        var subSrc = resolveImageSrc(sub.image || '');
+        duoHtml += '<div class="hp-duo-item">' +
+          '<div class="hp-duo-label">Item ' + (d + 1) + '</div>' +
+          '<div class="hp-card-content">' +
+          hpImgZone('hp-duo-' + i + '-' + d, subSrc) +
+          '<div class="hp-card-fields">' +
+          '<input type="text" class="hp-field hp-field-sm" value="' + esc(sub.category || '') + '" placeholder="Category" oninput="adminPanel.onHpDuoInput(' + i + ',' + d + ',\'category\',this.value)">' +
+          '<input type="text" class="hp-field hp-field-title" value="' + esc(sub.title || '') + '" placeholder="Title" oninput="adminPanel.onHpDuoInput(' + i + ',' + d + ',\'title\',this.value)">' +
+          '<textarea class="hp-field" placeholder="Excerpt" rows="2" oninput="adminPanel.onHpDuoInput(' + i + ',' + d + ',\'excerpt\',this.value)">' + esc(sub.excerpt || '') + '</textarea>' +
+          '<div class="hp-field-row">' +
+          '<input type="text" class="hp-field" value="' + esc(sub.date || '') + '" placeholder="Date" oninput="adminPanel.onHpDuoInput(' + i + ',' + d + ',\'date\',this.value)">' +
+          '<input type="text" class="hp-field" value="' + esc(sub.source || '') + '" placeholder="Source" oninput="adminPanel.onHpDuoInput(' + i + ',' + d + ',\'source\',this.value)">' +
+          '</div></div></div></div>';
+      }
+      duoHtml += '</div></div>';
+      return duoHtml;
+    }
+
+    if (item.type === 'quote') {
+      return '<div class="hp-visual-card hp-quote-card">' +
+        '<div class="hp-card-bar"><span class="hp-card-badge quote">Quote</span>' + actions + '</div>' +
+        '<div class="hp-quote-body">' +
+        '<i class="fas fa-quote-left hp-quote-icon"></i>' +
+        '<textarea class="hp-field hp-field-quote" placeholder="Quote text..." rows="2" oninput="adminPanel.onHpInput(\'stream\',' + i + ',\'text\',this.value)">' + esc(item.text || '') + '</textarea>' +
+        '</div></div>';
+    }
+
+    if (item.type === 'stat') {
+      return '<div class="hp-visual-card hp-stat-card">' +
+        '<div class="hp-card-bar"><span class="hp-card-badge stat">Stat</span>' + actions + '</div>' +
+        '<div class="hp-stat-body">' +
+        '<textarea class="hp-field" placeholder="Stat text..." rows="2" oninput="adminPanel.onHpInput(\'stream\',' + i + ',\'text\',this.value)">' + esc(item.text || '') + '</textarea>' +
+        '<input type="text" class="hp-field hp-field-sm" value="' + esc(item.source || '') + '" placeholder="Source" oninput="adminPanel.onHpInput(\'stream\',' + i + ',\'source\',this.value)">' +
+        '</div></div>';
+    }
+
+    return '';
   }
 
   function addStreamItem(type) {
     if (!homepageData.stream) homepageData.stream = [];
-    let newItem;
+    var newItem;
     if (type === 'feature') {
       newItem = { type: 'feature', category: '', title: '', excerpt: '', date: '', source: '', image: '' };
     } else if (type === 'duo') {
@@ -354,181 +598,87 @@
       newItem = { type: 'stat', text: '', source: '' };
     }
     homepageData.stream.push(newItem);
-    editStreamItem(homepageData.stream.length - 1);
     renderStreamItems();
     markUnsaved();
-  }
-
-  function editStreamItem(i) {
-    const item = homepageData.stream[i];
-    setVal('stream-edit-index', i);
-
-    // Set type
-    setVal('stream-type', item.type);
-    toggleStreamFields();
-
-    if (item.type === 'feature') {
-      setVal('stream-category', item.category || '');
-      setVal('stream-title', item.title || '');
-      setVal('stream-excerpt', item.excerpt || '');
-      setVal('stream-date', item.date || '');
-      setVal('stream-source', item.source || '');
-      setVal('stream-image', item.image || '');
-    } else if (item.type === 'duo') {
-      const items = item.items || [{}, {}];
-      setVal('duo-1-category', items[0].category || '');
-      setVal('duo-1-title', items[0].title || '');
-      setVal('duo-1-excerpt', items[0].excerpt || '');
-      setVal('duo-1-date', items[0].date || '');
-      setVal('duo-1-source', items[0].source || '');
-      setVal('duo-1-image', items[0].image || '');
-      setVal('duo-2-category', items[1].category || '');
-      setVal('duo-2-title', items[1].title || '');
-      setVal('duo-2-excerpt', items[1].excerpt || '');
-      setVal('duo-2-date', items[1].date || '');
-      setVal('duo-2-source', items[1].source || '');
-      setVal('duo-2-image', items[1].image || '');
-    } else if (item.type === 'quote') {
-      setVal('stream-quote-text', item.text || '');
-    } else if (item.type === 'stat') {
-      setVal('stream-stat-text', item.text || '');
-      setVal('stream-stat-source', item.source || '');
-    }
-
-    $('stream-modal-title').textContent = 'Edit ' + item.type.charAt(0).toUpperCase() + item.type.slice(1);
-    showModal('stream-modal');
-  }
-
-  function saveStreamItem() {
-    const i = parseInt(val('stream-edit-index'));
-    const type = val('stream-type');
-
-    if (type === 'feature') {
-      homepageData.stream[i] = {
-        type: 'feature',
-        category: val('stream-category'),
-        title: val('stream-title'),
-        excerpt: val('stream-excerpt'),
-        date: val('stream-date'),
-        source: val('stream-source'),
-        image: val('stream-image')
-      };
-    } else if (type === 'duo') {
-      homepageData.stream[i] = {
-        type: 'duo',
-        items: [
-          { category: val('duo-1-category'), title: val('duo-1-title'), excerpt: val('duo-1-excerpt'), date: val('duo-1-date'), source: val('duo-1-source'), image: val('duo-1-image') },
-          { category: val('duo-2-category'), title: val('duo-2-title'), excerpt: val('duo-2-excerpt'), date: val('duo-2-date'), source: val('duo-2-source'), image: val('duo-2-image') }
-        ]
-      };
-    } else if (type === 'quote') {
-      homepageData.stream[i] = { type: 'quote', text: val('stream-quote-text') };
-    } else if (type === 'stat') {
-      homepageData.stream[i] = { type: 'stat', text: val('stream-stat-text'), source: val('stream-stat-source') };
-    }
-
-    closeModal('stream-modal');
-    renderStreamItems();
-    markUnsaved();
-    showToast('Stream item updated', 'success');
   }
 
   function deleteStreamItem(i) {
-    pendingDeleteFn = () => {
+    pendingDeleteFn = function() {
       homepageData.stream.splice(i, 1);
       renderStreamItems();
       markUnsaved();
-      showToast('Stream item deleted', 'success');
     };
     showModal('confirm-modal');
   }
 
   function moveStreamItem(i, dir) {
-    const arr = homepageData.stream;
-    const j = i + dir;
+    var arr = homepageData.stream;
+    var j = i + dir;
     if (j < 0 || j >= arr.length) return;
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+    var temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;
     renderStreamItems();
     markUnsaved();
-  }
-
-  function toggleStreamFields() {
-    const type = val('stream-type');
-    $('stream-fields-single').style.display = type === 'feature' ? 'block' : 'none';
-    $('stream-fields-duo').style.display = type === 'duo' ? 'block' : 'none';
-    $('stream-fields-quote').style.display = type === 'quote' ? 'block' : 'none';
-    $('stream-fields-stat').style.display = type === 'stat' ? 'block' : 'none';
   }
 
   // --- Studio Items ---
 
   function renderStudioItems() {
-    const items = homepageData.studio_content || [];
-    const container = $('studio-items-list');
+    var items = homepageData.studio_content || [];
+    var container = $('hp-studio');
+    if (!container) return;
 
     if (items.length === 0) {
-      container.innerHTML = '<div class="empty-state"><i class="fas fa-palette"></i><p>No studio items yet.</p></div>';
+      container.innerHTML = '<div class="hp-empty">No studio items yet.</div>';
       return;
     }
 
-    container.innerHTML = items.map((item, i) => `
-      <div class="content-item">
-        <div class="content-item__image">
-          ${item.image ? `<img src="${esc(item.image)}" alt="">` : ''}
-        </div>
-        <div class="content-item__body">
-          <div class="content-item__meta">${esc(item.category)} &mdash; ${esc(item.date)}</div>
-          <div class="content-item__title">${esc(item.title)}</div>
-          <div class="content-item__excerpt">${esc(item.excerpt)}</div>
-        </div>
-        <div class="content-item__actions">
-          <button class="btn-icon" onclick="adminPanel.editStudioItem(${i})" title="Edit"><i class="fas fa-pen"></i></button>
-          <button class="btn-icon danger" onclick="adminPanel.deleteStudioItem(${i})" title="Delete"><i class="fas fa-trash"></i></button>
-        </div>
-      </div>
-    `).join('');
+    var html = '';
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      var imgSrc = resolveImageSrc(item.image || '');
+      html += '<div class="hp-visual-card">' +
+        '<div class="hp-card-bar">' +
+        '<span class="hp-card-badge studio">Studio</span>' +
+        '<div class="hp-card-actions">' +
+        (i > 0 ? '<button onclick="adminPanel.moveStudioItem(' + i + ',-1)" title="Move up"><i class="fas fa-chevron-up"></i></button>' : '') +
+        (i < items.length - 1 ? '<button onclick="adminPanel.moveStudioItem(' + i + ',1)" title="Move down"><i class="fas fa-chevron-down"></i></button>' : '') +
+        '<button class="danger" onclick="adminPanel.deleteStudioItem(' + i + ')" title="Delete"><i class="fas fa-trash"></i></button>' +
+        '</div></div>' +
+        '<div class="hp-card-content">' +
+        hpImgZone('hp-studio-' + i, imgSrc) +
+        '<div class="hp-card-fields">' +
+        '<input type="text" class="hp-field hp-field-sm" value="' + esc(item.category || '') + '" placeholder="Category" oninput="adminPanel.onHpInput(\'studio\',' + i + ',\'category\',this.value)">' +
+        '<input type="text" class="hp-field hp-field-title" value="' + esc(item.title || '') + '" placeholder="Title" oninput="adminPanel.onHpInput(\'studio\',' + i + ',\'title\',this.value)">' +
+        '<textarea class="hp-field" placeholder="Excerpt" rows="2" oninput="adminPanel.onHpInput(\'studio\',' + i + ',\'excerpt\',this.value)">' + esc(item.excerpt || '') + '</textarea>' +
+        '<div class="hp-field-row">' +
+        '<input type="text" class="hp-field" value="' + esc(item.date || '') + '" placeholder="Date" oninput="adminPanel.onHpInput(\'studio\',' + i + ',\'date\',this.value)">' +
+        '<input type="text" class="hp-field" value="' + esc(item.href || '') + '" placeholder="Link" oninput="adminPanel.onHpInput(\'studio\',' + i + ',\'href\',this.value)">' +
+        '</div></div></div></div>';
+    }
+    container.innerHTML = html;
   }
 
   function addStudioItem() {
     if (!homepageData.studio_content) homepageData.studio_content = [];
     homepageData.studio_content.push({ category: '', title: '', excerpt: '', date: '', href: '', image: '' });
-    editStudioItem(homepageData.studio_content.length - 1);
-  }
-
-  function editStudioItem(i) {
-    const item = homepageData.studio_content[i];
-    setVal('studio-edit-index', i);
-    setVal('studio-category', item.category || '');
-    setVal('studio-title', item.title || '');
-    setVal('studio-excerpt', item.excerpt || '');
-    setVal('studio-date', item.date || '');
-    setVal('studio-href', item.href || '');
-    setVal('studio-image', item.image || '');
-    showModal('studio-modal');
-  }
-
-  function saveStudioItem() {
-    const i = parseInt(val('studio-edit-index'));
-    homepageData.studio_content[i] = {
-      category: val('studio-category'),
-      title: val('studio-title'),
-      excerpt: val('studio-excerpt'),
-      date: val('studio-date'),
-      href: val('studio-href'),
-      image: val('studio-image')
-    };
-    closeModal('studio-modal');
     renderStudioItems();
     markUnsaved();
-    showToast('Studio item updated', 'success');
+  }
+
+  function moveStudioItem(i, dir) {
+    var arr = homepageData.studio_content;
+    var j = i + dir;
+    if (j < 0 || j >= arr.length) return;
+    var temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;
+    renderStudioItems();
+    markUnsaved();
   }
 
   function deleteStudioItem(i) {
-    pendingDeleteFn = () => {
+    pendingDeleteFn = function() {
       homepageData.studio_content.splice(i, 1);
       renderStudioItems();
       markUnsaved();
-      showToast('Studio item deleted', 'success');
     };
     showModal('confirm-modal');
   }
@@ -537,9 +687,12 @@
 
   function saveHomepage() {
     homepageData.cover = homepageData.cover || {};
-    homepageData.cover.title = val('cover-title');
-    homepageData.cover.image = val('cover-image');
-    homepageData.personal_quote = val('personal-quote');
+    // Read contenteditable fields
+    var titleEl = $('hp-cover-title');
+    if (titleEl) homepageData.cover.title = titleEl.innerText;
+    var quoteEl = $('hp-quote');
+    if (quoteEl) homepageData.personal_quote = quoteEl.textContent;
+    // Everything else already synced via oninput
     saveToStorage('homepage', homepageData);
     showToast('Homepage saved!', 'success');
     markSaved();
@@ -883,6 +1036,8 @@
           editorialBodyBlocks[idx].src = path;
           renderWysiwygBody();
         }
+      } else if (typeof pendingUploadTarget === 'string' && pendingUploadTarget.indexOf('hp-') === 0) {
+        applyHpUpload(pendingUploadTarget, path);
       }
 
       markUnsaved();
@@ -922,6 +1077,8 @@
           editorialBodyBlocks[target].src = path;
           renderWysiwygBody();
         }
+      } else if (typeof target === 'string' && target.indexOf('hp-') === 0) {
+        applyHpUpload(target, path);
       }
 
       markUnsaved();
@@ -1657,20 +1814,24 @@
     navigate,
     closeModal,
 
-    // Homepage
+    // Homepage — WYSIWYG
     saveHomepage,
+    clearHpImage,
+    clearHpItemImage,
+    onHpInput,
+    onHpDuoInput,
+    onHpHeadlineInput,
     addCoverHeadline,
-    editCoverHeadline,
+    moveCoverHeadline,
     deleteCoverHeadline,
+    addFeaturedItem,
+    moveFeaturedItem,
+    deleteFeaturedItem,
     addStreamItem,
-    editStreamItem,
-    saveStreamItem,
     deleteStreamItem,
     moveStreamItem,
-    toggleStreamFields,
     addStudioItem,
-    editStudioItem,
-    saveStudioItem,
+    moveStudioItem,
     deleteStudioItem,
 
     // Articles — Shopify-Style List

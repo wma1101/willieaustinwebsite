@@ -80,7 +80,7 @@
       </section>
 
       <!-- ============================================
-           HOMEPAGE
+           HOMEPAGE — WYSIWYG
            ============================================ -->
       <section class="admin-section" id="sec-homepage">
         <div class="section-header">
@@ -90,47 +90,66 @@
           </div>
         </div>
 
-        <!-- Cover -->
-        <div class="admin-card">
-          <h3><i class="fas fa-image"></i> Cover Section</h3>
-          <div class="form-group">
-            <label>Title (use \n for line breaks)</label>
-            <input type="text" class="form-control" id="cover-title">
-          </div>
-          <div class="form-group">
-            <label>Cover Image Path</label>
-            <input type="text" class="form-control" id="cover-image">
-          </div>
-          <h4 style="font-size:0.8rem;font-weight:600;margin:1.25rem 0 0.75rem;color:var(--admin-text-dim);">Cover Headlines</h4>
-          <div id="cover-headlines"></div>
-          <button class="btn btn-sm btn-secondary" style="margin-top:0.75rem;" onclick="adminPanel.addCoverHeadline()"><i class="fas fa-plus"></i> Add Headline</button>
-        </div>
+        <div class="wysiwyg-canvas hp-canvas">
+          <div class="wysiwyg-page">
 
-        <!-- Stream Items -->
-        <div class="admin-card">
-          <h3><i class="fas fa-stream"></i> Stream Items</h3>
-          <p style="font-size:0.75rem;color:var(--admin-text-muted);margin-bottom:1rem;">The main content feed on the homepage. Features, duos, quotes, and stats.</p>
-          <div id="stream-items-list"></div>
-          <div style="display:flex;gap:0.5rem;margin-top:1rem;">
-            <button class="btn btn-sm btn-secondary" onclick="adminPanel.addStreamItem('feature')"><i class="fas fa-plus"></i> Feature</button>
-            <button class="btn btn-sm btn-secondary" onclick="adminPanel.addStreamItem('duo')"><i class="fas fa-plus"></i> Duo</button>
-            <button class="btn btn-sm btn-secondary" onclick="adminPanel.addStreamItem('quote')"><i class="fas fa-plus"></i> Quote</button>
-            <button class="btn btn-sm btn-secondary" onclick="adminPanel.addStreamItem('stat')"><i class="fas fa-plus"></i> Stat</button>
-          </div>
-        </div>
+            <!-- Cover Image -->
+            <div class="hp-label"><i class="fas fa-image"></i> Cover Image</div>
+            <div class="wysiwyg-hero" id="hp-cover-zone"
+                 ondragover="adminPanel.preventDragDefault(event)"
+                 ondragenter="adminPanel.preventDragDefault(event)"
+                 ondrop="adminPanel.handleDrop(event,'hp-cover')">
+              <img id="hp-cover-img" src="" alt="" style="display:none;">
+              <div class="wysiwyg-hero-placeholder" id="hp-cover-placeholder" onclick="adminPanel.triggerUpload('hp-cover')">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Click to upload or drag &amp; drop cover image</span>
+              </div>
+              <div class="wysiwyg-hero-actions" id="hp-cover-actions" style="display:none;">
+                <button class="wysiwyg-img-action-btn" onclick="event.stopPropagation(); adminPanel.triggerUpload('hp-cover')"><i class="fas fa-cloud-upload-alt"></i> Replace</button>
+                <button class="wysiwyg-img-action-btn danger" onclick="event.stopPropagation(); adminPanel.clearHpImage('cover')"><i class="fas fa-times"></i> Remove</button>
+              </div>
+            </div>
 
-        <!-- Studio Content -->
-        <div class="admin-card">
-          <h3><i class="fas fa-palette"></i> Studio Content</h3>
-          <div id="studio-items-list"></div>
-          <button class="btn btn-sm btn-secondary" style="margin-top:0.75rem;" onclick="adminPanel.addStudioItem()"><i class="fas fa-plus"></i> Add Item</button>
-        </div>
+            <!-- Cover Title -->
+            <h1 class="wysiwyg-title" contenteditable="true" data-placeholder="Cover Title" id="hp-cover-title"></h1>
 
-        <!-- Personal Quote -->
-        <div class="admin-card">
-          <h3><i class="fas fa-quote-left"></i> Personal Quote</h3>
-          <div class="form-group">
-            <input type="text" class="form-control" id="personal-quote">
+            <!-- Cover Headlines -->
+            <div class="hp-label"><i class="fas fa-newspaper"></i> Cover Headlines</div>
+            <div id="hp-headlines"></div>
+            <button class="btn btn-sm btn-secondary" style="margin-top:0.75rem;" onclick="adminPanel.addCoverHeadline()"><i class="fas fa-plus"></i> Add Headline</button>
+
+            <hr class="hp-divider">
+
+            <!-- Featured -->
+            <div class="hp-label"><i class="fas fa-star"></i> Featured Items</div>
+            <div id="hp-featured"></div>
+            <button class="btn btn-sm btn-secondary" style="margin-top:0.75rem;" onclick="adminPanel.addFeaturedItem()"><i class="fas fa-plus"></i> Add Featured</button>
+
+            <hr class="hp-divider">
+
+            <!-- Stream -->
+            <div class="hp-label"><i class="fas fa-stream"></i> Stream</div>
+            <div id="hp-stream"></div>
+            <div style="display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap;">
+              <button class="btn btn-sm btn-secondary" onclick="adminPanel.addStreamItem('feature')"><i class="fas fa-plus"></i> Feature</button>
+              <button class="btn btn-sm btn-secondary" onclick="adminPanel.addStreamItem('duo')"><i class="fas fa-plus"></i> Duo</button>
+              <button class="btn btn-sm btn-secondary" onclick="adminPanel.addStreamItem('quote')"><i class="fas fa-plus"></i> Quote</button>
+              <button class="btn btn-sm btn-secondary" onclick="adminPanel.addStreamItem('stat')"><i class="fas fa-plus"></i> Stat</button>
+            </div>
+
+            <hr class="hp-divider">
+
+            <!-- Studio Content -->
+            <div class="hp-label"><i class="fas fa-palette"></i> Studio Content</div>
+            <div id="hp-studio"></div>
+            <button class="btn btn-sm btn-secondary" style="margin-top:0.75rem;" onclick="adminPanel.addStudioItem()"><i class="fas fa-plus"></i> Add Item</button>
+
+            <hr class="hp-divider">
+
+            <!-- Personal Quote -->
+            <div class="hp-label"><i class="fas fa-quote-left"></i> Personal Quote</div>
+            <div class="hp-quote-edit" contenteditable="true" data-placeholder="Personal quote..." id="hp-quote"></div>
+
           </div>
         </div>
       </section>
@@ -413,152 +432,6 @@
   <!-- ============================================
        MODALS
        ============================================ -->
-
-  <!-- Stream Item Modal -->
-  <div class="admin-modal-overlay" id="stream-modal">
-    <div class="admin-modal" style="max-width:600px;">
-      <div class="admin-modal-header">
-        <h2 id="stream-modal-title">Edit Stream Item</h2>
-        <button class="close-btn" onclick="adminPanel.closeModal('stream-modal')">&times;</button>
-      </div>
-      <div class="admin-modal-body">
-        <input type="hidden" id="stream-edit-index">
-        <div class="form-group">
-          <label>Type</label>
-          <select class="form-control" id="stream-type" onchange="adminPanel.toggleStreamFields()">
-            <option value="feature">Feature</option>
-            <option value="duo">Duo</option>
-            <option value="quote">Quote</option>
-            <option value="stat">Stat</option>
-          </select>
-        </div>
-
-        <!-- Feature / single item fields -->
-        <div id="stream-fields-single">
-          <div class="form-group">
-            <label>Category</label>
-            <input type="text" class="form-control" id="stream-category">
-          </div>
-          <div class="form-group">
-            <label>Title</label>
-            <input type="text" class="form-control" id="stream-title">
-          </div>
-          <div class="form-group">
-            <label>Excerpt</label>
-            <textarea class="form-control" id="stream-excerpt" rows="3"></textarea>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Date</label>
-              <input type="text" class="form-control" id="stream-date" placeholder="March 7, 2026">
-            </div>
-            <div class="form-group">
-              <label>Source</label>
-              <input type="text" class="form-control" id="stream-source">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Image Path</label>
-            <input type="text" class="form-control" id="stream-image">
-          </div>
-        </div>
-
-        <!-- Duo fields -->
-        <div id="stream-fields-duo" style="display:none;">
-          <p style="font-size:0.75rem;color:var(--admin-text-dim);margin-bottom:1rem;">A duo shows two items side by side.</p>
-          <div style="border:1px solid var(--admin-border);border-radius:var(--admin-radius);padding:1rem;margin-bottom:1rem;">
-            <h4 style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--admin-accent);margin-bottom:0.75rem;">Item 1</h4>
-            <div class="form-group"><label>Category</label><input type="text" class="form-control" id="duo-1-category"></div>
-            <div class="form-group"><label>Title</label><input type="text" class="form-control" id="duo-1-title"></div>
-            <div class="form-group"><label>Excerpt</label><textarea class="form-control" id="duo-1-excerpt" rows="2"></textarea></div>
-            <div class="form-row">
-              <div class="form-group"><label>Date</label><input type="text" class="form-control" id="duo-1-date"></div>
-              <div class="form-group"><label>Source</label><input type="text" class="form-control" id="duo-1-source"></div>
-            </div>
-            <div class="form-group"><label>Image</label><input type="text" class="form-control" id="duo-1-image"></div>
-          </div>
-          <div style="border:1px solid var(--admin-border);border-radius:var(--admin-radius);padding:1rem;">
-            <h4 style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--admin-accent);margin-bottom:0.75rem;">Item 2</h4>
-            <div class="form-group"><label>Category</label><input type="text" class="form-control" id="duo-2-category"></div>
-            <div class="form-group"><label>Title</label><input type="text" class="form-control" id="duo-2-title"></div>
-            <div class="form-group"><label>Excerpt</label><textarea class="form-control" id="duo-2-excerpt" rows="2"></textarea></div>
-            <div class="form-row">
-              <div class="form-group"><label>Date</label><input type="text" class="form-control" id="duo-2-date"></div>
-              <div class="form-group"><label>Source</label><input type="text" class="form-control" id="duo-2-source"></div>
-            </div>
-            <div class="form-group"><label>Image</label><input type="text" class="form-control" id="duo-2-image"></div>
-          </div>
-        </div>
-
-        <!-- Quote fields -->
-        <div id="stream-fields-quote" style="display:none;">
-          <div class="form-group">
-            <label>Quote Text</label>
-            <textarea class="form-control" id="stream-quote-text" rows="3"></textarea>
-          </div>
-        </div>
-
-        <!-- Stat fields -->
-        <div id="stream-fields-stat" style="display:none;">
-          <div class="form-group">
-            <label>Stat Text</label>
-            <textarea class="form-control" id="stream-stat-text" rows="3"></textarea>
-          </div>
-          <div class="form-group">
-            <label>Source</label>
-            <input type="text" class="form-control" id="stream-stat-source">
-          </div>
-        </div>
-      </div>
-      <div class="admin-modal-footer">
-        <button class="btn btn-secondary" onclick="adminPanel.closeModal('stream-modal')">Cancel</button>
-        <button class="btn btn-primary" onclick="adminPanel.saveStreamItem()"><i class="fas fa-save"></i> Save</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Studio Item Modal -->
-  <div class="admin-modal-overlay" id="studio-modal">
-    <div class="admin-modal">
-      <div class="admin-modal-header">
-        <h2>Edit Studio Item</h2>
-        <button class="close-btn" onclick="adminPanel.closeModal('studio-modal')">&times;</button>
-      </div>
-      <div class="admin-modal-body">
-        <input type="hidden" id="studio-edit-index">
-        <div class="form-group">
-          <label>Category</label>
-          <input type="text" class="form-control" id="studio-category" placeholder="Editorial, Collection, Photo Story">
-        </div>
-        <div class="form-group">
-          <label>Title</label>
-          <input type="text" class="form-control" id="studio-title">
-        </div>
-        <div class="form-group">
-          <label>Excerpt</label>
-          <textarea class="form-control" id="studio-excerpt" rows="3"></textarea>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Date</label>
-            <input type="text" class="form-control" id="studio-date">
-          </div>
-          <div class="form-group">
-            <label>Link (href)</label>
-            <input type="text" class="form-control" id="studio-href">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Image Path</label>
-          <input type="text" class="form-control" id="studio-image">
-        </div>
-      </div>
-      <div class="admin-modal-footer">
-        <button class="btn btn-secondary" onclick="adminPanel.closeModal('studio-modal')">Cancel</button>
-        <button class="btn btn-primary" onclick="adminPanel.saveStudioItem()"><i class="fas fa-save"></i> Save</button>
-      </div>
-    </div>
-  </div>
 
   <!-- Confirm Delete Modal -->
   <div class="admin-modal-overlay" id="confirm-modal">
