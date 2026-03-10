@@ -133,8 +133,9 @@
     // Load articles.json (full article content)
     articlesData = getFromStorage('articles') || await fetchJSON('content/articles.json') || {};
 
-    // Load uploaded images store
-    imageStore = getFromStorage('imageStore') || {};
+    // Clear old image store from localStorage to free space
+    try { localStorage.removeItem(STORAGE_PREFIX + 'imageStore'); } catch (e) {}
+    imageStore = {};
 
     // Load editorials
     for (const ed of EDITORIAL_FILES) {
@@ -1027,9 +1028,8 @@
       var safeName = file.name.replace(/[^a-z0-9.\-_]/gi, '-').toLowerCase();
       var path = 'assets/images/news/' + safeName;
 
-      // Store in image library
+      // Store in memory only (not localStorage — too large)
       imageStore[path] = dataUrl;
-      saveToStorage('imageStore', imageStore);
 
       // Apply to the target
       if (pendingUploadTarget === 'hero') {
@@ -1072,7 +1072,6 @@
       var path = 'assets/images/news/' + safeName;
 
       imageStore[path] = dataUrl;
-      saveToStorage('imageStore', imageStore);
 
       if (target === 'hero') {
         setVal('editor-hero', path);
@@ -1746,6 +1745,16 @@
      EXPORT
      ============================================ */
 
+  function clearStorage() {
+    var keys = [];
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf(STORAGE_PREFIX) === 0) keys.push(k);
+    }
+    for (var j = 0; j < keys.length; j++) localStorage.removeItem(keys[j]);
+    showToast('Storage cleared — reload to see original content', 'success');
+  }
+
   function exportAll() {
     downloadJSON('site.json', siteData);
     downloadJSON('homepage.json', homepageData);
@@ -1897,6 +1906,7 @@
     // Global
     saveCurrentSection,
     exportAll,
+    clearStorage,
     confirmDelete
   };
 

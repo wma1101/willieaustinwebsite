@@ -67,6 +67,7 @@
             <button class="btn btn-secondary" onclick="adminPanel.navigate('articles')"><i class="fas fa-plus"></i> New Article</button>
             <button class="btn btn-secondary" onclick="adminPanel.navigate('site-settings')"><i class="fas fa-cog"></i> Site Settings</button>
             <button class="btn btn-secondary" onclick="adminPanel.exportAll()"><i class="fas fa-download"></i> Download JSON</button>
+            <button class="btn btn-secondary" onclick="if(confirm('Clear all saved edits and revert to original content?')) adminPanel.clearStorage()" style="color:#ef5350;"><i class="fas fa-trash-alt"></i> Clear Storage</button>
           </div>
         </div>
 
