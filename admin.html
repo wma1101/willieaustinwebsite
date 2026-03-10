@@ -185,93 +185,95 @@
       </section>
 
       <!-- ============================================
-           ARTICLE EDITOR — Full-Page Visual Editor
+           ARTICLE EDITOR — WYSIWYG
            ============================================ -->
       <section class="admin-section" id="sec-article-editor">
-        <div class="section-header">
-          <h1 id="editor-page-title">Edit Article</h1>
-          <div class="actions">
-            <button class="btn btn-secondary" onclick="adminPanel.closeArticleEditor()"><i class="fas fa-arrow-left"></i> Back</button>
-            <button class="btn btn-secondary" onclick="adminPanel.togglePreview()"><i class="fas fa-eye"></i> Preview</button>
-            <button class="btn btn-primary" onclick="adminPanel.saveArticleFromEditor()"><i class="fas fa-save"></i> Save Article</button>
+
+        <!-- Top bar -->
+        <div class="wysiwyg-topbar">
+          <button class="btn btn-secondary btn-sm" onclick="adminPanel.closeArticleEditor()"><i class="fas fa-arrow-left"></i> Back</button>
+          <span class="wysiwyg-topbar-title" id="editor-page-title">Edit Article</span>
+          <div class="wysiwyg-topbar-actions">
+            <button class="btn btn-secondary btn-sm" onclick="adminPanel.toggleSettingsDrawer()"><i class="fas fa-cog"></i> Settings</button>
+            <button class="btn btn-primary btn-sm" onclick="adminPanel.saveArticleFromEditor()"><i class="fas fa-save"></i> Save</button>
           </div>
         </div>
 
-        <div class="editor-layout">
-          <!-- LEFT: Edit Panel -->
-          <div class="editor-panel" id="editor-panel">
+        <!-- Hidden fields -->
+        <input type="hidden" id="editor-key">
+        <input type="hidden" id="editor-source" value="articles">
 
-            <!-- Meta fields -->
-            <div class="admin-card">
-              <h3><i class="fas fa-info-circle"></i> Article Details</h3>
-              <input type="hidden" id="editor-key">
-              <input type="hidden" id="editor-source" value="articles">
-              <div class="form-group">
-                <label>Title</label>
-                <input type="text" class="form-control" id="editor-title" oninput="adminPanel.updatePreview()">
-              </div>
-              <div class="form-group">
-                <label>Dek / Subtitle</label>
-                <textarea class="form-control" id="editor-dek" rows="2" placeholder="Brief article subtitle" oninput="adminPanel.updatePreview()"></textarea>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Category</label>
-                  <input type="text" class="form-control" id="editor-category" value="News" oninput="adminPanel.updatePreview()">
-                </div>
-                <div class="form-group">
-                  <label>Source</label>
-                  <input type="text" class="form-control" id="editor-article-source" placeholder="NowFashion, Dazed, etc.">
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Author</label>
-                  <input type="text" class="form-control" id="editor-author" oninput="adminPanel.updatePreview()">
-                </div>
-                <div class="form-group">
-                  <label>Date</label>
-                  <input type="text" class="form-control" id="editor-date" placeholder="March 7, 2026" oninput="adminPanel.updatePreview()">
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Read Time</label>
-                  <input type="text" class="form-control" id="editor-readtime" placeholder="7 min read" oninput="adminPanel.updatePreview()">
-                </div>
-                <div class="form-group">
-                  <label>Tags (comma separated)</label>
-                  <input type="text" class="form-control" id="editor-tags" placeholder="Fashion, PFW, Runway">
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Hero Image Path</label>
-                <input type="text" class="form-control" id="editor-hero" oninput="adminPanel.updatePreview()">
-              </div>
-              <div class="editor-hero-preview" id="editor-hero-preview"></div>
-            </div>
-
-            <!-- Body Blocks -->
-            <div class="admin-card">
-              <h3><i class="fas fa-align-left"></i> Article Body</h3>
-              <div id="editor-blocks"></div>
-              <div style="display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap;">
-                <button class="btn btn-sm btn-secondary" onclick="adminPanel.addBlock('paragraph')"><i class="fas fa-paragraph"></i> Paragraph</button>
-                <button class="btn btn-sm btn-secondary" onclick="adminPanel.addBlock('heading')"><i class="fas fa-heading"></i> Heading</button>
-                <button class="btn btn-sm btn-secondary" onclick="adminPanel.addBlock('pullquote')"><i class="fas fa-quote-left"></i> Pullquote</button>
-                <button class="btn btn-sm btn-secondary" onclick="adminPanel.addBlock('image')"><i class="fas fa-image"></i> Image</button>
-              </div>
-            </div>
+        <!-- Settings drawer (slides in from right) -->
+        <div class="wysiwyg-drawer" id="settings-drawer">
+          <div class="wysiwyg-drawer-header">
+            <h3>Article Settings</h3>
+            <button class="close-btn" onclick="adminPanel.toggleSettingsDrawer()">&times;</button>
           </div>
-
-          <!-- RIGHT: Live Preview -->
-          <div class="editor-preview" id="editor-preview">
-            <div class="preview-header">
-              <span class="preview-label"><i class="fas fa-eye"></i> Live Preview</span>
+          <div class="wysiwyg-drawer-body">
+            <div class="form-group">
+              <label>Category</label>
+              <input type="text" class="form-control" id="editor-category" value="News">
             </div>
-            <div class="preview-content" id="preview-content"></div>
+            <div class="form-group">
+              <label>Source / Publication</label>
+              <input type="text" class="form-control" id="editor-article-source" placeholder="NowFashion, Dazed, etc.">
+            </div>
+            <div class="form-group">
+              <label>Read Time</label>
+              <input type="text" class="form-control" id="editor-readtime" placeholder="7 min read">
+            </div>
+            <div class="form-group">
+              <label>Tags (comma separated)</label>
+              <input type="text" class="form-control" id="editor-tags" placeholder="Fashion, PFW, Runway">
+            </div>
+            <div class="form-group">
+              <label>Hero Image Path</label>
+              <input type="text" class="form-control" id="editor-hero" oninput="adminPanel.onHeroInput()">
+            </div>
           </div>
         </div>
+        <div class="wysiwyg-drawer-overlay" id="drawer-overlay" onclick="adminPanel.toggleSettingsDrawer()"></div>
+
+        <!-- WYSIWYG Canvas -->
+        <div class="wysiwyg-canvas" id="wysiwyg-canvas">
+          <div class="wysiwyg-page">
+
+            <!-- Editable header zone -->
+            <div class="wysiwyg-category" contenteditable="true" data-placeholder="CATEGORY" id="wysiwyg-category"></div>
+            <h1 class="wysiwyg-title" contenteditable="true" data-placeholder="Article title" id="wysiwyg-title"></h1>
+            <div class="wysiwyg-dek" contenteditable="true" data-placeholder="Subtitle or summary..." id="wysiwyg-dek"></div>
+            <div class="wysiwyg-meta">
+              <span contenteditable="true" data-placeholder="Author" id="wysiwyg-author" class="wysiwyg-meta-field"></span>
+              <span class="wysiwyg-meta-sep">&middot;</span>
+              <span contenteditable="true" data-placeholder="Date" id="wysiwyg-date" class="wysiwyg-meta-field"></span>
+            </div>
+
+            <!-- Hero image -->
+            <div class="wysiwyg-hero" id="wysiwyg-hero" onclick="adminPanel.onHeroClick()">
+              <img id="wysiwyg-hero-img" src="" alt="" style="display:none;">
+              <div class="wysiwyg-hero-placeholder" id="wysiwyg-hero-placeholder">
+                <i class="fas fa-image"></i>
+                <span>Click to set hero image</span>
+              </div>
+            </div>
+
+            <!-- Body blocks rendered here -->
+            <div class="wysiwyg-body" id="wysiwyg-body"></div>
+
+            <!-- Add block button -->
+            <div class="wysiwyg-add-block" id="wysiwyg-add-row">
+              <button class="wysiwyg-add-btn" onclick="adminPanel.showBlockMenu()" title="Add block"><i class="fas fa-plus"></i></button>
+              <div class="wysiwyg-block-menu" id="block-menu">
+                <button onclick="adminPanel.addBlock('paragraph')"><i class="fas fa-paragraph"></i> Paragraph</button>
+                <button onclick="adminPanel.addBlock('heading')"><i class="fas fa-heading"></i> Heading</button>
+                <button onclick="adminPanel.addBlock('pullquote')"><i class="fas fa-quote-left"></i> Pullquote</button>
+                <button onclick="adminPanel.addBlock('image')"><i class="fas fa-image"></i> Image</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </section>
 
       <!-- ============================================

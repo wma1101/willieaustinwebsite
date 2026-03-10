@@ -756,10 +756,9 @@
     showModal('confirm-modal');
   }
 
-  /* --- Visual Article Editor --- */
+  /* --- WYSIWYG Article Editor --- */
 
   function openArticleEditor(key, source) {
-    // Hide articles list, show editor
     $('sec-articles').classList.remove('active');
     $('sec-article-editor').classList.add('active');
 
@@ -767,15 +766,17 @@
       var a = articlesData[key];
       setVal('editor-key', key);
       setVal('editor-source', 'articles');
-      setVal('editor-title', a.title || '');
-      setVal('editor-dek', a.dek || '');
       setVal('editor-category', a.category || 'News');
       setVal('editor-article-source', a.source || '');
-      setVal('editor-author', a.author || '');
-      setVal('editor-date', a.date || '');
       setVal('editor-readtime', a.read_time || '');
       setVal('editor-tags', '');
       setVal('editor-hero', a.image || '');
+      // WYSIWYG fields
+      $('wysiwyg-category').textContent = a.category || '';
+      $('wysiwyg-title').textContent = a.title || '';
+      $('wysiwyg-dek').textContent = a.dek || '';
+      $('wysiwyg-author').textContent = a.author || '';
+      $('wysiwyg-date').textContent = a.date || '';
       editorialBodyBlocks = (a.body || []).map(function(b) { return Object.assign({}, b); });
       $('editor-page-title').textContent = 'Edit Article';
     } else if (key && source === 'editorial') {
@@ -783,172 +784,197 @@
       if (!ed) return;
       setVal('editor-key', key);
       setVal('editor-source', 'editorial');
-      setVal('editor-title', ed.title || '');
-      setVal('editor-dek', '');
       setVal('editor-category', ed.category || 'Editorial');
       setVal('editor-article-source', '');
-      setVal('editor-author', ed.author || 'Willie Austin');
-      setVal('editor-date', ed.date || '');
       setVal('editor-readtime', ed.read_time || '');
       setVal('editor-tags', (ed.tags || []).join(', '));
       setVal('editor-hero', ed.hero_image || '');
+      $('wysiwyg-category').textContent = ed.category || '';
+      $('wysiwyg-title').textContent = ed.title || '';
+      $('wysiwyg-dek').textContent = '';
+      $('wysiwyg-author').textContent = ed.author || 'Willie Austin';
+      $('wysiwyg-date').textContent = ed.date || '';
       editorialBodyBlocks = (ed.body || []).map(function(b) { return Object.assign({}, b); });
       $('editor-page-title').textContent = 'Edit Editorial';
     } else {
-      // New article
       setVal('editor-key', '');
       setVal('editor-source', 'articles');
-      setVal('editor-title', '');
-      setVal('editor-dek', '');
       setVal('editor-category', 'News');
       setVal('editor-article-source', '');
-      setVal('editor-author', '');
-      setVal('editor-date', '');
       setVal('editor-readtime', '');
       setVal('editor-tags', '');
       setVal('editor-hero', '');
+      $('wysiwyg-category').textContent = '';
+      $('wysiwyg-title').textContent = '';
+      $('wysiwyg-dek').textContent = '';
+      $('wysiwyg-author').textContent = '';
+      $('wysiwyg-date').textContent = '';
       editorialBodyBlocks = [];
       $('editor-page-title').textContent = 'New Article';
     }
 
-    renderEditorBlocks();
-    updateHeroPreview();
-    updatePreview();
+    renderHero();
+    renderWysiwygBody();
+    hideBlockMenu();
   }
 
   function closeArticleEditor() {
     $('sec-article-editor').classList.remove('active');
     $('sec-articles').classList.add('active');
+    // Close drawer if open
+    $('settings-drawer').classList.remove('open');
+    $('drawer-overlay').classList.remove('open');
     renderArticles();
   }
 
-  function togglePreview() {
-    var preview = $('editor-preview');
-    preview.classList.toggle('collapsed');
-    var panel = $('editor-panel');
-    if (preview.classList.contains('collapsed')) {
-      panel.parentElement.style.gridTemplateColumns = '1fr';
-    } else {
-      panel.parentElement.style.gridTemplateColumns = '1fr 1fr';
-    }
+  function toggleSettingsDrawer() {
+    $('settings-drawer').classList.toggle('open');
+    $('drawer-overlay').classList.toggle('open');
   }
 
-  function updateHeroPreview() {
+  /* --- Hero Image --- */
+
+  function renderHero() {
     var src = val('editor-hero');
-    var container = $('editor-hero-preview');
+    var img = $('wysiwyg-hero-img');
+    var placeholder = $('wysiwyg-hero-placeholder');
     if (src) {
-      container.innerHTML = '<img src="' + esc(src) + '" alt="Hero preview" onerror="this.style.display=\'none\'">';
+      img.src = src;
+      img.style.display = 'block';
+      img.onerror = function() { img.style.display = 'none'; placeholder.style.display = ''; };
+      placeholder.style.display = 'none';
     } else {
-      container.innerHTML = '';
+      img.style.display = 'none';
+      placeholder.style.display = '';
     }
   }
 
-  /* --- Render Editor Blocks (inline visual editing) --- */
+  function onHeroClick() {
+    var current = val('editor-hero');
+    var src = prompt('Hero image path:', current);
+    if (src === null) return;
+    setVal('editor-hero', src);
+    renderHero();
+    markUnsaved();
+  }
 
-  function renderEditorBlocks() {
-    var container = $('editor-blocks');
-    if (editorialBodyBlocks.length === 0) {
-      container.innerHTML = '<div class="empty-state" style="padding:2rem;"><i class="fas fa-align-left"></i><p>No body blocks yet. Add paragraphs, headings, images, or pullquotes below.</p></div>';
-      return;
-    }
+  function onHeroInput() {
+    renderHero();
+    markUnsaved();
+  }
 
-    var html = '<div class="editor-blocks">';
+  /* --- Render WYSIWYG Body Blocks --- */
+
+  function renderWysiwygBody() {
+    var container = $('wysiwyg-body');
+    var html = '';
+
     for (var i = 0; i < editorialBodyBlocks.length; i++) {
       var block = editorialBodyBlocks[i];
-      var icon = 'fa-paragraph';
-      if (block.type === 'heading') icon = 'fa-heading';
-      else if (block.type === 'pullquote') icon = 'fa-quote-left';
-      else if (block.type === 'image') icon = 'fa-image';
 
-      html += '<div class="editor-block" data-index="' + i + '">';
-      html += '<div class="editor-block-header">';
-      html += '<span class="editor-block-type"><i class="fas ' + icon + '"></i> ' + esc(block.type) + '</span>';
-      html += '<div class="editor-block-actions">';
+      // Inserter between blocks
+      if (i > 0) {
+        html += '<div class="wysiwyg-inserter"><button onclick="adminPanel.insertBlockAt(' + i + ')" title="Insert block here"><i class="fas fa-plus"></i></button></div>';
+      }
+
+      html += '<div class="wysiwyg-block" data-index="' + i + '">';
+
+      // Side toolbar
+      html += '<div class="wysiwyg-block-toolbar">';
       if (i > 0) html += '<button onclick="adminPanel.moveBlock(' + i + ',-1)" title="Move up"><i class="fas fa-chevron-up"></i></button>';
       if (i < editorialBodyBlocks.length - 1) html += '<button onclick="adminPanel.moveBlock(' + i + ',1)" title="Move down"><i class="fas fa-chevron-down"></i></button>';
-      html += '<button class="danger" onclick="adminPanel.removeBlock(' + i + ')" title="Delete block"><i class="fas fa-trash-alt"></i></button>';
-      html += '</div></div>';
-
-      html += '<div class="editor-block-body">';
+      html += '<button class="danger" onclick="adminPanel.removeBlock(' + i + ')" title="Delete"><i class="fas fa-trash-alt"></i></button>';
+      html += '</div>';
 
       if (block.type === 'paragraph') {
-        html += '<textarea class="block-para-input" data-index="' + i + '" data-field="text" oninput="adminPanel.onBlockInput(this)">' + esc(block.text || '') + '</textarea>';
-        html += '<label class="dropcap-toggle"><input type="checkbox" data-index="' + i + '" ' + (block.dropcap ? 'checked' : '') + ' onchange="adminPanel.onDropcapToggle(this)"> Dropcap (large first letter)</label>';
-      } else if (block.type === 'heading') {
-        html += '<textarea class="block-heading-input" data-index="' + i + '" data-field="text" oninput="adminPanel.onBlockInput(this)">' + esc(block.text || '') + '</textarea>';
-      } else if (block.type === 'pullquote') {
-        html += '<textarea class="block-pullquote-input" data-index="' + i + '" data-field="text" oninput="adminPanel.onBlockInput(this)" placeholder="Enter quote text...">' + esc(block.text || '') + '</textarea>';
-        html += '<input type="text" style="margin-top:0.5rem;width:100%;background:var(--admin-surface-2);border:1px solid var(--admin-border);border-radius:var(--admin-radius);color:var(--admin-text);font-size:0.8rem;padding:0.5rem 0.7rem;" data-index="' + i + '" data-field="attribution" value="' + esc(block.attribution || '') + '" oninput="adminPanel.onBlockInput(this)" placeholder="Attribution (optional)">';
-      } else if (block.type === 'image') {
-        html += '<div class="block-image-fields">';
-        var imgSrc = block.src || '';
-        if (imgSrc) {
-          html += '<img class="block-image-preview" src="' + esc(imgSrc) + '" alt="" onerror="this.style.display=\'none\'">';
+        var pText = block.text || '';
+        if (block.dropcap && pText.length > 0) {
+          html += '<div class="wysiwyg-block-paragraph" contenteditable="true" data-index="' + i + '" data-placeholder="Type your paragraph..." oninput="adminPanel.onWysiwygInput(this)"><span class="w-dropcap">' + esc(pText.charAt(0)) + '</span>' + esc(pText.slice(1)) + '</div>';
         } else {
-          html += '<div class="block-image-placeholder"><i class="fas fa-image" style="margin-right:0.5rem;"></i> No image set</div>';
+          html += '<div class="wysiwyg-block-paragraph" contenteditable="true" data-index="' + i + '" data-placeholder="Type your paragraph..." oninput="adminPanel.onWysiwygInput(this)">' + esc(pText) + '</div>';
         }
-        html += '<input type="text" data-index="' + i + '" data-field="src" value="' + esc(imgSrc) + '" oninput="adminPanel.onBlockInput(this)" placeholder="Image path (e.g. assets/images/...)">';
-        html += '<input type="text" data-index="' + i + '" data-field="caption" value="' + esc(block.caption || '') + '" oninput="adminPanel.onBlockInput(this)" placeholder="Caption (optional)">';
-        html += '<select data-index="' + i + '" data-field="layout" onchange="adminPanel.onBlockInput(this)" style="background:var(--admin-surface-2);border:1px solid var(--admin-border);border-radius:var(--admin-radius);color:var(--admin-text);font-size:0.8rem;padding:0.5rem 0.7rem;">';
-        html += '<option value="wide"' + (block.layout === 'wide' ? ' selected' : '') + '>Wide</option>';
-        html += '<option value="full-bleed"' + (block.layout === 'full-bleed' ? ' selected' : '') + '>Full Bleed</option>';
-        html += '</select>';
+        html += '<div class="wysiwyg-block-options"><label><input type="checkbox" data-index="' + i + '" ' + (block.dropcap ? 'checked' : '') + ' onchange="adminPanel.onDropcapToggle(this)"> Drop cap</label></div>';
+
+      } else if (block.type === 'heading') {
+        html += '<div class="wysiwyg-block-heading" contenteditable="true" data-index="' + i + '" data-placeholder="Section heading..." oninput="adminPanel.onWysiwygInput(this)">' + esc(block.text || '') + '</div>';
+
+      } else if (block.type === 'pullquote') {
+        html += '<div class="wysiwyg-block-pullquote" contenteditable="true" data-index="' + i + '" data-placeholder="Enter a quote..." oninput="adminPanel.onWysiwygInput(this)">' + esc(block.text || '') + '</div>';
+
+      } else if (block.type === 'image') {
+        html += '<div class="wysiwyg-block-image" data-index="' + i + '">';
+        if (block.src) {
+          html += '<img src="' + esc(block.src) + '" alt="" onclick="adminPanel.onImgClick(' + i + ')" onerror="this.style.display=\'none\'">';
+        } else {
+          html += '<div class="wysiwyg-img-placeholder" onclick="adminPanel.onImgClick(' + i + ')"><i class="fas fa-image" style="font-size:1.5rem;"></i><span>Click to add image</span></div>';
+        }
+        html += '<div class="wysiwyg-img-input-wrap' + (block.src ? '' : ' show') + '"><input type="text" value="' + esc(block.src || '') + '" data-index="' + i + '" data-field="src" oninput="adminPanel.onImgPathInput(this)" placeholder="Image path (e.g. assets/images/...)"></div>';
+        html += '<div class="wysiwyg-caption" contenteditable="true" data-index="' + i + '" data-field="caption" data-placeholder="Caption (optional)" oninput="adminPanel.onCaptionInput(this)">' + esc(block.caption || '') + '</div>';
         html += '</div>';
       }
 
-      html += '</div></div>';
+      html += '</div>'; // end .wysiwyg-block
     }
-    html += '</div>';
+
     container.innerHTML = html;
-
-    // Auto-resize textareas
-    var textareas = container.querySelectorAll('textarea');
-    for (var t = 0; t < textareas.length; t++) {
-      autoResize(textareas[t]);
-    }
   }
 
-  function autoResize(el) {
-    el.style.height = 'auto';
-    el.style.height = el.scrollHeight + 'px';
-  }
+  /* --- WYSIWYG Input Handlers --- */
 
-  function onBlockInput(el) {
+  function onWysiwygInput(el) {
     var idx = parseInt(el.getAttribute('data-index'));
-    var field = el.getAttribute('data-field');
-    editorialBodyBlocks[idx][field] = el.value;
-
-    // Auto-resize textarea
-    if (el.tagName === 'TEXTAREA') autoResize(el);
-
-    // Refresh image preview if src changed
-    if (field === 'src') {
-      var blockEl = el.closest('.editor-block');
-      var preview = blockEl.querySelector('.block-image-preview');
-      var placeholder = blockEl.querySelector('.block-image-placeholder');
-      if (el.value) {
-        if (preview) {
-          preview.src = el.value;
-          preview.style.display = '';
-        } else if (placeholder) {
-          var img = document.createElement('img');
-          img.className = 'block-image-preview';
-          img.src = el.value;
-          img.alt = '';
-          img.onerror = function() { this.style.display = 'none'; };
-          placeholder.parentNode.replaceChild(img, placeholder);
-        }
-      }
-    }
-
-    updatePreview();
+    var block = editorialBodyBlocks[idx];
+    // Get text content (strip dropcap span if present)
+    var text = el.textContent || '';
+    block.text = text;
+    markUnsaved();
   }
 
   function onDropcapToggle(el) {
     var idx = parseInt(el.getAttribute('data-index'));
     editorialBodyBlocks[idx].dropcap = el.checked;
-    updatePreview();
+    renderWysiwygBody();
+    markUnsaved();
   }
+
+  function onImgClick(idx) {
+    var block = editorialBodyBlocks[idx];
+    var src = prompt('Image path:', block.src || '');
+    if (src === null) return;
+    block.src = src;
+    renderWysiwygBody();
+    markUnsaved();
+  }
+
+  function onImgPathInput(el) {
+    var idx = parseInt(el.getAttribute('data-index'));
+    editorialBodyBlocks[idx].src = el.value;
+    // Live-update image
+    var blockEl = el.closest('.wysiwyg-block-image');
+    var img = blockEl.querySelector('img');
+    var placeholder = blockEl.querySelector('.wysiwyg-img-placeholder');
+    if (el.value) {
+      if (img) {
+        img.src = el.value;
+        img.style.display = '';
+      } else {
+        renderWysiwygBody();
+      }
+      if (placeholder) placeholder.style.display = 'none';
+    } else {
+      if (img) img.style.display = 'none';
+      if (placeholder) placeholder.style.display = '';
+    }
+    markUnsaved();
+  }
+
+  function onCaptionInput(el) {
+    var idx = parseInt(el.getAttribute('data-index'));
+    editorialBodyBlocks[idx].caption = el.textContent || '';
+    markUnsaved();
+  }
+
+  /* --- Block Management --- */
 
   function addBlock(type) {
     var block;
@@ -957,18 +983,35 @@
     else if (type === 'pullquote') block = { type: 'pullquote', text: '', attribution: '' };
     else if (type === 'image') block = { type: 'image', src: '', caption: '', layout: 'wide' };
     editorialBodyBlocks.push(block);
-    renderEditorBlocks();
-    updatePreview();
+    hideBlockMenu();
+    renderWysiwygBody();
     markUnsaved();
 
-    // Scroll to & focus the new block
-    var blocks = document.querySelectorAll('.editor-block');
-    var lastBlock = blocks[blocks.length - 1];
-    if (lastBlock) {
-      lastBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      var firstInput = lastBlock.querySelector('textarea, input[type="text"]');
-      if (firstInput) setTimeout(function() { firstInput.focus(); }, 200);
-    }
+    // Focus the new block
+    setTimeout(function() {
+      var blocks = document.querySelectorAll('.wysiwyg-block');
+      var last = blocks[blocks.length - 1];
+      if (last) {
+        last.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        var editable = last.querySelector('[contenteditable=true]');
+        if (editable) editable.focus();
+      }
+    }, 100);
+  }
+
+  function insertBlockAt(idx) {
+    var type = prompt('Block type (paragraph, heading, pullquote, image):', 'paragraph');
+    if (!type) return;
+    type = type.toLowerCase().trim();
+    var block;
+    if (type === 'paragraph') block = { type: 'paragraph', text: '', dropcap: false };
+    else if (type === 'heading') block = { type: 'heading', text: '' };
+    else if (type === 'pullquote') block = { type: 'pullquote', text: '', attribution: '' };
+    else if (type === 'image') block = { type: 'image', src: '', caption: '', layout: 'wide' };
+    else { showToast('Unknown block type', 'error'); return; }
+    editorialBodyBlocks.splice(idx, 0, block);
+    renderWysiwygBody();
+    markUnsaved();
   }
 
   function moveBlock(i, dir) {
@@ -977,118 +1020,62 @@
     var temp = editorialBodyBlocks[i];
     editorialBodyBlocks[i] = editorialBodyBlocks[j];
     editorialBodyBlocks[j] = temp;
-    renderEditorBlocks();
-    updatePreview();
+    renderWysiwygBody();
     markUnsaved();
   }
 
   function removeBlock(i) {
     editorialBodyBlocks.splice(i, 1);
-    renderEditorBlocks();
-    updatePreview();
+    renderWysiwygBody();
     markUnsaved();
   }
 
-  /* --- Live Preview --- */
+  function showBlockMenu() {
+    $('block-menu').classList.toggle('open');
+  }
 
-  function updatePreview() {
-    var container = $('preview-content');
-    if (!container) return;
-
-    var title = val('editor-title');
-    var dek = val('editor-dek');
-    var category = val('editor-category');
-    var author = val('editor-author');
-    var date = val('editor-date');
-    var readTime = val('editor-readtime');
-    var heroSrc = val('editor-hero');
-
-    var html = '';
-
-    // Category
-    if (category) html += '<div class="preview-category">' + esc(category) + '</div>';
-
-    // Title
-    html += '<div class="preview-title">' + esc(title || 'Untitled Article') + '</div>';
-
-    // Dek
-    if (dek) html += '<div class="preview-dek">' + esc(dek) + '</div>';
-
-    // Meta line
-    var metaParts = [];
-    if (author) metaParts.push('By ' + esc(author));
-    if (date) metaParts.push(esc(date));
-    if (readTime) metaParts.push(esc(readTime));
-    if (metaParts.length) html += '<div class="preview-meta">' + metaParts.join(' &middot; ') + '</div>';
-
-    // Hero image
-    if (heroSrc) html += '<img class="preview-hero-img" src="' + esc(heroSrc) + '" alt="" onerror="this.style.display=\'none\'">';
-
-    // Body blocks
-    for (var i = 0; i < editorialBodyBlocks.length; i++) {
-      var block = editorialBodyBlocks[i];
-      if (block.type === 'paragraph') {
-        var pText = block.text || '';
-        if (!pText) continue;
-        if (block.dropcap && pText.length > 0) {
-          html += '<p class="preview-paragraph"><span class="dropcap">' + esc(pText.charAt(0)) + '</span>' + esc(pText.slice(1)) + '</p>';
-        } else {
-          html += '<p class="preview-paragraph">' + esc(pText) + '</p>';
-        }
-      } else if (block.type === 'heading') {
-        if (block.text) html += '<h2 class="preview-heading">' + esc(block.text) + '</h2>';
-      } else if (block.type === 'pullquote') {
-        if (block.text) {
-          html += '<blockquote class="preview-pullquote">' + esc(block.text);
-          if (block.attribution) html += '<br><span style="font-size:0.75rem;font-style:normal;color:#888;">&mdash; ' + esc(block.attribution) + '</span>';
-          html += '</blockquote>';
-        }
-      } else if (block.type === 'image') {
-        if (block.src) {
-          html += '<img class="preview-body-img" src="' + esc(block.src) + '" alt="" onerror="this.style.display=\'none\'">';
-          if (block.caption) html += '<div class="preview-caption">' + esc(block.caption) + '</div>';
-        }
-      }
-    }
-
-    if (!editorialBodyBlocks.length) {
-      html += '<p style="color:#bbb;font-style:italic;text-align:center;padding:2rem 0;">Add body blocks to see content here...</p>';
-    }
-
-    container.innerHTML = html;
-
-    // Update hero preview in edit panel too
-    updateHeroPreview();
+  function hideBlockMenu() {
+    var menu = $('block-menu');
+    if (menu) menu.classList.remove('open');
   }
 
   /* --- Save from Editor --- */
 
   function saveArticleFromEditor() {
-    var title = val('editor-title');
+    // Read from WYSIWYG contenteditable fields
+    var title = ($('wysiwyg-title').textContent || '').trim();
     if (!title) { showToast('Title is required', 'error'); return; }
+
+    var dek = ($('wysiwyg-dek').textContent || '').trim();
+    var author = ($('wysiwyg-author').textContent || '').trim();
+    var date = ($('wysiwyg-date').textContent || '').trim();
+    var category = ($('wysiwyg-category').textContent || '').trim() || val('editor-category');
 
     var source = val('editor-source') || 'articles';
     var key = val('editor-key') || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
+    // Sync body blocks from contenteditable
+    syncBlocksFromDOM();
+
     if (source === 'articles') {
       articlesData[key] = {
         title: title,
-        category: val('editor-category'),
-        date: val('editor-date'),
+        category: category,
+        date: date,
         source: val('editor-article-source'),
-        author: val('editor-author'),
+        author: author,
         read_time: val('editor-readtime'),
         image: val('editor-hero'),
-        dek: val('editor-dek'),
+        dek: dek,
         body: editorialBodyBlocks.map(function(b) { return Object.assign({}, b); })
       };
       saveToStorage('articles', articlesData);
     } else {
       editorialsIndex[key] = {
-        category: val('editor-category'),
+        category: category,
         title: title,
-        author: val('editor-author'),
-        date: val('editor-date'),
+        author: author,
+        date: date,
         read_time: val('editor-readtime'),
         hero_image: val('editor-hero'),
         tags: val('editor-tags').split(',').map(function(t) { return t.trim(); }).filter(Boolean),
@@ -1097,9 +1084,31 @@
       saveToStorage('editorial_' + key, editorialsIndex[key]);
     }
 
+    // Also sync category back to drawer
+    setVal('editor-category', category);
     renderDashboard();
     showToast('Article saved!', 'success');
     markSaved();
+  }
+
+  function syncBlocksFromDOM() {
+    // Read current text from contenteditable elements back into blocks
+    var blockEls = document.querySelectorAll('.wysiwyg-block');
+    for (var i = 0; i < blockEls.length; i++) {
+      var idx = parseInt(blockEls[i].getAttribute('data-index'));
+      if (isNaN(idx) || !editorialBodyBlocks[idx]) continue;
+      var block = editorialBodyBlocks[idx];
+
+      if (block.type === 'paragraph' || block.type === 'heading' || block.type === 'pullquote') {
+        var editable = blockEls[i].querySelector('[contenteditable=true]');
+        if (editable) block.text = editable.textContent || '';
+      } else if (block.type === 'image') {
+        var captionEl = blockEls[i].querySelector('.wysiwyg-caption');
+        if (captionEl) block.caption = captionEl.textContent || '';
+        var srcInput = blockEls[i].querySelector('input[data-field="src"]');
+        if (srcInput) block.src = srcInput.value || '';
+      }
+    }
   }
 
   function deleteArticle(key, source) {
@@ -1531,18 +1540,25 @@
     toggleSelectAll,
     deleteSelectedArticles,
 
-    // Articles — Visual Editor
+    // Articles — WYSIWYG Editor
     openArticleEditor,
     closeArticleEditor,
-    togglePreview,
-    updatePreview,
+    toggleSettingsDrawer,
     saveArticleFromEditor,
     deleteArticle,
     addBlock,
+    insertBlockAt,
     moveBlock,
     removeBlock,
-    onBlockInput,
+    showBlockMenu,
+    hideBlockMenu,
+    onWysiwygInput,
     onDropcapToggle,
+    onImgClick,
+    onImgPathInput,
+    onCaptionInput,
+    onHeroClick,
+    onHeroInput,
 
     // Collections
     exportCollection,
@@ -1577,5 +1593,15 @@
      ============================================ */
 
   document.addEventListener('DOMContentLoaded', init);
+
+  // Close block menu when clicking outside
+  document.addEventListener('click', function(e) {
+    var menu = $('block-menu');
+    if (menu && menu.classList.contains('open')) {
+      if (!e.target.closest('.wysiwyg-add-block')) {
+        menu.classList.remove('open');
+      }
+    }
+  });
 
 })();
