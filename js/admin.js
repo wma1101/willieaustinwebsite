@@ -15,6 +15,8 @@
   let pendingDeleteFn = null;
   let hasUnsaved = false;
   let editorialBodyBlocks = []; // temp blocks for modal
+  let imageStore = {}; // path -> base64 data URL for uploaded images
+  let pendingUploadTarget = null; // 'hero' or block index number
 
   const STORAGE_PREFIX = 'wa_';
   const CONTENT_FILES = {
@@ -126,6 +128,9 @@
 
     // Load articles.json (full article content)
     articlesData = getFromStorage('articles') || await fetchJSON('content/articles.json') || {};
+
+    // Load uploaded images store
+    imageStore = getFromStorage('imageStore') || {};
 
     // Load editorials
     for (const ed of EDITORIAL_FILES) {
@@ -832,33 +837,145 @@
     $('drawer-overlay').classList.toggle('open');
   }
 
+  /* --- Image Upload System --- */
+
+  function resolveImageSrc(path) {
+    // If it's already a data URL, return it
+    if (path && path.indexOf('data:') === 0) return path;
+    // Check uploaded images store
+    if (path && imageStore[path]) return imageStore[path];
+    return path;
+  }
+
+  function triggerUpload(target) {
+    pendingUploadTarget = target;
+    $('image-upload-input').click();
+  }
+
+  function handleImageUpload(input) {
+    var file = input.files && input.files[0];
+    if (!file) return;
+    if (!file.type.match('image.*')) {
+      showToast('Please select an image file', 'error');
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var dataUrl = e.target.result;
+      // Generate a path
+      var ext = file.name.split('.').pop().toLowerCase();
+      if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'avif'].indexOf(ext) === -1) ext = 'jpg';
+      var safeName = file.name.replace(/[^a-z0-9.\-_]/gi, '-').toLowerCase();
+      var path = 'assets/images/news/' + safeName;
+
+      // Store in image library
+      imageStore[path] = dataUrl;
+      saveToStorage('imageStore', imageStore);
+
+      // Apply to the target
+      if (pendingUploadTarget === 'hero') {
+        setVal('editor-hero', path);
+        renderHero();
+      } else if (typeof pendingUploadTarget === 'number') {
+        var idx = pendingUploadTarget;
+        if (editorialBodyBlocks[idx]) {
+          editorialBodyBlocks[idx].src = path;
+          renderWysiwygBody();
+        }
+      }
+
+      markUnsaved();
+      showToast('Image uploaded: ' + safeName, 'success');
+      pendingUploadTarget = null;
+    };
+    reader.readAsDataURL(file);
+
+    // Reset input so same file can be re-selected
+    input.value = '';
+  }
+
+  function handleDrop(e, target) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.currentTarget) e.currentTarget.classList.remove('drag-over');
+    var file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (!file || !file.type.match('image.*')) return;
+
+    pendingUploadTarget = target;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var dataUrl = ev.target.result;
+      var ext = file.name.split('.').pop().toLowerCase();
+      if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'avif'].indexOf(ext) === -1) ext = 'jpg';
+      var safeName = file.name.replace(/[^a-z0-9.\-_]/gi, '-').toLowerCase();
+      var path = 'assets/images/news/' + safeName;
+
+      imageStore[path] = dataUrl;
+      saveToStorage('imageStore', imageStore);
+
+      if (target === 'hero') {
+        setVal('editor-hero', path);
+        renderHero();
+      } else if (typeof target === 'number') {
+        if (editorialBodyBlocks[target]) {
+          editorialBodyBlocks[target].src = path;
+          renderWysiwygBody();
+        }
+      }
+
+      markUnsaved();
+      showToast('Image uploaded: ' + safeName, 'success');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function preventDragDefault(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    // Add visual feedback
+    var dropZone = e.currentTarget;
+    if (dropZone) {
+      dropZone.classList.add('drag-over');
+      clearTimeout(dropZone._dragLeaveTimer);
+      dropZone._dragLeaveTimer = setTimeout(function() {
+        dropZone.classList.remove('drag-over');
+      }, 150);
+    }
+  }
+
   /* --- Hero Image --- */
 
   function renderHero() {
     var src = val('editor-hero');
+    var displaySrc = resolveImageSrc(src);
     var img = $('wysiwyg-hero-img');
     var placeholder = $('wysiwyg-hero-placeholder');
-    if (src) {
-      img.src = src;
+    var actions = $('wysiwyg-hero-actions');
+    if (displaySrc) {
+      img.src = displaySrc;
       img.style.display = 'block';
-      img.onerror = function() { img.style.display = 'none'; placeholder.style.display = ''; };
+      img.onerror = function() { img.style.display = 'none'; placeholder.style.display = ''; if (actions) actions.style.display = 'none'; };
       placeholder.style.display = 'none';
+      if (actions) actions.style.display = '';
     } else {
       img.style.display = 'none';
       placeholder.style.display = '';
+      if (actions) actions.style.display = 'none';
     }
   }
 
   function onHeroClick() {
-    var current = val('editor-hero');
-    var src = prompt('Hero image path:', current);
-    if (src === null) return;
-    setVal('editor-hero', src);
+    triggerUpload('hero');
+  }
+
+  function onHeroInput() {
     renderHero();
     markUnsaved();
   }
 
-  function onHeroInput() {
+  function clearHeroImage() {
+    setVal('editor-hero', '');
     renderHero();
     markUnsaved();
   }
@@ -902,13 +1019,18 @@
         html += '<div class="wysiwyg-block-pullquote" contenteditable="true" data-index="' + i + '" data-placeholder="Enter a quote..." oninput="adminPanel.onWysiwygInput(this)">' + esc(block.text || '') + '</div>';
 
       } else if (block.type === 'image') {
-        html += '<div class="wysiwyg-block-image" data-index="' + i + '">';
-        if (block.src) {
-          html += '<img src="' + esc(block.src) + '" alt="" onclick="adminPanel.onImgClick(' + i + ')" onerror="this.style.display=\'none\'">';
+        var imgDisplay = resolveImageSrc(block.src);
+        html += '<div class="wysiwyg-block-image" data-index="' + i + '" ondragover="adminPanel.preventDragDefault(event)" ondragenter="adminPanel.preventDragDefault(event)" ondrop="adminPanel.handleDrop(event,' + i + ')">';
+        if (imgDisplay) {
+          html += '<img src="' + esc(imgDisplay) + '" alt="" onerror="this.style.display=\'none\'">';
         } else {
-          html += '<div class="wysiwyg-img-placeholder" onclick="adminPanel.onImgClick(' + i + ')"><i class="fas fa-image" style="font-size:1.5rem;"></i><span>Click to add image</span></div>';
+          html += '<div class="wysiwyg-img-placeholder" onclick="adminPanel.triggerUpload(' + i + ')"><i class="fas fa-cloud-upload-alt" style="font-size:1.5rem;"></i><span>Click to upload or drag &amp; drop</span></div>';
         }
-        html += '<div class="wysiwyg-img-input-wrap' + (block.src ? '' : ' show') + '"><input type="text" value="' + esc(block.src || '') + '" data-index="' + i + '" data-field="src" oninput="adminPanel.onImgPathInput(this)" placeholder="Image path (e.g. assets/images/...)"></div>';
+        html += '<div class="wysiwyg-img-actions">';
+        html += '<button class="wysiwyg-img-action-btn" onclick="adminPanel.triggerUpload(' + i + ')" title="Upload image"><i class="fas fa-cloud-upload-alt"></i> Upload</button>';
+        html += '<button class="wysiwyg-img-action-btn" onclick="adminPanel.onImgPathPrompt(' + i + ')" title="Enter URL or path"><i class="fas fa-link"></i> URL</button>';
+        if (block.src) html += '<button class="wysiwyg-img-action-btn danger" onclick="adminPanel.clearBlockImage(' + i + ')" title="Remove image"><i class="fas fa-times"></i></button>';
+        html += '</div>';
         html += '<div class="wysiwyg-caption" contenteditable="true" data-index="' + i + '" data-field="caption" data-placeholder="Caption (optional)" oninput="adminPanel.onCaptionInput(this)">' + esc(block.caption || '') + '</div>';
         html += '</div>';
       }
@@ -937,34 +1059,18 @@
     markUnsaved();
   }
 
-  function onImgClick(idx) {
+  function onImgPathPrompt(idx) {
     var block = editorialBodyBlocks[idx];
-    var src = prompt('Image path:', block.src || '');
+    var src = prompt('Image path or URL:', block.src || '');
     if (src === null) return;
     block.src = src;
     renderWysiwygBody();
     markUnsaved();
   }
 
-  function onImgPathInput(el) {
-    var idx = parseInt(el.getAttribute('data-index'));
-    editorialBodyBlocks[idx].src = el.value;
-    // Live-update image
-    var blockEl = el.closest('.wysiwyg-block-image');
-    var img = blockEl.querySelector('img');
-    var placeholder = blockEl.querySelector('.wysiwyg-img-placeholder');
-    if (el.value) {
-      if (img) {
-        img.src = el.value;
-        img.style.display = '';
-      } else {
-        renderWysiwygBody();
-      }
-      if (placeholder) placeholder.style.display = 'none';
-    } else {
-      if (img) img.style.display = 'none';
-      if (placeholder) placeholder.style.display = '';
-    }
+  function clearBlockImage(idx) {
+    editorialBodyBlocks[idx].src = '';
+    renderWysiwygBody();
     markUnsaved();
   }
 
@@ -1492,8 +1598,43 @@
       downloadJSON('collection-' + key + '.json', collectionsIndex[key]);
     }
 
+    // Export uploaded images
+    var imgKeys = Object.keys(imageStore);
+    if (imgKeys.length > 0) {
+      exportUploadedImages();
+    }
+
     showToast('All JSON files exported!', 'success');
     markSaved();
+  }
+
+  function exportUploadedImages() {
+    var keys = Object.keys(imageStore);
+    for (var i = 0; i < keys.length; i++) {
+      var path = keys[i];
+      var dataUrl = imageStore[path];
+      var filename = path.split('/').pop();
+      // Convert data URL to blob and download
+      try {
+        var parts = dataUrl.split(',');
+        var mime = parts[0].match(/:(.*?);/)[1];
+        var bstr = atob(parts[1]);
+        var arr = new Uint8Array(bstr.length);
+        for (var j = 0; j < bstr.length; j++) arr[j] = bstr.charCodeAt(j);
+        var blob = new Blob([arr], { type: mime });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch (e) {
+        console.warn('Failed to export image:', path, e);
+      }
+    }
+    if (keys.length > 0) {
+      showToast(keys.length + ' uploaded image(s) exported', 'success');
+    }
   }
 
   /* ============================================
@@ -1554,11 +1695,16 @@
     hideBlockMenu,
     onWysiwygInput,
     onDropcapToggle,
-    onImgClick,
-    onImgPathInput,
+    triggerUpload,
+    handleImageUpload,
+    handleDrop,
+    preventDragDefault,
+    onImgPathPrompt,
+    clearBlockImage,
     onCaptionInput,
     onHeroClick,
     onHeroInput,
+    clearHeroImage,
 
     // Collections
     exportCollection,

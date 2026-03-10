@@ -1535,6 +1535,76 @@ select.form-control {
   font-size: 1.5rem;
 }
 
+/* Hero action buttons (replace/remove) */
+.wysiwyg-hero-actions {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  gap: 0.35rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.wysiwyg-hero:hover .wysiwyg-hero-actions {
+  opacity: 1;
+}
+
+/* Image action buttons (shared between hero and blocks) */
+.wysiwyg-img-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.7rem;
+  background: rgba(255,255,255,0.95);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: var(--admin-font);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.wysiwyg-img-action-btn:hover {
+  background: #fff;
+  color: #0a0a0a;
+  border-color: #bbb;
+}
+
+.wysiwyg-img-action-btn.danger:hover {
+  color: #c0392b;
+  border-color: #c0392b;
+}
+
+/* Image block action row */
+.wysiwyg-img-actions {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.5rem 0.25rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.wysiwyg-block-image:hover .wysiwyg-img-actions,
+.wysiwyg-block-image:focus-within .wysiwyg-img-actions {
+  opacity: 1;
+}
+
+/* Drag-and-drop active state */
+.wysiwyg-hero.drag-over,
+.wysiwyg-block-image.drag-over {
+  outline: 2px dashed #c4462a;
+  outline-offset: -2px;
+}
+
+.wysiwyg-hero.drag-over .wysiwyg-hero-placeholder,
+.wysiwyg-block-image.drag-over .wysiwyg-img-placeholder {
+  background: #e8e4e0;
+}
+
 /* Body blocks */
 .wysiwyg-body {
   position: relative;

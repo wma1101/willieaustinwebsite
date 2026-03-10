@@ -228,7 +228,10 @@
             </div>
             <div class="form-group">
               <label>Hero Image Path</label>
-              <input type="text" class="form-control" id="editor-hero" oninput="adminPanel.onHeroInput()">
+              <div style="display:flex;gap:0.5rem;">
+                <input type="text" class="form-control" id="editor-hero" oninput="adminPanel.onHeroInput()" style="flex:1;">
+                <button class="btn btn-sm btn-secondary" onclick="adminPanel.triggerUpload('hero')" style="white-space:nowrap;"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
+              </div>
             </div>
           </div>
         </div>
@@ -249,11 +252,18 @@
             </div>
 
             <!-- Hero image -->
-            <div class="wysiwyg-hero" id="wysiwyg-hero" onclick="adminPanel.onHeroClick()">
+            <div class="wysiwyg-hero" id="wysiwyg-hero"
+                 ondragover="adminPanel.preventDragDefault(event)"
+                 ondragenter="adminPanel.preventDragDefault(event)"
+                 ondrop="adminPanel.handleDrop(event,'hero')">
               <img id="wysiwyg-hero-img" src="" alt="" style="display:none;">
-              <div class="wysiwyg-hero-placeholder" id="wysiwyg-hero-placeholder">
-                <i class="fas fa-image"></i>
-                <span>Click to set hero image</span>
+              <div class="wysiwyg-hero-placeholder" id="wysiwyg-hero-placeholder" onclick="adminPanel.triggerUpload('hero')">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Click to upload or drag & drop hero image</span>
+              </div>
+              <div class="wysiwyg-hero-actions" id="wysiwyg-hero-actions">
+                <button class="wysiwyg-img-action-btn" onclick="event.stopPropagation(); adminPanel.triggerUpload('hero')"><i class="fas fa-cloud-upload-alt"></i> Replace</button>
+                <button class="wysiwyg-img-action-btn danger" onclick="event.stopPropagation(); adminPanel.clearHeroImage()"><i class="fas fa-times"></i> Remove</button>
               </div>
             </div>
 
@@ -577,6 +587,9 @@
       <button class="btn btn-sm btn-primary" onclick="adminPanel.saveCurrentSection()"><i class="fas fa-save"></i> Save</button>
     </div>
   </div>
+
+  <!-- Hidden file input for image uploads -->
+  <input type="file" id="image-upload-input" accept="image/*" style="display:none;" onchange="adminPanel.handleImageUpload(this)">
 
   <script src="js/admin.js"></script>
 </body>
