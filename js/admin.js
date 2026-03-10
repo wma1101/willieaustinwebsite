@@ -257,7 +257,7 @@
   }
 
   function renderHpCoverImage(imgPath) {
-    var src = resolveImageSrc(imgPath || '');
+    var src = hpDisplaySrc('hp-cover', imgPath);
     var img = $('hp-cover-img');
     var placeholder = $('hp-cover-placeholder');
     var actions = $('hp-cover-actions');
@@ -322,40 +322,33 @@
     markUnsaved();
   }
 
-  // Apply uploaded image to homepage target
+  // Homepage image previews — kept in memory only, never saved to data
+  var hpImagePreviews = {};
+
+  // Apply uploaded image to homepage target (preview only — doesn't change saved data)
   function applyHpUpload(target, path) {
-    // target format: hp-cover, hp-featured-N, hp-stream-N, hp-duo-N-M, hp-studio-N
+    // Store the base64 preview keyed by target (e.g. 'hp-cover', 'hp-featured-0')
+    var dataUrl = imageStore[path];
+    if (dataUrl) hpImagePreviews[target] = dataUrl;
+
+    // Re-render to show preview
     var parts = target.split('-');
     if (parts[1] === 'cover') {
-      if (!homepageData.cover) homepageData.cover = {};
-      homepageData.cover.image = path;
-      renderHpCoverImage(path);
+      renderHpCoverImage(homepageData.cover ? homepageData.cover.image : '');
     } else if (parts[1] === 'featured') {
-      var idx = parseInt(parts[2]);
-      if (homepageData.featured && homepageData.featured[idx]) {
-        homepageData.featured[idx].image = path;
-        renderFeaturedItems();
-      }
-    } else if (parts[1] === 'stream') {
-      var idx = parseInt(parts[2]);
-      if (homepageData.stream && homepageData.stream[idx]) {
-        homepageData.stream[idx].image = path;
-        renderStreamItems();
-      }
-    } else if (parts[1] === 'duo') {
-      var si = parseInt(parts[2]);
-      var di = parseInt(parts[3]);
-      if (homepageData.stream && homepageData.stream[si] && homepageData.stream[si].items) {
-        homepageData.stream[si].items[di].image = path;
-        renderStreamItems();
-      }
+      renderFeaturedItems();
+    } else if (parts[1] === 'stream' || parts[1] === 'duo') {
+      renderStreamItems();
     } else if (parts[1] === 'studio') {
-      var idx = parseInt(parts[2]);
-      if (homepageData.studio_content && homepageData.studio_content[idx]) {
-        homepageData.studio_content[idx].image = path;
-        renderStudioItems();
-      }
+      renderStudioItems();
     }
+    markUnsaved();
+  }
+
+  // Get the display src for a homepage image — check preview first, then resolve path
+  function hpDisplaySrc(target, originalPath) {
+    if (hpImagePreviews[target]) return hpImagePreviews[target];
+    return resolveImageSrc(originalPath || '');
   }
 
   function clearHpItemImage(section, index, subIndex) {
@@ -448,8 +441,8 @@
     var html = '';
     for (var i = 0; i < items.length; i++) {
       var item = items[i];
-      var imgSrc = resolveImageSrc(item.image || '');
       var target = 'hp-featured-' + i;
+      var imgSrc = hpDisplaySrc(target, item.image);
       html += '<div class="hp-visual-card">' +
         '<div class="hp-card-bar">' +
         '<span class="hp-card-badge">Featured' + (item.lead ? ' &bull; Lead' : '') + '</span>' +
@@ -527,7 +520,7 @@
       '</div>';
 
     if (item.type === 'feature') {
-      var imgSrc = resolveImageSrc(item.image || '');
+      var imgSrc = hpDisplaySrc('hp-stream-' + i, item.image);
       return '<div class="hp-visual-card">' +
         '<div class="hp-card-bar"><span class="hp-card-badge feature">Feature</span>' + actions + '</div>' +
         '<div class="hp-card-content">' +
@@ -549,7 +542,7 @@
         '<div class="hp-duo-wrap">';
       for (var d = 0; d < 2; d++) {
         var sub = items2[d] || {};
-        var subSrc = resolveImageSrc(sub.image || '');
+        var subSrc = hpDisplaySrc('hp-duo-' + i + '-' + d, sub.image);
         duoHtml += '<div class="hp-duo-item">' +
           '<div class="hp-duo-label">Item ' + (d + 1) + '</div>' +
           '<div class="hp-card-content">' +
@@ -641,7 +634,7 @@
     var html = '';
     for (var i = 0; i < items.length; i++) {
       var item = items[i];
-      var imgSrc = resolveImageSrc(item.image || '');
+      var imgSrc = hpDisplaySrc('hp-studio-' + i, item.image);
       html += '<div class="hp-visual-card">' +
         '<div class="hp-card-bar">' +
         '<span class="hp-card-badge studio">Studio</span>' +
